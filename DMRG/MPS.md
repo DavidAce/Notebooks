@@ -1,6 +1,15 @@
 
 
+
+### To view math in this document there are several options:
+
+- Install a MathJax renderer for your browser to read directly on the github webpage.
+- Open this file on your pc/mac with the `Atom` editor with the `markdown-preview-plus` -plugin installed.
+- Open this file on your pc/mac with the `ReText` editor.
+
+
 # Matrix Product States
+
 
 # Preparation of MPS
 
@@ -23,7 +32,7 @@ $$|\psi\rangle = \sum_{\sigma_1...\sigma_N} \Gamma^{\sigma_1}\Lambda^1\Gamma^{\s
 
 which diagrammatically looks like
 
-<img class="center-block" height="60px" src="https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490628258537_file.png">
+<img class="center-block" height="60px" src="eqs/tensortrain.png">
 
 This form allows for many possible representations of the same wave function, giving us the opportunity to define a “canonical form” of the MPS.
 
@@ -33,9 +42,14 @@ We can define a set of $\chi_n$ wave functions $|\alpha\rangle_{L/R}^n$ to the l
 $$|\psi\rangle = \sum_{\alpha=1}^\chi \Lambda_\alpha^n |\alpha\rangle^n_L\otimes |\alpha\rangle^n_R , \quad |\alpha\rangle \in H_{L/R}$$
 
 
+---
 
-> **The MPS representation** $\{\Gamma^{\sigma_1}\Lambda^1\Gamma^{\sigma_2}\Lambda^2...\Lambda^{N-1}\Gamma^{\sigma_N}\}$ **is canonical if for every bond, the set of wave functions** $|\alpha\rangle_{L/R}^n$ **along with** $\Lambda^i$ **form a Schmidt decomposition of** $\psi$**. In other words we must have** $\langle \hat{\alpha}|\alpha\rangle^n_{L} = \delta_{\hat{\alpha}\alpha}$ **,** $\langle \hat{\alpha}|\alpha\rangle^n_{R} = \delta_{\hat{\alpha}\alpha}$ **and** $\sum(\Lambda_\alpha^i)^2 = 1$ **on every bond.**
+**
+The MPS representation $\{\Gamma^{\sigma_1}\Lambda^1\Gamma^{\sigma_2}\Lambda^2...\Lambda^{N-1}\Gamma^{\sigma_N}\}$ is canonical if for every bond, the set of wave functions $|\alpha\rangle_{L/R}^n$ along with $\Lambda^i$ form a Schmidt decomposition of $\psi$.
+In other words we must have** $\langle \hat{\alpha}|\alpha\rangle^n_{L} = \delta_{\hat{\alpha}\alpha}$ , $\langle \hat{\alpha}|\alpha\rangle^n_{R} =
+\delta_{\hat{\alpha}\alpha}$ and $\sum(\Lambda_\alpha^i)^2 = 1$ on every bond.
 
+---
 
 
 
