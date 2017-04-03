@@ -44,10 +44,9 @@ $$|\psi\rangle = \sum_{\alpha=1}^\chi \Lambda_\alpha^n |\alpha\rangle^n_L\otimes
 
 ---
 
-**
-The MPS representation $\{\Gamma^{\sigma_1}\Lambda^1\Gamma^{\sigma_2}\Lambda^2...\Lambda^{N-1}\Gamma^{\sigma_N}\}$ is canonical if for every bond, the set of wave functions $|\alpha\rangle_{L/R}^n$ along with $\Lambda^i$ form a Schmidt decomposition of $\psi$.
-In other words we must have** $\langle \hat{\alpha}|\alpha\rangle^n_{L} = \delta_{\hat{\alpha}\alpha}$ , $\langle \hat{\alpha}|\alpha\rangle^n_{R} =
-\delta_{\hat{\alpha}\alpha}$ and $\sum(\Lambda_\alpha^i)^2 = 1$ on every bond.
+**The MPS representation $\{\Gamma^{\sigma_1}\Lambda^1\Gamma^{\sigma_2}\Lambda^2...\Lambda^{N-1}\Gamma^{\sigma_N}\}$ is canonical if for every bond, the set of wave functions $|\alpha\rangle_{L/R}^n$ along with $\Lambda^i$ form a Schmidt decomposition of $\psi$.
+In other words we must have $\langle \hat{\alpha}|\alpha\rangle^n_{L} = \delta_{\hat{\alpha}\alpha}$ , $\langle \hat{\alpha}|\alpha\rangle^n_{R} =
+\delta_{\hat{\alpha}\alpha}$ and $\sum(\Lambda_\alpha^i)^2 = 1$ on every bond.**
 
 ---
 
