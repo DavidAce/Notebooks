@@ -116,9 +116,13 @@ Repeating steps 1 to 3 for the Schmidt vectors $|\Phi_{\alpha_3}^{4...n}\rangle 
 
 There are more details on higher-order tensor decomposition (matrix unfolding) here:
 [De Lathauwer, L., De Moor, B., & Vandewalle, J. (2000). A Multilinear Singular Value Decomposition. - Society for Industrial and Applied Mathematics. Journal on Matrix Analysis and Applications](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696)
+
 <img class="center-block" height="450px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding.png">
+
 And also here:
+
 [Bengua, J. a., Phien, H. N., Tuan, H. D., & Do, M. N. (2015). Matrix Product State for Feature Extraction of Higher-Order Tensors, (1944), 10.](http://arxiv.org/abs/1503.0516)
+
 <img class="center-block" height="200px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm.png">
 <img class="center-block" height="350px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm2.png">
 
