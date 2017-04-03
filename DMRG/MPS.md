@@ -3,7 +3,7 @@
 
 ### To view math in this document there are several options:
 
-- Install a MathJax renderer for your browser to read directly on the github webpage.
+- Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
 - Open this file on your pc/mac with the `Atom` editor with the `markdown-preview-plus` -plugin installed.
 - Open this file on your pc/mac with the `ReText` editor.
 
@@ -32,7 +32,7 @@ $$|\psi\rangle = \sum_{\sigma_1...\sigma_N} \Gamma^{\sigma_1}\Lambda^1\Gamma^{\s
 
 which diagrammatically looks like
 
-<img class="center-block" height="60px" src="eqs/tensortrain.png">
+<img class="center-block" height="60px" src="figs/tensortrain.png">
 
 This form allows for many possible representations of the same wave function, giving us the opportunity to define a “canonical form” of the MPS.
 
@@ -54,12 +54,15 @@ In other words we must have $\langle \hat{\alpha}|\alpha\rangle^n_{L} = \delta_{
 
 ## Schmidt decomposition according to Vidal
 
-Summary from the following papers
+---
 
-> Vidal, G. (2003). Efficient Classical Simulation of Slightly Entangled Quantum Computations. Physical Review Letters, 91(14), 147902. https://doi.org/10.1103/PhysRevLett.91.147902
+> **Summary from the following papers**
 >
-> Vidal, G. (2004). Efficient simulation of one-dimensional quantum many-body systems. Physical Review Letters, 93(4), 40502–1. https://doi.org/10.1103/PhysRevLett.93.040502
+> [Vidal, G. (2003). Efficient Classical Simulation of Slightly Entangled Quantum Computations. Physical Review Letters, 91(14), 147902.](https://doi.org/10.1103/PhysRevLett.91.147902)
+>
+> [Vidal, G. (2004). Efficient simulation of one-dimensional quantum many-body systems. Physical Review Letters, 93(4), 40502–1.](https://doi.org/10.1103/PhysRevLett.93.040502)
 
+---
 
 The local decomposition of the state $|\psi\rangle \in H_2^{\otimes n}$ in terms of $n$ tensors $\{\Gamma^{\sigma_l}\}^n_{l=1}$ and $\{\lambda^{l}\}^{n-1}_{l=1}$ is denoted
 
@@ -72,53 +75,60 @@ $$c_{\sigma_1...\sigma_n}= \sum_{\alpha_1...\alpha_{n-1}} \Gamma^{\sigma_1}_{\al
 
 so that $2^n$ coefficients in $c_{\sigma_1...\sigma_n}$ are expressed in terms of about $(2\chi^2 + \chi)n$ parameters, a number that grows linearly in $n$ for a fixed value of $\chi$.
 
-**Procedure**
+### Procedure
 This decomposition is essentially a concatenation of $n-1$ Schmidt decompositions, and depends on how the qubits have been ordered from $1$ to $n$. We first compute the Schmidt decomposition according to the bipartite splitting of $|\psi\rangle$ into qubit $1$ and the $n-1$ remaining qubits.
 
 
-                $|\psi\rangle = \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2...n}\rangle$$\; = \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2...n}\rangle$
+$$|\psi\rangle = \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2...n}\rangle = \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2...n}\rangle$$
 
 We then proceed according to the following three steps:
 
+---
 
-    1.  Expand each vector $|\Phi_{\alpha_1}^{2...n}\rangle$ in a local basis for qubit 2, $|\Phi_{\alpha_1}^{2...n}\rangle =\sum_{\sigma_2}|\sigma_2\rangle |\tau_{\alpha_1,\sigma_2}^{3...n}\rangle$
-    2.  Write each vector $|\tau_{\alpha_1,\sigma_2}^{3...n}\rangle$ in terms of at most $\chi$ Schmidt vectors $\{|\Phi_{\alpha_2}^{3...n}\rangle\}_{\alpha_2}^\chi$, i.e. eigenvectors of $\rho^{3...n}$ and the corresponding Schmidt coefficients $\lambda_{\alpha_2}^2$: $|\tau_{\alpha_1,\sigma_2}^{3...n}\rangle = \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle$
-    3. Substitute the equations in (1) and (2) into the first splitting above, i.e.:
+1.  Expand each vector $|\Phi_{\alpha_1}^{2...n}\rangle$ in a local basis for qubit 2, $|\Phi_{\alpha_1}^{2...n}\rangle =\sum_{\sigma_2}|\sigma_2\rangle |\tau_{\alpha_1,\sigma_2}^{3...n}\rangle$
+2.  Write each vector $|\tau_{\alpha_1,\sigma_2}^{3...n}\rangle$ in terms of at most $\chi$ Schmidt vectors $\{|\Phi_{\alpha_2}^{3...n}\rangle\}_{\alpha_2}^\chi$, i.e. eigenvectors of $\rho^{3...n}$ and the corresponding Schmidt coefficients $\lambda_{\alpha_2}^2$: $|\tau_{\alpha_1,\sigma_2}^{3...n}\rangle = \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle$
+3. Substitute the equations in (1) and (2) into the first splitting above, i.e.:
 
-            $|\Phi_{\alpha_1}^{2...n}\rangle =\sum_{\sigma_2}|\sigma_2\rangle  \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle$
+$$
+\begin{align}
+|\Phi_{\alpha_1}^{2...n}\rangle &=\sum_{\sigma_2}|\sigma_2\rangle  \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle \\
+&=\sum_{\sigma_2,\alpha_2} \Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\sigma_2\rangle |\Phi_{\alpha_2}^{3...n}\rangle
+\end{align}
+$$
 
-              $\qquad =\sum_{\sigma_2,\alpha_2} \Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\sigma_2\rangle |\Phi_{\alpha_2}^{3...n}\rangle$
+followed by
 
-      followed by
+$$
+\begin{align}
+|\psi\rangle &= \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle\sum_{\sigma_2}|\sigma_2\rangle  \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle \\
+&=\sum_{\sigma_1\sigma_2,\alpha_1\alpha_2}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}  \Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\sigma_1\rangle|\sigma_2\rangle|\Phi_{\alpha_2}^{3...n}\rangle
+\end{align}
+$$
 
-          $|\psi\rangle = \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle\sum_{\sigma_2}|\sigma_2\rangle  \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle$
+---
 
-                $= \sum_{\sigma_1\sigma_2,\alpha_1\alpha_2}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}  \Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\sigma_1\rangle|\sigma_2\rangle|\Phi_{\alpha_2}^{3...n}\rangle$
-
-
-Repeating steps $(i)-(iii)$ for the Schmidt vectors $|\Phi_{\alpha_3}^{4...n}\rangle , |\Phi_{\alpha_4}^{5...n}\rangle...$ gives us the state $|\psi\rangle$ in terms of tensors $\Gamma^{\sigma_l}$ and $\lambda^l$.
+Repeating steps 1 to 3 for the Schmidt vectors $|\Phi_{\alpha_3}^{4...n}\rangle , |\Phi_{\alpha_4}^{5...n}\rangle...$ gives us the state $|\psi\rangle$ in terms of tensors $\Gamma^{\sigma_l}$ and $\lambda^l$.
 
 
 **Tensor decomposition**
 
 There are more details on higher-order tensor decomposition (matrix unfolding) here:
 
-  > [De Lathauwer, L., De Moor, B., & Vandewalle, J. (2000). A Multilinear Singular Value Decomposition.](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696) [Society for Industrial and Applied Mathematics. Journal on Matrix Analysis and Applications](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696)[,](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696) [21](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696)[(4), 1253. Retrieved from](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696)
+> [De Lathauwer, L., De Moor, B., & Vandewalle, J. (2000). A Multilinear Singular Value Decomposition. - Society for Industrial and Applied Mathematics. Journal on Matrix Analysis and Applications](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696)
+<img class="center-block" height="450px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding.png">
+>
+> And also here:
+>
+> [Bengua, J. a., Phien, H. N., Tuan, H. D., & Do, M. N. (2015). Matrix Product State for Feature Extraction of Higher-Order Tensors, (1944), 10.](http://arxiv.org/abs/1503.0516)
+> <img class="center-block" height="200px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm.png">
+>
+> <img class="center-block" height="350px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm2.png">
 
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490798421581_file.png
 
 
 
-And also here:
-
-  > Bengua, J. a., Phien, H. N., Tuan, H. D., & Do, M. N. (2015). Matrix Product State for Feature Extraction of Higher-Order Tensors, (1944), 10. Retrieved from http://arxiv.org/abs/1503.0516
-  >
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490856854327_file.png
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490801243446_file.png
 
 ----------
-
 
 
 **Local updates**
