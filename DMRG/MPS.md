@@ -3,7 +3,7 @@
 
 ### To view math in this document there are several options. From low to high effort, these are:
 
-- Open or copy-paste this file into [`StackEdit`](https://stackedit.io), an online open-source markdown+tex editor.
+- [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
 - Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
 - Open this file on your pc/mac with the [`Atom`](https://atom.io/) editor with the `markdown-preview-plus` -plugin installed.
 - Open this file on your pc/mac with the [`ReText`](https://github.com/retext-project/retext) editor. To get inline equations showing nicely, do the following (copy-paste to terminal):
