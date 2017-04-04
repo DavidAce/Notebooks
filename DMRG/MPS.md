@@ -1,7 +1,7 @@
 
 
 
-### To view math in this document there are several options. From low to high effort, these are:
+**To view math in this document there are several options. From low to high effort:**
 
 - [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
 - Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
@@ -300,22 +300,29 @@ Following the previous prescription, we set $A^{\sigma_3} = \begin{pmatrix}\bino
 
 We now have
 
-        $|\psi\rangle = \sum_{\sigma_1\sigma_2\sigma_3} c_{\sigma_1\sigma_2\sigma_3}|\sigma_1\sigma_2\sigma_3\rangle = \sum_{a_1,a_2,a_3}^{r_1,r_2,r_3}A^{\sigma_1}_{a_1}A^{\sigma_2}_{a_1,a_2}A^{\sigma_3}_{a_3} |\sigma_1\sigma_2\sigma_3\rangle$
+$$
+|\psi\rangle
+= 
+\sum_{\sigma_1\sigma_2\sigma_3} c_{\sigma_1\sigma_2\sigma_3}|\sigma_1\sigma_2\sigma_3\rangle = 
+\sum_{a_1,a_2,a_3}^{r_1,r_2,r_3}A^{\sigma_1}_{a_1}A^{\sigma_2}_{a_1,a_2}A^{\sigma_3}_{a_3} |\sigma_1\sigma_2\sigma_3\rangle
+$$
 
 where
 
-
-      $A_{\alpha_1}^{\sigma_1} = \{(1,0) , (0,1)\}$
-      $A_{\alpha_1\alpha_2}^{\sigma_2} = \{\begin{pmatrix}0&0\\0&1\end{pmatrix} , \begin{pmatrix}-1&0\\0&0\end{pmatrix} \}$
-      $A_{\alpha_2}^{\sigma_3} = \{\begin{pmatrix}-2^{-1/2}\\0\end{pmatrix} , \begin{pmatrix}0\\2^{-1/2}\end{pmatrix} \}$
-
+$$
+\begin{align}
+A_{\alpha_1}^{\sigma_1} &= \{(1,0) , (0,1)\}\\
+A_{\alpha_1\alpha_2}^{\sigma_2} &= \{\begin{pmatrix}0&0\\0&1\end{pmatrix} , \begin{pmatrix}-1&0\\0&0\end{pmatrix} \} \\
+A_{\alpha_2}^{\sigma_3} &= \{\begin{pmatrix}-2^{-1/2}\\0\end{pmatrix} , \begin{pmatrix}0\\2^{-1/2}\end{pmatrix} \}
+\end{align}
+$$
 
 **Remark on Normalization**
 It would seem that it is simpler to do the decomposition for unnormalized states using ones everywhere, and then normalize by $1/\sqrt{2}$  perhaps?
 
 
 
-**Example 2: Four Qubits, following Vidal**
+### Example 2: Four Qubits, following Vidal
 
 Let $|\psi\rangle = \frac{1}{\sqrt{3}}(|1100\rangle + |0011\rangle + |1010\rangle)$
 
@@ -324,103 +331,92 @@ For giggles, disregard the normalization factor for now.
 We do a bipartite splitting on the first qubit,
 
 
-                $|\psi\rangle = \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle$$\; = \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle$
+$$
+|\psi\rangle
+=
+\sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle =
+\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle
+$$
 
 
 where $\Gamma_{\alpha_1}^{\sigma_1}$ comes from the SVD decomposition and $\lambda_{\alpha_1}^1$ are the corresponding singular values, or Schmidt coefficients.
 
 To actually perform the SVD decomposition initially, the tensor $c_{\sigma_1...\sigma_4}$ needs to be flattened, or “matricized”.
 
-We begin by doing a *mode-1* matrix unfolding (or flattening), where we get a matrix$\Psi_{i_1,j} = \Psi_{\sigma_1,(\sigma_2...\sigma_4}) \in \mathbb{R}^{2\times(2\cdot2\cdot2)}$. Note that $i_k$ and $j$ denotes the tensor indices, i.e. $i_k \in 1, 2,..., I_k$, and $j \in 1,2,...,(\prod_{m\neq k}^n I_m)$. An $I_k$ is simply the dimensions of a qubit at $k$, i.e. 2.
+We begin by doing a *mode-1* matrix unfolding (or flattening), where we get a matrix $\Psi_{i_1,j} = \Psi_{\sigma_1,(\sigma_2...\sigma_4}) \in \mathbb{R}^{2\times(2\cdot2\cdot2)}$. Note that $i_k$ and $j$ denotes the tensor indices, i.e. $i_k \in 1, 2,..., I_k$, and $j \in 1,2,...,(\prod_{m\neq k}^n I_m)$. An $I_k$ is simply the dimensions of a qubit at $k$, i.e. 2.
 
 
 The tensor $c_{\sigma_1...\sigma_4}$ has nonzero elements $c_{1100}, c_{0011} \text{ and } c_{1010}$ which, in a mode-1 unfolding, maps to matrix coordinates
 
 
-  $c_{1100} \rightarrow \Psi_{i_1 = 2,j=2}$
-      Here $j =1 + \sum_{k\neq 1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq1}^{k-1} I_m$
-      We can use qubit values directly, by instead rewriting:
-                $j =1 + \sum_{k\neq 1}^4 \sigma_kJ_k$
+- $c_{1100} \rightarrow \Psi_{i_1 = 2,j=2}$. Here $j =1 + \sum_{k\neq 1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq1}^{k-1} I_m$. We can use qubit values directly, by instead rewriting $j =1 + \sum_{k\neq 1}^4 \sigma_kJ_k$. This gives $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*1 + 0*2 + 0*4 = 2$.
 
-      This gives
-      $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*1 + 0*2 + 0*4 = 2$
+- $c_{0011} \rightarrow {}$$\Psi_{i_1=1,j=7}$ Using the same method as above we get $j = 1+0*1 + 1*2 + 1*4 = 7$.
 
-  $c_{0011} \rightarrow {}$$\Psi_{i_1=1,j=7}$
-      Using the same method as above we get
-      $j = 1+0*1 + 1*2 + 1*4 = 7$
-
-
-  $c_{1010} \rightarrow {\Psi_{i_1=2,j=3}}$
-      And again,
-      $j = 1+0*1 + 1*2 + 0*4 = 3$
+- $c_{1010} \rightarrow {\Psi_{i_1=2,j=3}}$. And again, $j = 1+0*1 + 1*2 + 0*4 = 3$.
 
 
 Reinserting the normalization factor we get
 
 
-      $\Psi = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1&0 \\ 0&1&1&0&0&0&0&0\end{pmatrix}$
-
+$$
+\Psi = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1&0 \\ 0&1&1&0&0&0&0&0\end{pmatrix}
+$$
 
 The SVD decomposition yields:
 
 
-      $U = \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}$
-
-
-      $S = \frac{1}{\sqrt{3}} \begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}$
-
-
-      $V^\dagger = \frac{1}{\sqrt{2}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}$
-
+$$
+\begin{align}
+U &= \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}\\
+S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
+V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}
+\end{align}
+$$
 
 
 where we can identify $\Gamma_{\alpha_1}^{\sigma_1} = U$ ($\sigma_1$ labels the row-vectors in $U$), and $\lambda^1_{\alpha_1} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We also identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as
 
+$$
+|\psi\rangle
+=
+\sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle =
+\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle
+$$
+
+Now do step 1 to 3 in Vidal’s approach. Essentially these steps do the decomposition above on $|\sigma_2\sigma_3\sigma_4\rangle$. We have two sets of these vectors depending on the value of $\sigma_1$?
 
 
-            $|\psi\rangle = \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle$$\; = \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle$
-
-Now do step (i)-(iii) in Vidal’s approach. Essentially these steps do the decomposition above on $|\sigma_2\sigma_3\sigma_4\rangle$. We have two sets of these vectors depending on the value of $\sigma_1$?
-
-
-
-
-
-
-
-    i.  $|\Phi_{\alpha_1}^{2,3,4}\rangle = \sum_{\sigma_2} |\sigma_2\rangle|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle$$=|0\rangle|\tau^{3,4}_{\alpha_1,0}\rangle + |1\rangle|\tau^{3,4}_{\alpha_1,1}\rangle$$=|0\rangle(|10\rangle + |11\rangle) + |1\rangle(|00\rangle)$?
-      This means that we should have two different vectors $\tau$. One for each possible $\sigma_2$.
-
-
-
-
-    ii. $|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle = \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3,4}\rangle$
-      This can be accomplished by doing a Schmidt decomposition on each of $|\psi\rangle|_{\sigma_2 = 0}$
+1. $|\Phi_{\alpha_1}^{2,3,4}\rangle = \sum_{\sigma_2} |\sigma_2\rangle|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle=|0\rangle|\tau^{3,4}_{\alpha_1,0}\rangle + |1\rangle|\tau^{3,4}_{\alpha_1,1}\rangle=|0\rangle(|10\rangle + |11\rangle) + |1\rangle(|00\rangle)$?
+This means that we should have two different vectors $\tau$. One for each possible $\sigma_2$.
 
 
 
 
+2. $|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle = \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3,4}\rangle$
+This can be accomplished by doing a Schmidt decomposition on each of $|\psi\rangle|_{\sigma_2 = 0}$
 
 
-    >  Expand each vector $|\Phi_{\alpha_1}^{2...n}\rangle$ in a local basis for qubit 2, $|\Phi_{\alpha_1}^{2...n}\rangle =\sum_{\sigma_2}|\sigma_2\rangle |\tau_{\alpha_1,\sigma_2}^{3...n}\rangle$
-    >
-    >  Write each vector $|\tau_{\alpha_1,\sigma_2}^{3...n}\rangle$ in terms of at most $\chi$ Schmidt vectors $\{|\Phi_{\alpha_2}^{3...n}\rangle\}_{\alpha_2}^\chi$, i.e. eigenvectors of $\rho^{3...n}$ and the corresponding Schmidt coefficients $\lambda_{\alpha_2}^2$: $|\tau_{\alpha_1,\sigma_2}^{3...n}\rangle = \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle$
-    >
-    > Substitute the equations in (1) and (2) into the first splitting above
+
+### Example with PBC
 
 
-**Example with PBC**
 
+---
 
 ## Virtual systems: Valence bonds or Maximally entangled pairs
 
-This is a summary of [ppt3](http://www.pks.mpg.de/~esicqw12/Talks_pdf/Verstraete.pdf) and
+---
 
-> Wahl, T. B. (2015). Tensor network states for the description of quantum many-body systems. arXiv Preprint, (August), 156. Retrieved from http://arxiv.org/abs/1509.05984
+> The following is a summary of this [presentation](http://www.pks.mpg.de/~esicqw12/Talks_pdf/Verstraete.pdf) and
 >
-> Pérez-García, D., Verstraete, F., Wolf, M. M., & Cirac, J. I. (2007). Matrix Product State Representation. Quantum Inf. Comp., 7, 401. https://doi.org/10.1143/JPSJ.81.074003
+> [Wahl, T. B. (2015). Tensor network states for the description of quantum many-body systems. arXiv Preprint, (August), 156.](http://arxiv.org/abs/1509.05984)
 >
-> Saberi, H. (2008). Matrix-product states for strongly correlated systems and quantum information processing. Dissertation, 141. https://edoc.ub.uni-muenchen.de/9755/1/Saberi_Hamed.pdf
+> [Pérez-García, D., Verstraete, F., Wolf, M. M., & Cirac, J. I. (2007). Matrix Product State Representation. Quantum Inf. Comp., 7, 401.](https://doi.org/10.1143/JPSJ.81.074003)
+>
+> [Saberi, H. (2008). Matrix-product states for strongly correlated systems and quantum information processing. Dissertation, 141.](https://edoc.ub.uni-muenchen.de/9755/1/Saberi_Hamed.pdf)
+
+---
 
 
 On a spin-$S$ chain of length $N$, replace each $d$-dimensional system $|\sigma_i\rangle$ at site $i$, with two *virtual systems* $|l_i,r_i\rangle$ of dimension $D_i=1+2S'$, called the bond dimension. These are sometimes called *auxiliary* systems. In general $D_i$ can be different for each site but it it needs to be larger than the bond dimension. Note that $l$ and $r$ stand for left and right.
