@@ -1,4 +1,4 @@
-[#startTOC]:
+[comment]: <> (This is a comment, it will not be included)
 
 Table of Contents
 =================
@@ -19,9 +19,9 @@ Table of Contents
    * [Graphical representation](#graphical-representation)
    * [Matrix Product Operators](#matrix-product-operators)
 
-[#endTOC]:
+[comment]: <> (This is a comment, it will not be included)
 
-
+heh
 
 **To view math in this document there are several options. From low to high effort:**
 
