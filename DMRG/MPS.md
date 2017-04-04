@@ -1,8 +1,9 @@
-[comment]: <> (This is a comment, it will not be included)
+[comment]: <> (startTOC)
 
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
    * [Matrix Product States](#matrix-product-states)
    * [Preparation of MPS](#preparation-of-mps)
       * [Canonical form (from <a href="http://journals.aps.org/prb/abstract/10.1103/PhysRevB.87.235106">Jens paper</a>)](#canonical-form-from-jens-paper)
@@ -19,9 +20,9 @@ Table of Contents
    * [Graphical representation](#graphical-representation)
    * [Matrix Product Operators](#matrix-product-operators)
 
-[comment]: <> (This is a comment, it will not be included)
+[comment]: <> (endtTOC)
 
-heh
+
 
 **To view math in this document there are several options. From low to high effort:**
 

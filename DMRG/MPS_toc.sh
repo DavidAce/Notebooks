@@ -1,6 +1,6 @@
 TOC=".././gh-md-toc https://github.com/DavidAce/Notebooks/blob/master/DMRG/MPS.md"
-START="[#startTOC]:"
-END="[#endTOC]:"
+START="[comment]: <> (startTOC)"
+END="[comment]: <> (startTOC)"
 
 awk -i inplace -v toc="$TOC" -v start="$START" -v end="$END" '
     BEGIN     {p=0}
