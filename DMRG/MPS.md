@@ -343,7 +343,7 @@ It would seem that it is simpler to do the decomposition for unnormalized states
 
 
 
-##### Example 2: Four Qubits, following Vidal
+### Example 2: Four Qubits, following Vidal
 
 Let $|\psi\rangle = \frac{1}{\sqrt{3}}(|1100\rangle + |0011\rangle + |1010\rangle)$
 
