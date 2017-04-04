@@ -23,7 +23,7 @@ Table of Contents
 [comment]: <> (endtTOC)
 
 
-# Instroctions for enabling MathJax
+# Instructions for MathJax
 To view math in this document there are several options. From low to high effort:**
 
 - [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
@@ -39,9 +39,6 @@ To view math in this document there are several options. From low to high effort
 
 
 # Matrix Product States
-
-
-# Preparation of MPS
 
 There are two alternative ways to prepare MPS. The first is by using successive Schmidt decompositions, which as it turns out also produces MPS in *canonical form*. The second is a preparation from maximally entangled pairs, the so called valence bonds states.
 
@@ -105,8 +102,8 @@ $$c_{\sigma_1...\sigma_n}= \sum_{\alpha_1...\alpha_{n-1}} \Gamma^{\sigma_1}_{\al
 
 so that $2^n$ coefficients in $c_{\sigma_1...\sigma_n}$ are expressed in terms of about $(2\chi^2 + \chi)n$ parameters, a number that grows linearly in $n$ for a fixed value of $\chi$.
 
-### Procedure
-This decomposition is essentially a concatenation of $n-1$ Schmidt decompositions, and depends on how the qubits have been ordered from $1$ to $n$. We first compute the Schmidt decomposition according to the bipartite splitting of $|\psi\rangle$ into qubit $1$ and the $n-1$ remaining qubits.
+## Procedure
+This is essentially a concatenation of $n-1$ Schmidt decompositions, and depends on how the qubits have been ordered from $1$ to $n$. We first compute the Schmidt decomposition according to the bipartite splitting of $|\psi\rangle$ into qubit $1$ and the $n-1$ remaining qubits.
 
 
 $$|\psi\rangle = \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2...n}\rangle = \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2...n}\rangle$$
@@ -140,9 +137,8 @@ $$
 Repeating steps 1 to 3 for the Schmidt vectors $|\Phi_{\alpha_3}^{4...n}\rangle , |\Phi_{\alpha_4}^{5...n}\rangle...$ gives us the state $|\psi\rangle$ in terms of tensors $\Gamma^{\sigma_l}$ and $\lambda^l$.
 
 
-#### Tensor decomposition
+### Tensor decomposition
 
----
 
 There are more details on higher-order tensor decomposition (matrix unfolding) here:
 [De Lathauwer, L., De Moor, B., & Vandewalle, J. (2000). A Multilinear Singular Value Decomposition. - Society for Industrial and Applied Mathematics. Journal on Matrix Analysis and Applications](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696)
@@ -159,7 +155,7 @@ And also here:
 ---
 
 
-#### Local updates
+### Local updates
 
 Updating the state $|\psi\rangle$ after a unitary operation $U$ acts on qubit $l$ does only involve transforming $\Gamma^{\sigma_l}$. The computational cost is $\mathcal{O}(\chi^2)$ basic operations.
 
@@ -347,7 +343,7 @@ It would seem that it is simpler to do the decomposition for unnormalized states
 
 
 
-### Example 2: Four Qubits, following Vidal
+##### Example 2: Four Qubits, following Vidal
 
 Let $|\psi\rangle = \frac{1}{\sqrt{3}}(|1100\rangle + |0011\rangle + |1010\rangle)$
 
@@ -563,7 +559,7 @@ $$
 $$
 
 
-## Bond Dimension
+### Bond Dimension
 
 Each $A_{a_i,a_{i+1}}^{\sigma_i}$ above is an $(r_i\times r_{i+1})$ matrix, where $r_i$ is the rank of the Schmidt decomposition at each site $i$. The *bond dimension* of an MPS is defined by
 
