@@ -558,87 +558,21 @@ $$D\equiv \max_i r_i$$
 
 We represent mathematical objects in the following way:
 
-
-<div class="figure_sideways">
-    <div style="float:left;margin-right:30px;">
-        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/>
-        <figcaption>Scalar</figcaption>
-    </div>
-    <div style="float:left;margin-right:30px;">
-        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/vector.png" height="35"/>
-        <figcaption>Vector</figcaption>
-    </div>
-    <div style="float:left;margin-right:30px;">
-        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/>        
-        <figcaption>Dual vector</figcaption>
-    </div>
-</div>
-
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490005909326_file.png
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490005869283_file.png
-
-
-Scalar
-
-
-
-Vector
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490005950339_file.png
-
-
-
-
-Dual vector
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490006014605_file.png
-
-
-
-
-Matrix
-
-
-
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490006286725_file.png
-
-
-Scalar multiplication
-
-
-A contracted common index between matrices constitute a matrix multiplication, represented by a shared edge:
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490006130191_file.png
-
-
-
-$\sum_{\gamma}^{N} A_{\alpha,\gamma}B_{\gamma,\beta} = C_{\alpha,\beta}$.
-
-A trace is understood as
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490006240579_file.png
-
-
-
-
-
-and a partial trace as
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490006357573_file.png
-
-
-
-
-
+<figure>
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/> Scalar
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/vector.png" height="35"/> Vector
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/dualvector.png" height="35"/> Dual Vector
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrix.png" height="35"/> Matrix 
+        <br>
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/trace.png" height="50"/> Trace
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/partialtrace.png" height="50"/> Partial Trace
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalarproduct.png" height="45"/> Scalar Product
+</figure>
 
 
 Let $j_i$ be a particle with spin-$1/2$ at position $i$ on a chain with $n$ particles. Then the tensor $c_{j_1,j_2,...,j_n}$ is the collection of complex numbers that tells us in what linear combination a state is in, in terms of its basis vectors:
 
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490006860832_file.png
-
+<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensor.png" height="45"/>
 
 $|\psi\rangle = \sum_{j_1,j_2...j_n}c_{j_1,j_2,...,j_n} |j_1,j_2,...,j_n\rangle$
 
@@ -646,8 +580,7 @@ $|\psi\rangle = \sum_{j_1,j_2...j_n}c_{j_1,j_2,...,j_n} |j_1,j_2,...,j_n\rangle$
 
 The Schmidt decomposition allows us to rewrite this tensor in terms of matrices. If we use periodic boundary conditions this looks like
 
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490007113304_file.png
-
+<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensor.png" height="45"/>
 
 
 $|\psi\rangle = \sum_{a_1,a_2...,a_n}^{r_1,r_2,...,r_n} \text{Tr}(A_{a_1,a_2}^{j_1}A_{a_2,a_3}^{j_2}...A_{a_n,a_1}^{j_n})|j_1,j_2,...,j_n\rangle$
