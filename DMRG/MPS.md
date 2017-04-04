@@ -558,31 +558,21 @@ $$D\equiv \max_i r_i$$
 
 We represent mathematical objects in the following way:
 
-<img class="center-block" height="25px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png">
 
-<figure>
-  <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" alt="The Pulpit Rock" height="25px">
-  <figcaption>Scalar</figcaption>
-  <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" alt="The Pulpit Rock" height="25px">
-  <figcaption>Scalar</figcaption>
-</figure>
-
-
-<div class="image123">
-    <div style="float:left;margin-right:5px;">
+<div class="figure_sideways">
+    <div style="float:left;margin-right:30px;">
         <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/>
-        <figcaption "text-align:center;">Scalar</figcaption>
+        <figcaption>Scalar</figcaption>
     </div>
-    <div style="float:left;margin-right:5px;">
-        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/>
-        <p style="text-align:center;">This is image 2</p>
+    <div style="float:left;margin-right:30px;">
+        <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/vector.png" height="35"/>
+        <figcaption>Vector</figcaption>
     </div>
-    <div style="float:left;margin-right:5px;">
+    <div style="float:left;margin-right:30px;">
         <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/>        
-        <p style="text-align:center;">This is image 3</p>
+        <figcaption>Dual vector</figcaption>
     </div>
 </div>
-
 
 
 https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490005909326_file.png
