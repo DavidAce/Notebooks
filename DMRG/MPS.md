@@ -1,11 +1,16 @@
 
 
 
-### To view math in this document there are several options:
+### To view math in this document there are several options. From low to high effort, these are:
 
+- Open or copy-paste this file into [`StackEdit`](https://stackedit.io), an online open-source markdown+tex editor.
 - Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
-- Open this file on your pc/mac with the `Atom` editor with the `markdown-preview-plus` -plugin installed.
-- Open this file on your pc/mac with the `ReText` editor.
+- Open this file on your pc/mac with the [`Atom`](https://atom.io/) editor with the `markdown-preview-plus` -plugin installed.
+- Open this file on your pc/mac with the [`ReText`](https://github.com/retext-project/retext) editor. To get inline equations showing nicely, do the following (copy-paste to terminal):
+    - `sudo apt install python3-pyqt5.qtwebkit`
+    - `echo "mathjax" >> ~/.config/markdown-extensions.txt`.
+    - Finally enable webkit inside ReText: `Edit -> Use WebKit Renderer`.
+
 
 
 # Matrix Product States
@@ -32,7 +37,7 @@ $$|\psi\rangle = \sum_{\sigma_1...\sigma_N} \Gamma^{\sigma_1}\Lambda^1\Gamma^{\s
 
 which diagrammatically looks like
 
-<img class="center-block" height="60px" src="figs/tensortrain.png">
+<img class="center-block" height="50px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensortrain.png">
 
 This form allows for many possible representations of the same wave function, giving us the opportunity to define a “canonical form” of the MPS.
 
@@ -129,7 +134,7 @@ And also here:
 ---
 
 
-**Local updates**
+#### Local updates
 
 Updating the state $|\psi\rangle$ after a unitary operation $U$ acts on qubit $l$ does only involve transforming $\Gamma^{\sigma_l}$. The computational cost is $\mathcal{O}(\chi^2)$ basic operations.
 
@@ -137,91 +142,147 @@ When a unitary operation $V$, like a two-qubit gate, is applied to qubits $l$ an
 
 
 
-**Example 1: Three Qubits, following Schollwöck**
+### Example 1: Three Qubits, following Schollwöck
 This example tries to follow the steps in
+[Schollwoeck, U. (2010). The density-matrix renormalization group in the age of matrix product states. Annals of Physics, 326(1), 96–192.]( https://doi.org/10.1016/j.aop.2010.09.012)
 
-> Schollwoeck, U. (2010). The density-matrix renormalization group in the age of matrix product states. Annals of Physics, 326(1), 96–192. https://doi.org/10.1016/j.aop.2010.09.012
 
+**Step 1:**
 
-Step 1:
 In general, a 3 qubit state can be written as:
 
-                $|\psi\rangle = \sum_{\sigma_1\sigma_2\sigma_3} c_{\sigma_1 \sigma_2 \sigma_3} |\sigma_1\sigma_2\sigma_3\rangle$,
+$$|\psi\rangle = \sum_{\sigma_1\sigma_2\sigma_3} c_{\sigma_1 \sigma_2 \sigma_3} |\sigma_1\sigma_2\sigma_3\rangle,$$
 
 where each $\sigma_i\in \{0,1\}$ and the coefficients $c_{\sigma_1 \sigma_2 \sigma_3}$ are $2^3$ complex numbers. These numbers can be visualized as being on the corners of a (hyper)cube, or simply a long list of numbers corresponding to the 8 possible states.
 
 Consider the following state with 3 qubits: $|\psi\rangle = \frac{1}{\sqrt{2}} ( |010\rangle + |101\rangle)$. The cube would look as in the figure below.
 
-
-https://d2mxuefqeaa7sj.cloudfront.net/s_AE97D0CB8B2D31436F344886DFAECAD6A75C44894AFB7C0DC385A87F2E121077_1489415596924_cube.jpg
-
+<img class="center-block" height="150px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/cube.jpg">
 
 
-  $\times 2^{-1/2}$, or simply,   $\begin{array}{c|c}   0 & |000\rangle  \\    0 & |001\rangle \\   2^{-1/2} & |010\rangle \\     0 & |011\rangle \\ 0 & |100\rangle \\ 2^{-1/2} & |101\rangle \\ 0 & |110\rangle \\ 0 & |111\rangle  \end{array}$
+or simply,  
+$$
+\begin{array}{c|c}   0 & |000\rangle  \\    0 & |001\rangle \\   2^{-1/2} & |010\rangle \\     0 & |011\rangle \\ 0 & |100\rangle \\ 2^{-1/2} & |101\rangle \\ 0 & |110\rangle \\ 0 & |111\rangle
+\end{array}
+$$
 
 
 
 The first step in the decomposition is to define a $d\times d^{L-1} = 2\times 2^2$ matrix that flattens the tensor:
 
 
-      $\Psi_{\sigma_1,(\sigma_2\sigma_3)} =$ $\begin{array}{c|c c c c}    & \bold{\sigma_1 = 0, \sigma_3 = 0} & \bold{\sigma_1 = 0, \sigma_3 = 1} & \bold{\sigma_1 = 1, \sigma_3 = 0 }& \bold{\sigma_1 = 1, \sigma_3 = 1} & \\ \bold{\sigma_2 = 0} & 0 & 0 & 0 & 2^{-1/2} \\ \bold{\sigma_2 = 1} & 2^{-1/2} & 0 &0 & 0  \end{array}$
-
-            $= \begin{pmatrix} 0 & 0 & 0 & 2^{-1/2} \\ 2^{-1/2} & 0 & 0 & 0  \end{pmatrix}$
+$$
+\Psi_{\sigma_1,(\sigma_2\sigma_3)} =
+\begin{array}{c|c c c c}
+    & \mathbf{\sigma_1 = 0, \sigma_3 = 0} & \mathbf{\sigma_1 = 0, \sigma_3 = 1} & \mathbf{\sigma_1 = 1, \sigma_3 = 0 }& \mathbf{\sigma_1 = 1, \sigma_3 = 1} & \\ \mathbf{\sigma_2 = 0} & 0 & 0 & 0 & 2^{-1/2} \\ \mathbf{\sigma_2 = 1} & 2^{-1/2} & 0 &0 & 0  
+\end{array}
+$$
+$$
+=
+\begin{pmatrix} 0 & 0 & 0 & 2^{-1/2} \\ 2^{-1/2} & 0 & 0 & 0
+\end{pmatrix}
+$$
 
 
 Note how the cube has been sliced and concatenated. Basically, the matrix is composed of two $(2\times 2)$ matrices side by side, one for each value of $\sigma_1$.
 
 Now we perform the single value decomposition on  $\Psi_{\sigma_1,(\sigma_2\sigma_3)} = USV^\dagger$:
 
-$= \begin{pmatrix} 0 & 0 & 0 & 2^{-1/2} \\ 2^{-1/2} & 0 & 0 & 0  \end{pmatrix}$ $=$ $\begin{pmatrix} 1 & 0 \\ 0 & 1\end{pmatrix}$$\begin{pmatrix} 2^{-1/2} & 0 \\ 0 & 2^{-1/2}\end{pmatrix}$$\begin{pmatrix} 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0  \end{pmatrix}$$= \sum_{a_1}^{r_1} U_{\sigma_1, a_1} S_{a_1,a_1} V^\dagger_{a_1,\sigma_2\sigma_3}$
-
-
-                $\equiv \sum_{a_1}^{r_1} U_{\sigma_1,a_1} c_{a_1,\sigma_2\sigma_3}$
+$$
+\begin{align}
+\begin{pmatrix}
+  0 & 0 & 0 & 2^{-1/2} \\
+  2^{-1/2} & 0 & 0 & 0
+\end{pmatrix}
+&=\begin{pmatrix}
+  1 & 0 \\
+  0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+  2^{-1/2} & 0 \\
+  0 & 2^{-1/2}
+\end{pmatrix}
+\begin{pmatrix}
+  0 & 0 & 0 & 1 \\
+  1 & 0 & 0 & 0  
+\end{pmatrix} \\
+&= \sum_{a_1}^{r_1} U_{\sigma_1, a_1} S_{a_1,a_1} V^\dagger_{a_1,\sigma_2\sigma_3} \\
+&\equiv \sum_{a_1}^{r_1} U_{\sigma_1,a_1} c_{a_1,\sigma_2\sigma_3}
+\end{align}
+$$
 
 where $r_1\leq d=2$ is the rank of the decomposition, i.e., the number of nonzero items in $S$, and $a_1 \in \{0,1\}$. In the last equality $S$ and $V^\dagger$ have been multiplied. It can then be reshaped into a matrix of dimension $(r_1d\times d) = (4\times 2)$, called $\Psi_{(a_1\sigma_2),(\sigma_3)}$. This is NOT done by stacking the $(2\times 2)$ matrices. Instead, note how the $\sigma_2$ index selects the upper/lower row, which then become matrices. Pythons numpy.reshape() does this.  **Here the label** $a_1$**is the index being summed over (by matrix multiplication), and** $\sigma_2,\sigma_3$ **serve to select appropriate matrices.**
 
 
-      $c_{a_1,\sigma_2\sigma_3} = \begin{pmatrix} 0 & 0 & 0 & 2^{-1/2} \\ 2^{-1/2} & 0 & 0 & 0  \end{pmatrix}$$\rightarrow \begin{pmatrix}  \begin{pmatrix}\binom{0}{0}&\binom{0}{2^{-1/2}}  \end{pmatrix}_{\sigma_3}\\  \begin{pmatrix} \binom{2^{-1/2}}{0} &\binom{0}{0}  \end{pmatrix}_{\sigma_3}\end{pmatrix}_{\sigma_2}$$=\Psi_{(a_1\sigma_2),(\sigma_3)}$
+$$
+c_{a_1,\sigma_2\sigma_3} =
+\begin{pmatrix} 0 & 0 & 0 & 2^{-1/2} \\ 2^{-1/2} & 0 & 0 & 0  \end{pmatrix}
+\rightarrow
+\begin{pmatrix}
+  \begin{pmatrix} \binom{0}{0}&\binom{0}{2^{-1/2}}\end{pmatrix}_{\sigma_3}\\
+  \begin{pmatrix} \binom{2^{-1/2}}{0} &\binom{0}{0}\end{pmatrix}_{\sigma_3}
+\end{pmatrix}_{\sigma_2}
+=\Psi_{(a_1\sigma_2),(\sigma_3)}
+$$
 
 $U$ is now sliced into $d=2$ row vectors $A^{\sigma_1}$, which we interpret as $(1\times 2)$ matrices, i.e., $A^{\sigma_1}_{a_1}=U_{\sigma_1,a_1} \rightarrow \begin{pmatrix}\begin{pmatrix}1&0\end{pmatrix}\\ \begin{pmatrix}0&1\end{pmatrix}\end{pmatrix}_{\sigma_1}$, where $\sigma_1$ labels each row vector.
 
 By now we have achieved the following:
 
 
-      $c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1}^{r_1} A^{\sigma_1}_{a_1} \Psi_{(a_1\sigma_2),(\sigma3)}$
-
-
-              $=\begin{pmatrix}\begin{pmatrix}1&0\end{pmatrix}\\ \begin{pmatrix}0&1\end{pmatrix}\end{pmatrix}_{\sigma_1}$$\rightarrow \begin{pmatrix}  \begin{pmatrix}\binom{0}{0}&\binom{0}{2^{-1/2}}  \end{pmatrix}_{\sigma_3}\\  \begin{pmatrix} \binom{2^{-1/2}}{0} &\binom{0}{0}  \end{pmatrix}_{\sigma_3}\end{pmatrix}_{\sigma_2}$
+$$
+c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1}^{r_1} A^{\sigma_1}_{a_1} \Psi_{(a_1\sigma_2),(\sigma3)}
+=
+\begin{pmatrix}
+  \begin{pmatrix}1&0\end{pmatrix}\\
+  \begin{pmatrix}0&1\end{pmatrix}
+\end{pmatrix}_{\sigma_1}
+\begin{pmatrix}
+  \begin{pmatrix}\binom{0}{0}&\binom{0}{2^{-1/2}}  \end{pmatrix}_{\sigma_3}\\  \begin{pmatrix} \binom{2^{-1/2}}{0} &\binom{0}{0} \end{pmatrix}_{\sigma_3}
+\end{pmatrix}_{\sigma_2}
+$$
 
 where the labels $\sigma_1,\sigma_2,\sigma_3$ serve to index the inner elements.
-
-
 
 So for instance if $|\sigma_1 \sigma_2 \sigma_3 \rangle = |101\rangle$ we get $c_{101} = (0,1)\binom{0}{2^{-1/2}} = 2^{-1/2}$ as expected (check this!).
 
 
-Step 2:
+**Step 2:**
+
 Next, we apply the SVD decomposition once more
 
 
-    $\Psi_{(a_1\sigma_2),(\sigma_3)} = U S V^\dagger =  \begin{pmatrix}0 & 0 \\ 0 &1 \\ -1 & 0 \\ 0 & 0\end{pmatrix}$$\begin{pmatrix} 2^{-1/2} &0 \\ 0 & 2^{-1/2} \end{pmatrix}$$\begin{pmatrix} -1 &0 \\ 0 & 1 \end{pmatrix}$
+$$
+\begin{align}
+\Psi_{(a_1\sigma_2),(\sigma_3)} = U S V^\dagger &=
+\begin{pmatrix}0 & 0 \\ 0 &1 \\ -1 & 0 \\ 0 & 0\end{pmatrix}
+\begin{pmatrix}2^{-1/2} &0 \\ 0 & 2^{-1/2} \end{pmatrix}
+\begin{pmatrix} -1 &0 \\ 0 & 1 \end{pmatrix} \\
+&= \sum_{a_2}^{r_2}U_{(a_1\sigma_2),a_2}S_{a_2,a_2}(V^\dagger)_{a_2,(\sigma_3)} \\
+&=\sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}
+\end{align}
+$$
 
-
-                $= \sum_{a_2}^{r_2}U_{(a_1\sigma_2),a_2}S_{a_2,a_2}(V^\dagger)_{a_2,(\sigma_3)}$
-
-
-                $=\sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}$
 
 where $U$ is replaced by a set of $d$ matrices $A^{\sigma_2}$ of dimension $r_1\times r_2 = (2\times 2)$ with entries $A^{\sigma_2}_{a_1,a_2} = U_{(a_1\sigma_2),a_2}$. As before, $SV^\dagger$ has been reshaped into a matrix $\Psi$ of dimension $r_2d\times d^{L-3} = (4\times 1)$.
 
 Explicitly, this reads:
 
-$\sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}$$=\begin{pmatrix}\begin{pmatrix}0 & 0 \\ 0 & 1 \end{pmatrix} \\ \begin{pmatrix}-1 & 0 \\ 0 & 0\end{pmatrix}\end{pmatrix}_{\sigma_2}$$\begin{pmatrix}\binom{-2^{-1/2}}{0} \\ \binom{0}{2^{-1/2}} \end{pmatrix}_{\sigma_3}$
+$$
+\sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}
+=
+\begin{pmatrix}
+  \begin{pmatrix}0 & 0 \\ 0 & 1 \end{pmatrix} \\
+  \begin{pmatrix}-1 & 0\\ 0 & 0 \end{pmatrix}
+\end{pmatrix}_{\sigma_2}
+\begin{pmatrix}\binom{-2^{-1/2}}{0} \\ \binom{0}{2^{-1/2}} \end{pmatrix}_{\sigma_3}
+$$
 
 So far we have achieved the following:
 
-
-                $c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1,a_2}^{r_1,r_2} A^{\sigma_1}_{a_1} A^{\sigma_2}_{a_1,a_2} \Psi_{a_2\sigma_3}$
+$$
+c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1,a_2}^{r_1,r_2} A^{\sigma_1}_{a_1} A^{\sigma_2}_{a_1,a_2} \Psi_{a_2\sigma_3}
+$$
 
 So for instance
 
