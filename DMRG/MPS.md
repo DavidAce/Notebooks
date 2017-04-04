@@ -422,103 +422,120 @@ This can be accomplished by doing a Schmidt decomposition on each of $|\psi\rang
 On a spin-$S$ chain of length $N$, replace each $d$-dimensional system $|\sigma_i\rangle$ at site $i$, with two *virtual systems* $|l_i,r_i\rangle$ of dimension $D_i=1+2S'$, called the bond dimension. These are sometimes called *auxiliary* systems. In general $D_i$ can be different for each site but it it needs to be larger than the bond dimension. Note that $l$ and $r$ stand for left and right.
 
 
-https://d2mxuefqeaa7sj.cloudfront.net/s_72860CA687EA58462BE4EE7EC7675CC2A4C338BF20408382737D46203044AB28_1490345269135_file.png
+<img class="center-block" height="150px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/valence.png">
 
 
 Let every pair of virtual systems be maximally entangled with the respective neighboring system. This means that $r_i = l_{i+1} = \alpha_i$. The states are written in the form:
 
 
-          $|I_{i,i+1}\rangle = \sum_{\alpha_i=1}^D |r_i=\alpha_i,l_{i+1}=\alpha_i\rangle$
+$$
+|I_{i,i+1}\rangle = \sum_{\alpha_i=1}^D |r_i=\alpha_i,l_{i+1}=\alpha_i\rangle
+$$
 
 And for the whole chain:
 
-
-          $|I\rangle = \sum_{\alpha_1,\alpha_2,...,\alpha_{N-1}}|\alpha_0,\alpha_1\rangle|\alpha_1,\alpha_2\rangle...|\alpha_{N-1},\alpha_N\rangle$
+$$
+|I\rangle = \sum_{\alpha_1,\alpha_2,...,\alpha_{N-1}}|\alpha_0,\alpha_1\rangle|\alpha_1,\alpha_2\rangle...|\alpha_{N-1},\alpha_N\rangle
+$$
 
 where each sum denotes an *entangled bond*. **Note that without PBC the leftmost and rightmost sites have only one virtual particle**.
 
 Then, apply a map
 
-
-                $\mathcal{A}^i = \sum_{\sigma_i} \sum_{l_i,r_i} A^{\sigma_i}_{l_i,r_i}|\sigma_i\rangle\langle l_i,r_i|$
+$$
+\mathcal{A}^i = \sum_{\sigma_i} \sum_{l_i,r_i} A^{\sigma_i}_{l_i,r_i}|\sigma_i\rangle\langle l_i,r_i|
+$$
 
 to each of the $N$ sites. We then obtain the MPS
 
+$$
+|\psi\rangle = (\bigotimes_i^N \mathcal{A}^i)(\bigotimes_i^{N-1} |I_{i,i+1}\rangle)= \sum_{\sigma_1...\sigma_N} A^{\sigma_1}...A^{\sigma_N} |\sigma_1...\sigma_N\rangle
+$$
 
-          $|\psi\rangle = (\bigotimes_i^N \mathcal{A}^i)(\bigotimes_i^{N-1} |I_{i,i+1}\rangle)= \sum_{\sigma_1...\sigma_N} A^{\sigma_1}...A^{\sigma_N} |\sigma_1...\sigma_N\rangle$
 
 
 
-
-**Example using valence bonds:**
+### Example using valence bonds:
 
 As before, let $|\psi\rangle = \frac{1}{\sqrt{2}}(|010\rangle + |101\rangle)$ be the state of 3 qubits, $d = 2$.
 
 Let each site be replaced by pairs of dimension $D=2$ in a maximally entangled state, i.e. rewrite it in the (unnormalized) form:
 
-
-            $|I_{1,2} \rangle = \sum_{\alpha_1} |r_1 = \alpha_1, l_2=\alpha_1\rangle = |0,0\rangle_{r_1,l_2} + |1,1\rangle_{r_1,l_2}$
-            $|I_{2,3} \rangle = \sum_{\alpha_2} |r_2 = \alpha_2, l_3=\alpha_2\rangle = |0,0\rangle_{r_2,l_3} + |1,1\rangle_{r_2,l_3}$
+$$
+\begin{align}
+|I_{1,2} \rangle &=
+\sum_{\alpha_1} |r_1 = \alpha_1, l_2=\alpha_1\rangle = |0,0\rangle_{r_1,l_2} + |1,1\rangle_{r_1,l_2} \\
+|I_{2,3} \rangle &=
+\sum_{\alpha_2} |r_2 = \alpha_2, l_3=\alpha_2\rangle = |0,0\rangle_{r_2,l_3} + |1,1\rangle_{r_2,l_3}
+\end{align}
+$$
 
 
 where the subscripts $r_i,l_i$ are there to remind us that this is the right and left virtual particles corresponding to site $i$. Now apply the map $\mathcal{A}$ on each site. :
 
+$$
+\begin{align}
+\mathcal{A}^1|I_{1,2}\rangle &=
+\sum_{\sigma_1}\sum_{r_1}A^{\sigma_1}_{r_1}|\sigma_1\rangle\langle r_1|(\sum_{\alpha_1}|\alpha_1,\alpha_1\rangle)\\
+&= \sum_{\sigma_1} A_0^{\sigma_1} |\sigma_1\rangle _{r_1}\langle 0|0,0\rangle_{r_1,l_2} +
+A_1^{\sigma_1}|\sigma_1\rangle _{r_1}\langle 1|1,1\rangle_{r_1,l_2}\\
+&= \sum_{\sigma_1} A_0^{\sigma_1} |\sigma_1\rangle |0\rangle_{l_2} + A_1^{\sigma_1}|\sigma_1\rangle |1\rangle_{l_2}
+\end{align}
+$$
 
-          $\mathcal{A}^1 |I_{1,2}\rangle=\sum_{\sigma_1}\sum_{r_1}A^{\sigma_1}_{r_1}|\sigma_1\rangle\langle r_1|(\sum_{\alpha_1}|\alpha_1,\alpha_1\rangle)$
-
-                $= \sum_{\sigma_1} A_0^{\sigma_1} |\sigma_1\rangle _{r_1}\langle 0|0,0\rangle_{r_1,l_2} + A_1^{\sigma_1}|\sigma_1\rangle _{r_1}\langle 1|1,1\rangle_{r_1,l_2}$,
-
-
-                $= \sum_{\sigma_1} A_0^{\sigma_1} |\sigma_1\rangle |0\rangle_{l_2} + A_1^{\sigma_1}|\sigma_1\rangle |1\rangle_{l_2}$
 
 
 Similarly,
 
+$$
+\begin{align}
+\mathcal{A}^2 |I_{1,2}\rangle 
+&=
+\sum_{\sigma_2}\sum_{l_2,r_2}A^{\sigma_2}_{l_2,r_2}|\sigma_2\rangle\langle l_2,r_2|(\sum_{\alpha_1}|\alpha_1,\alpha_1\rangle) \\
+&=
+\sum_{\sigma_2} (A_{0,0}^{\sigma_2} |\sigma_2\rangle\langle 0,0| + A_{0,1}^{\sigma_2}|\sigma_2\rangle\langle 0,1| + A_{1,0}^{\sigma_2}|\sigma_2\rangle\langle 1,0| + A_{1,1}^{\sigma_2}|\sigma_2\rangle\langle 1,1|)_{l_2,r_2} (|0,0\rangle_{r_1,l_2} + |1,1\rangle_{r_1,l_2}) \\
+&=
+\sum_{\sigma_2} A_{0,0}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 0|0\rangle_{r_1} + A_{0,1}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 0|1\rangle_{r_1} + A_{1,0}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 1|0\rangle_{r_1}+A_{1,1}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 1|1\rangle_{r_1} \\
+\mathcal{A}^2 |I_{2,3}\rangle 
+&=
+\sum_{\sigma_2}\sum_{l_2,r_2}A^{\sigma_2}_{l_2,r_2}|\sigma_2\rangle\langle l_2,r_2|(\sum_{\alpha_2}|\alpha_2,\alpha_2\rangle) \\
+&=
+\sum_{\sigma_2} A_{0,0}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 0|0\rangle_{l_3} + A_{0,1}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 0|1\rangle_{l_3} + A_{1,0}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 1|0\rangle_{l_3}+A_{1,1}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 1|1\rangle_{l_3}\\
+\mathcal{A}^3 |I_{2,3}\rangle
+&=
+\sum_{\sigma_3}\sum_{l_3}A^{\sigma_3}_{l_3}|\sigma_3\rangle\langle l_3|(\sum_{\alpha_2}|\alpha_2,\alpha_2\rangle)\\
+&=
+\sum_{\sigma_3} A_0^{\sigma_3} |\sigma_3\rangle _{l_3}\langle 0|0,0\rangle_{r_2,l_3} + A_1^{\sigma_3}|\sigma_3\rangle _{l_3}\langle 1|1,1\rangle_{r_2,l_3} \\
+&=
+\sum_{\sigma_3} A_0^{\sigma_3} |\sigma_3\rangle |0\rangle_{r_2} + A_1^{\sigma_3}|\sigma_3\rangle |1\rangle_{r_2}
+\end{align}
+$$
 
-      $\mathcal{A}^2 |I_{1,2}\rangle=\sum_{\sigma_2}\sum_{l_2,r_2}A^{\sigma_2}_{l_2,r_2}|\sigma_2\rangle\langle l_2,r_2|(\sum_{\alpha_1}|\alpha_1,\alpha_1\rangle)$
-
-          $= \sum_{\sigma_2} (A_{0,0}^{\sigma_2} |\sigma_2\rangle\langle 0,0| + A_{0,1}^{\sigma_2}|\sigma_2\rangle\langle 0,1| + A_{1,0}^{\sigma_2}|\sigma_2\rangle\langle 1,0| + A_{1,1}^{\sigma_2}|\sigma_2\rangle\langle 1,1|)_{l_2,r_2} (|0,0\rangle_{r_1,l_2} + |1,1\rangle_{r_1,l_2})$
-          $= \sum_{\sigma_2} A_{0,0}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 0|0\rangle_{r_1} + A_{0,1}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 0|1\rangle_{r_1} + A_{1,0}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 1|0\rangle_{r_1}+A_{1,1}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 1|1\rangle_{r_1}$
 
 
-
-      $\mathcal{A}^2 |I_{2,3}\rangle=\sum_{\sigma_2}\sum_{l_2,r_2}A^{\sigma_2}_{l_2,r_2}|\sigma_2\rangle\langle l_2,r_2|(\sum_{\alpha_2}|\alpha_2,\alpha_2\rangle)$
-          $= \sum_{\sigma_2} A_{0,0}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 0|0\rangle_{l_3} + A_{0,1}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 0|1\rangle_{l_3} + A_{1,0}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 1|0\rangle_{l_3}+A_{1,1}^{\sigma_2} |\sigma_2\rangle _{l_2}\langle 1|1\rangle_{l_3}$
-
-
-and finally,
-
-
-          $\mathcal{A}^3 |I_{2,3}\rangle=\sum_{\sigma_3}\sum_{l_3}A^{\sigma_3}_{l_3}|\sigma_3\rangle\langle l_3|(\sum_{\alpha_2}|\alpha_2,\alpha_2\rangle)$
-
-                $= \sum_{\sigma_3} A_0^{\sigma_3} |\sigma_3\rangle _{l_3}\langle 0|0,0\rangle_{r_2,l_3} + A_1^{\sigma_3}|\sigma_3\rangle _{l_3}\langle 1|1,1\rangle_{r_2,l_3}$
-
-
-                $= \sum_{\sigma_3} A_0^{\sigma_3} |\sigma_3\rangle |0\rangle_{r_2} + A_1^{\sigma_3}|\sigma_3\rangle |1\rangle_{r_2}$
-
-Above, all cross-terms such as $_{r_i}\langle n|m \rangle_{r_i} = _{l_i}\langle n|m\rangle_{l_i} = \delta_{nm}$.
-
-All other combinations are equal to zero, i.e. $\mathcal{A}^1|I_{2,3}\rangle =\mathcal{A}^3|I_{1,2}\rangle=0$.
+All cross-terms such as $_{r_i}\langle n|m \rangle_{r_i} = _{l_i}\langle n|m\rangle_{l_i} = \delta_{nm}$. All other combinations are equal to zero, i.e. $\mathcal{A}^1|I_{2,3}\rangle =\mathcal{A}^3|I_{1,2}\rangle=0$.
 
 Now we multiply
 
-$(\mathcal{A}^1\otimes\mathcal{A}^2)(|I_{1,2}\rangle\otimes|I_{2,3}\rangle)$$=\sum_{\sigma_1,\sigma_2} A^{\sigma_1}_0 A^{\sigma_2}_{0,0}|0\rangle_{l_3} + A_0^{\sigma_1}A_{0,1}^{\sigma_2}|1\rangle_{l_3}$
+$$
+(\mathcal{A}^1\otimes\mathcal{A}^2)(|I_{1,2}\rangle\otimes|I_{2,3}\rangle)
+=
+\sum_{\sigma_1,\sigma_2} A^{\sigma_1}_0 A^{\sigma_2}_{0,0}|0\rangle_{l_3} + A_0^{\sigma_1}A_{0,1}^{\sigma_2}|1\rangle_{l_3}
+$$
+
+
+$$
+|\psi\rangle=
+(\bigotimes_i^3 \mathcal{A}^i)(\bigotimes_i^{2} |I_{i,i+1}\rangle)
+=
+$$
 
 
 
-      $|\psi\rangle=(\bigotimes_i^3 \mathcal{A}^i)(\bigotimes_i^{2} |I_{i,i+1}\rangle)$$=$
 
-
-Hmmm
-
-
-
-
-
-
-
-
-
+$$
+\fbox{Comment: Hmmm. This seems overly impractical... perhaps I've misunderstood something}
+$$
 
 ## Bond Dimension
 
