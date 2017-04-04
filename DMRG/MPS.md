@@ -12,7 +12,7 @@ Table of Contents
          * [Tensor decomposition](#tensor-decomposition)
          * [Local updates](#local-updates)
          * [Example 1: Three Qubits, following Schollwöck](#example-1-three-qubits-following-schollwöck)
-               * [Example 2: Four Qubits, following Vidal](#example-2-four-qubits-following-vidal)
+         * [Example 2: Four Qubits, following Vidal](#example-2-four-qubits-following-vidal)
          * [Example with PBC](#example-with-pbc)
       * [Virtual systems: Valence bonds or Maximally entangled pairs](#virtual-systems-valence-bonds-or-maximally-entangled-pairs)
          * [Example using valence bonds:](#example-using-valence-bonds)
@@ -559,7 +559,7 @@ $$
 $$
 
 
-### Bond Dimension
+## Bond Dimension
 
 Each $A_{a_i,a_{i+1}}^{\sigma_i}$ above is an $(r_i\times r_{i+1})$ matrix, where $r_i$ is the rank of the Schmidt decomposition at each site $i$. The *bond dimension* of an MPS is defined by
 
