@@ -16,7 +16,7 @@ Table of Contents
          * [Example with PBC](#example-with-pbc)
       * [Virtual systems: Valence bonds or Maximally entangled pairs](#virtual-systems-valence-bonds-or-maximally-entangled-pairs)
          * [Example using valence bonds:](#example-using-valence-bonds)
-         * [Bond Dimension](#bond-dimension)
+      * [Bond Dimension](#bond-dimension)
    * [Graphical representation](#graphical-representation)
    * [Matrix Product Operators](#matrix-product-operators)
 
