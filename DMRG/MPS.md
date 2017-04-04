@@ -1,3 +1,25 @@
+[#startTOC]:
+
+Table of Contents
+=================
+
+   * [Matrix Product States](#matrix-product-states)
+   * [Preparation of MPS](#preparation-of-mps)
+      * [Canonical form (from <a href="http://journals.aps.org/prb/abstract/10.1103/PhysRevB.87.235106">Jens paper</a>)](#canonical-form-from-jens-paper)
+      * [Schmidt decomposition according to Vidal](#schmidt-decomposition-according-to-vidal)
+         * [Procedure](#procedure)
+            * [Tensor decomposition](#tensor-decomposition)
+            * [Local updates](#local-updates)
+         * [Example 1: Three Qubits, following Schollwöck](#example-1-three-qubits-following-schollwöck)
+         * [Example 2: Four Qubits, following Vidal](#example-2-four-qubits-following-vidal)
+         * [Example with PBC](#example-with-pbc)
+      * [Virtual systems: Valence bonds or Maximally entangled pairs](#virtual-systems-valence-bonds-or-maximally-entangled-pairs)
+         * [Example using valence bonds:](#example-using-valence-bonds)
+      * [Bond Dimension](#bond-dimension)
+   * [Graphical representation](#graphical-representation)
+   * [Matrix Product Operators](#matrix-product-operators)
+
+[#endTOC]:
 
 
 
@@ -10,6 +32,9 @@
     - `sudo apt install python3-pyqt5.qtwebkit`
     - `echo "mathjax" >> ~/.config/markdown-extensions.txt`.
     - Finally enable webkit inside ReText: `Edit -> Use WebKit Renderer`.
+
+
+
 
 
 
@@ -160,7 +185,7 @@ Consider the following state with 3 qubits: $|\psi\rangle = \frac{1}{\sqrt{2}} (
 <img class="center-block" height="150px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/cube.jpg">
 
 
-or simply,  
+or simply,
 $$
 \begin{array}{c|c}   0 & |000\rangle  \\    0 & |001\rangle \\   2^{-1/2} & |010\rangle \\     0 & |011\rangle \\ 0 & |100\rangle \\ 2^{-1/2} & |101\rangle \\ 0 & |110\rangle \\ 0 & |111\rangle
 \end{array}
@@ -572,24 +597,26 @@ We represent mathematical objects in the following way:
 
 Let $j_i$ be a particle with spin-$1/2$ at position $i$ on a chain with $n$ particles. Then the tensor $c_{j_1,j_2,...,j_n}$ is the collection of complex numbers that tells us in what linear combination a state is in, in terms of its basis vectors:
 
-<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensor.png" height="45"/>
+<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensor.png" height="75"/>
 
-$|\psi\rangle = \sum_{j_1,j_2...j_n}c_{j_1,j_2,...,j_n} |j_1,j_2,...,j_n\rangle$
-
+$$
+|\psi\rangle = \sum_{j_1,j_2...j_n}c_{j_1,j_2,...,j_n} |j_1,j_2,...,j_n\rangle
+$$
 
 
 The Schmidt decomposition allows us to rewrite this tensor in terms of matrices. If we use periodic boundary conditions this looks like
 
-<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensor.png" height="45"/>
+<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/mps.png" height="75"/>
 
 
-$|\psi\rangle = \sum_{a_1,a_2...,a_n}^{r_1,r_2,...,r_n} \text{Tr}(A_{a_1,a_2}^{j_1}A_{a_2,a_3}^{j_2}...A_{a_n,a_1}^{j_n})|j_1,j_2,...,j_n\rangle$
+$$
+|\psi\rangle =
+\sum_{a_1,a_2...,a_n}^{r_1,r_2,...,r_n} \text{Tr}(A_{a_1,a_2}^{j_1}A_{a_2,a_3}^{j_2}...A_{a_n,a_1}^{j_n})|j_1,j_2,...,j_n\rangle
+$$
 
 
 where the trace takes care of the periodic boundary.
 
 
 
-
-##
 # Matrix Product Operators
