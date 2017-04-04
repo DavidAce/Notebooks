@@ -537,21 +537,24 @@ $$
 \fbox{Comment: Hmmm. This seems overly impractical... perhaps I've misunderstood something}
 $$
 
+
 ## Bond Dimension
 
 Each $A_{a_i,a_{i+1}}^{\sigma_i}$ above is an $(r_i\times r_{i+1})$ matrix, where $r_i$ is the rank of the Schmidt decomposition at each site $i$. The *bond dimension* of an MPS is defined by
 
-
-                $D\equiv \max_i r_i$
+$$D\equiv \max_i r_i$$
 
 
 
 # Graphical representation
 
-The following is a summary of the review paper by
+---
 
-> [Eisert, J. (2013). Entanglement and tensor network states.](https://arxiv.org/pdf/1308.3318.pdf) [Modeling and Simulation](https://arxiv.org/pdf/1308.3318.pdf)[,](https://arxiv.org/pdf/1308.3318.pdf) [3](https://arxiv.org/pdf/1308.3318.pdf)[(520), 39](https://arxiv.org/pdf/1308.3318.pdf).
+> The following is a summary of the review paper by
+>
+> [Eisert, J. (2013). Entanglement and tensor network states.](https://arxiv.org/pdf/1308.3318.pdf)
 
+---
 
 We represent mathematical objects in the following way:
 
