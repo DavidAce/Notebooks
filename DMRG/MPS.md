@@ -23,8 +23,8 @@ Table of Contents
 [comment]: <> (endtTOC)
 
 
-
-**To view math in this document there are several options. From low to high effort:**
+# Instroctions for enabling MathJax
+To view math in this document there are several options. From low to high effort:**
 
 - [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
 - Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
@@ -33,7 +33,6 @@ Table of Contents
     - `sudo apt install python3-pyqt5.qtwebkit`
     - `echo "mathjax" >> ~/.config/markdown-extensions.txt`.
     - Finally enable webkit inside ReText: `Edit -> Use WebKit Renderer`.
-
 
 
 
