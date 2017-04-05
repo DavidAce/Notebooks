@@ -1,3 +1,16 @@
+# Instructions for MathJax
+To view math in this document there are several options. From low to high effort:
+
+- (**Recommended**) [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
+- Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
+- Open this file on your pc/mac with the [`Atom`](https://atom.io/) editor with the `markdown-preview-plus` -plugin installed.
+- Open this file on your pc/mac with the [`ReText`](https://github.com/retext-project/retext) editor. To get inline equations showing nicely, do the following (copy-paste to terminal):
+    - `sudo apt install python3-pyqt5.qtwebkit`
+    - `echo "mathjax" >> ~/.config/markdown-extensions.txt`.
+    - Finally enable webkit inside ReText: `Edit -> Use WebKit Renderer`.
+
+
+
 [comment]: <> (startTOC)
 
 Table of Contents
@@ -21,20 +34,6 @@ Table of Contents
    * [Matrix Product Operators](#matrix-product-operators)
 
 [comment]: <> (endtTOC)
-
-
-# Instructions for MathJax
-To view math in this document there are several options. From low to high effort:**
-
-- (**Recommended**) [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
-- Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
-- Open this file on your pc/mac with the [`Atom`](https://atom.io/) editor with the `markdown-preview-plus` -plugin installed.
-- Open this file on your pc/mac with the [`ReText`](https://github.com/retext-project/retext) editor. To get inline equations showing nicely, do the following (copy-paste to terminal):
-    - `sudo apt install python3-pyqt5.qtwebkit`
-    - `echo "mathjax" >> ~/.config/markdown-extensions.txt`.
-    - Finally enable webkit inside ReText: `Edit -> Use WebKit Renderer`.
-
-
 
 
 
@@ -362,7 +361,9 @@ $$
 
 where $\Gamma_{\alpha_1}^{\sigma_1}$ comes from the SVD decomposition and $\lambda_{\alpha_1}^1$ are the corresponding singular values, or Schmidt coefficients.
 
-To actually perform the SVD decomposition initially, the tensor $c_{\sigma_1...\sigma_4}$ needs to be flattened, or “matricized”.
+** Preliminaries: Mode-1 unfolding **
+
+To actually perform the SVD decomposition initially, the tensor $c_{\sigma_1...\sigma_4}$ needs to be flattened, or matricized.
 
 We begin by doing a *mode-1* matrix unfolding (or flattening), where we get a matrix $\Psi_{i_1,j} = \Psi_{\sigma_1,(\sigma_2...\sigma_4}) \in \mathbb{R}^{2\times(2\cdot2\cdot2)}$. Note that $i_k$ and $j$ denotes the tensor indices, i.e. $i_k \in 1, 2,..., I_k$, and $j \in 1,2,...,(\prod_{m\neq k}^n I_m)$. An $I_k$ is simply the dimensions of a qubit at $k$, i.e. 2.
 
@@ -381,10 +382,14 @@ Reinserting the normalization factor we get
 
 
 $$
-\Psi = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1&0 \\ 0&1&1&0&0&0&0&0\end{pmatrix}
+\Psi^{1} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1&0 \\ 0&1&1&0&0&0&0&0\end{pmatrix}
 $$
 
-The SVD decomposition yields:
+where the superscript $1$ denotes the first iteration.
+
+** First SVD **
+
+The SVD decomposition of $\Psi^1$ yields:
 
 
 $$
@@ -396,16 +401,55 @@ V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&\sq
 $$
 
 
-where we can identify $\Gamma_{\alpha_1}^{\sigma_1} = U$ ($\sigma_1$ labels the row-vectors in $U$), and $\lambda^1_{\alpha_1} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We also identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as
-
+where we can identify $\Gamma_{\alpha_1}^{\sigma_1} = U$ ($\sigma_1$ labels the row-vectors in $U$), and $\lambda^1_{\alpha_1} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We arrive at
 $$
 |\psi\rangle
 =
 \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle =
-\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle
+\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle,
+$$
+and we identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as the rows of
+
+$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&1&0\end{pmatrix}$$.
+
+To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value of $\alpha_1$, i.e., one for each row on $SV^\dagger$, as follows
+
+> If $\alpha_1 = 1$ we accomodate $c_{0011}$: Pretend $\sigma_2$ denotes the row, and $\sigma_3\sigma_4$ the columns, i.e. do a mode-1 matricization on $|\sigma_2\sigma_3\sigma_4\rangle$. Then we have a nonzero element at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 1*2 = 4$. Note how the $J_k$ have been shifted because we are dealing with $\sigma_2$ and $2$ remaining qubits.
+$$\Psi^2|_{\alpha_1 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\ 0&0&0&0\end{pmatrix}$$
+
+> If $\alpha_1 = 2$ we accomodate $c_{1100}$ and $c_{1010}$: Pretend $\sigma_2$ denotes the row, and $\sigma_3\sigma_4$ the columns. Then we have a nonzero element for $c_{1010}$ at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 0*2 = 2$ and for $c_{1100}$ at $i = 2$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 0*1 + 0*2 = 1$.
+> $$\Psi^2|_{\alpha_1 = 2} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&0&0 \\ 1&0&0&0\end{pmatrix}$$
+
+
+<p class="center-block" align="center" style="width:200px;background-color:#ffcc00;font-weight: bold"/p>NOTE: These two matrices are exactly what we get if we reshape the rows of $SV^\dagger$! This is useful for implementation in code!</p>
+
+
+>
+> We finish this step by stacking these matrices into
+> $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\alpha_1 = 1} \\ \Psi^2|_{\alpha_1 = 2}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\  0&0&0&0\\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}$$
 $$
 
-Now do step 1 to 3 in Vidal’s approach. Essentially these steps do the decomposition above on $|\sigma_2\sigma_3\sigma_4\rangle$. We have two sets of these vectors depending on the value of $\sigma_1$?
+** Second SVD **
+
+$$
+\begin{align}
+U &= \begin{pmatrix}1&0 \\ 0&1\end{pmatrix}\\
+S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
+V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}
+\end{align}
+$$
+
+
+where we can identify $\Gamma_{\alpha_2}^{\sigma_2} = U$ ($\sigma_2$ labels the row-vectors in $U$), and $\lambda^2_{\alpha_2} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We also identify $|\Phi_{\alpha_2}^{3,4}\rangle$ as $SV^\dagger$.
+
+
+
+
+
+Now do step 1 to 3 in Vidal's approach. Essentially these steps do the decomposition above on $|\sigma_2\sigma_3\sigma_4\rangle$. We have two sets of these vectors depending on the value of $\sigma_1$?
+
+
+
 
 
 1. $|\Phi_{\alpha_1}^{2,3,4}\rangle = \sum_{\sigma_2} |\sigma_2\rangle|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle=|0\rangle|\tau^{3,4}_{\alpha_1,0}\rangle + |1\rangle|\tau^{3,4}_{\alpha_1,1}\rangle=|0\rangle(|10\rangle + |11\rangle) + |1\rangle(|00\rangle)$?
@@ -416,6 +460,17 @@ This means that we should have two different vectors $\tau$. One for each possib
 
 2. $|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle = \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3,4}\rangle$
 This can be accomplished by doing a Schmidt decomposition on each of $|\psi\rangle|_{\sigma_2 = 0}$
+
+
+
+
+
+$$
+\fbox{Comment: Check these}
+$$
+
+[comment]:<> (<iframe height='260' width='400' src="https://www.youtube.com/embed/Q8bFmV6tHBs" frameborder="0" allowfullscreen align="middle"></iframe>)
+
 
 
 
