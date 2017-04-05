@@ -361,7 +361,7 @@ $$
 
 where $\Gamma_{\alpha_1}^{\sigma_1}$ comes from the SVD decomposition and $\lambda_{\alpha_1}^1$ are the corresponding singular values, or Schmidt coefficients.
 
-** Preliminaries: Mode-1 unfolding **
+**Preliminaries: Mode-1 unfolding **
 
 To actually perform the SVD decomposition initially, the tensor $c_{\sigma_1...\sigma_4}$ needs to be flattened, or matricized.
 
@@ -387,7 +387,7 @@ $$
 
 where the superscript $1$ denotes the first iteration.
 
-** First SVD **
+**First SVD**
 
 The SVD decomposition of $\Psi^1$ yields:
 
@@ -402,12 +402,13 @@ $$
 
 
 where we can identify $\Gamma_{\alpha_1}^{\sigma_1} = U$ ($\sigma_1$ labels the row-vectors in $U$), and $\lambda^1_{\alpha_1} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We arrive at
+
 $$
-|\psi\rangle
-=
+|\psi\rangle =
 \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle =
 \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle,
 $$
+
 and we identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as the rows of
 
 $$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&1&0\end{pmatrix}$$.
@@ -421,15 +422,29 @@ $$\Psi^2|_{\alpha_1 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\ 0&0&0&0\
 > $$\Psi^2|_{\alpha_1 = 2} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&0&0 \\ 1&0&0&0\end{pmatrix}$$
 
 
-<p class="center-block" align="center" style="width:200px;background-color:#ffcc00;font-weight: bold"/p>NOTE: These two matrices are exactly what we get if we reshape the rows of $SV^\dagger$! This is useful for implementation in code!</p>
+> <p class="center-block" align="center" style="width:200px;background-color:#ffcc00;font-weight: bold">NOTE: These two matrices are exactly what we get if we reshape the rows of SV! This is useful for implementation in code!</p>
 
-
->
-> We finish this step by stacking these matrices into
-> $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\alpha_1 = 1} \\ \Psi^2|_{\alpha_1 = 2}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\  0&0&0&0\\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}$$
+$$
+\begin{array} \\ \fbox{NOTE: These two matrices are exactly what we get if we reshape the rows of SV!} \\ \fbox{This is useful for implementation in code!} \end{array}
 $$
 
-** Second SVD **
+????Deprecated
+test
+
+????
+
+```html
+
+test
+
+```
+
+
+> We finish this step by stacking these matrices into
+> $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\alpha_1 = 1} \\ \Psi^2|_{\alpha_1 = 2}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\  0&0&0&0\\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}$$
+
+
+**Second SVD**
 
 $$
 \begin{align}
