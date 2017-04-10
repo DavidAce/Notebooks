@@ -344,7 +344,7 @@ It would seem that it is simpler to do the decomposition for unnormalized states
 
 ### Example 2: Four Qubits, following Vidal
 
-Let $|\psi\rangle = \frac{1}{\sqrt{3}}(|1100\rangle + |0011\rangle + |1010\rangle)$
+Let $|\psi\rangle = \frac{1}{\sqrt{3}}(|1110\rangle + |0011\rangle + |1010\rangle)$
 
 
 For giggles, disregard the normalization factor for now.
@@ -371,7 +371,7 @@ We begin by doing a *mode-1* matrix unfolding (or flattening), where we get a ma
 The tensor $c_{\sigma_1...\sigma_4}$ has nonzero elements $c_{1100}, c_{0011} \text{ and } c_{1010}$ which, in a mode-1 unfolding, maps to matrix coordinates
 
 
-- $c_{1100} \rightarrow \Psi_{i_1 = 2,j=2}$. Here $j =1 + \sum_{k\neq 1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq1}^{k-1} I_m$. We can use qubit values directly, by instead rewriting $j =1 + \sum_{k\neq 1}^4 \sigma_kJ_k$. This gives $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*1 + 0*2 + 0*4 = 2$.
+- $c_{1110} \rightarrow \Psi_{i_1 = 2,j=4}$. Here $j =1 + \sum_{k\neq 1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq1}^{k-1} I_m$. We can use qubit values directly, by instead rewriting $j =1 + \sum_{k\neq 1}^4 \sigma_kJ_k$. This gives $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*1 + 1*2 + 0*4 = 4$.
 
 - $c_{0011} \rightarrow {}$$\Psi_{i_1=1,j=7}$ Using the same method as above we get $j = 1+0*1 + 1*2 + 1*4 = 7$.
 
@@ -382,7 +382,7 @@ Reinserting the normalization factor we get
 
 
 $$
-\Psi^{1} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1&0 \\ 0&1&1&0&0&0&0&0\end{pmatrix}
+\Psi^{1} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1&0 \\ 0&0&1&1&0&0&0&0\end{pmatrix}
 $$
 
 where the superscript $1$ denotes the first iteration.
@@ -396,7 +396,7 @@ $$
 \begin{align}
 U &= \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}\\
 S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
-V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}
+V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&0&1&1&0&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}
 \end{align}
 $$
 
@@ -411,40 +411,32 @@ $$
 
 and we identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as the rows of
 
-$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&1&0\end{pmatrix}$$.
+$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&1&0&0&0&0 \\ 0&0&0&0&0&0&1&0\end{pmatrix}$$.
 
-To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value of $\alpha_1$, i.e., one for each row on $SV^\dagger$, as follows
+To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, and $\alpha_1$ labels the rows of $SV^\dagger$.
 
-> If $\alpha_1 = 1$ we accomodate $c_{0011}$: Pretend $\sigma_2$ denotes the row, and $\sigma_3\sigma_4$ the columns, i.e. do a mode-1 matricization on $|\sigma_2\sigma_3\sigma_4\rangle$. Then we have a nonzero element at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 1*2 = 4$. Note how the $J_k$ have been shifted because we are dealing with $\sigma_2$ and $2$ remaining qubits.
-$$\Psi^2|_{\alpha_1 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\ 0&0&0&0\end{pmatrix}$$
+> Pretend $\sigma_2$ denotes the rows of a $(2\times 1)$ matrix, where each element is a $(2 \times 4)$ matrix, and$\sigma_3\sigma_4$ the columns, i.e. do a mode-1 matricizations on $|\sigma_2\sigma_3\sigma_4\rangle$ for each row.
+>
+> - If $\sigma_2 = 0$, we can accomodate $c_{1010}$ and $c_{0011}$. The nonzero elements are at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 0*2 = 2$ and at at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 1*2 = 4$.
+> - If 
 
-> If $\alpha_1 = 2$ we accomodate $c_{1100}$ and $c_{1010}$: Pretend $\sigma_2$ denotes the row, and $\sigma_3\sigma_4$ the columns. Then we have a nonzero element for $c_{1010}$ at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 0*2 = 2$ and for $c_{1100}$ at $i = 2$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 0*1 + 0*2 = 1$.
-> $$\Psi^2|_{\alpha_1 = 2} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&0&0 \\ 1&0&0&0\end{pmatrix}$$
 
+> $$\Psi^2|_{\sigma_2 = 0} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&0&0 \\ 0&1&0&0\end{pmatrix}$$
+> $$\Psi^2|_{\sigma_2 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\ 0&0&0&0\end{pmatrix}$$
 
-> <p class="center-block" align="center" style="width:200px;background-color:#ffcc00;font-weight: bold">NOTE: These two matrices are exactly what we get if we reshape the rows of SV! This is useful for implementation in code!</p>
-
-$$
-\begin{array} \\ \fbox{NOTE: These two matrices are exactly what we get if we reshape the rows of SV!} \\ \fbox{This is useful for implementation in code!} \end{array}
-$$
-
-????Deprecated
-test
-
-????
-
-```html
-
-test
-
-```
 
 
 > We finish this step by stacking these matrices into
-> $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\alpha_1 = 1} \\ \Psi^2|_{\alpha_1 = 2}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1 \\  0&0&0&0\\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}$$
+> $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\alpha_1 = 1} \\ \Psi^2|_{\alpha_1 = 2}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&0&0 \\  0&1&0&0\\ 0&0&0&1\\ 0&0&0&0\end{pmatrix}.$$
 
+$$
+\begin{array}{c c}\fbox{NOTE: These two matrices (should be) exactly what we get if we reshape the rows of SV!} \\ \fbox{This is useful for implementation in code!} \end{array}
+$$
 
 **Second SVD**
+
+
+
 
 $$
 \begin{align}
