@@ -1,6 +1,3 @@
-# Instructions for MathJax
-To view math in this document there are several options. From low to high effort:
-
 - (**Recommended**) [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
 - Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
 - Open this file on your pc/mac with the [`Atom`](https://atom.io/) editor with the `markdown-preview-plus` -plugin installed.
@@ -16,15 +13,15 @@ To view math in this document there are several options. From low to high effort
 Table of Contents
 =================
 
-   * [Table of Contents](#table-of-contents)
    * [Instructions for MathJax](#instructions-for-mathjax)
+   * [Table of Contents](#table-of-contents)
    * [Matrix Product States](#matrix-product-states)
       * [Canonical form (from <a href="http://journals.aps.org/prb/abstract/10.1103/PhysRevB.87.235106">Jens paper</a>)](#canonical-form-from-jens-paper)
       * [Schmidt decomposition according to Vidal](#schmidt-decomposition-according-to-vidal)
       * [Procedure](#procedure)
          * [Tensor decomposition](#tensor-decomposition)
          * [Local updates](#local-updates)
-         * [Example 1: Three Qubits, following Schollwöck](#example-1-three-qubits-following-schollwöck)
+         * [Example 1: Three Qubits, following Schollw?ck](#example-1-three-qubits-following-schollwck)
          * [Example 2: Four Qubits, following Vidal](#example-2-four-qubits-following-vidal)
          * [Example with PBC](#example-with-pbc)
       * [Virtual systems: Valence bonds or Maximally entangled pairs](#virtual-systems-valence-bonds-or-maximally-entangled-pairs)
@@ -447,6 +444,9 @@ S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0&0&0 \\ 0&1&0&0 \\ 0&0&0&0 \\ 0&
 V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
 \end{align}
 $$
+
+
+
 
 
 ### Example with PBC
