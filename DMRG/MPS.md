@@ -423,16 +423,35 @@ To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value 
 
 $$
 \begin{align}
-\tau^{\sigma_3\sigma_4}_{\sigma_2 = 0} &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
-\tau^{\sigma_3\sigma_4}_{\sigma_2 = 1} &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
+|0\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
+|1\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
 \end{align}
 $$
 
 We finish this step by stacking these matrices into a $(4 \times 4)$ matrix
 
-$$\Psi^2 = \begin{pmatrix}\Psi^2|_{\sigma_2 = 0} \\ \Psi^2|_{\sigma_2 = 1}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix}.$$
+$$\Psi^2 = |\sigma_2\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2}\rangle =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix}.$$
+
+
+
 
 **Second SVD**
+
+The SVD decomposition of $\Psi^2$ yields:
+
+
+$$
+\begin{align}
+U &= \frac{1}{\sqrt{2}}\begin{pmatrix}1&0&0&-1   \\ 0&\sqrt{2}&0&0 \\ 1&0&0&1 \\0&0&\sqrt{2}&0\end{pmatrix}\\
+S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0&0&0 \\ 0&1&0&0 \\ 0&0&0&0 \\ 0&0&0&0\end{pmatrix}\\
+V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
+\end{align}
+$$
+
+Like the previous step, to we need to slice $|\Phi_{\alpha_1,\alpha_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$
+
+
+**Third SVD**
 
 The SVD decomposition of $\Psi^2$ yields:
 
