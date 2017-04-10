@@ -388,14 +388,14 @@ Reinserting the normalization factor we get
 
 
 $$
-\Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4}) = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011}&0&0&0&0 \\ 0&0&1_{1010}&0&0&0&1_{1110}&0\end{pmatrix}
+\Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4)} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011}&0&0&0&0 \\ 0&0&1_{1010}&0&0&0&1_{1110}&0\end{pmatrix}
 $$
 
-whichthat goes into the first SVD iteration.
+which goes into the first SVD iteration.
 
 **First SVD**
 
-The SVD decomposition of $\Psi^1$ yields:
+The SVD decomposition of $\Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4)} $ yields:
 
 
 $$
@@ -417,26 +417,32 @@ $$
 
 and we identify $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ as 
 
-$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0&0&0&1_{1110}&0 \\ 0&0&0&1_{0011}&0&0&0&0\end{pmatrix}$$.
+$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0&0&0&1_{1110}&0 \\ 0&0&0&1_{0011}&0&0&0&0\end{pmatrix}.$$
 
 To continue, we slice $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, and $\alpha_1$ labels the rows of $SV^\dagger$. In Vidal's notation
 
 $$
 \begin{align}
-|\sigma_2 = 0\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
-|\sigma_2 = 1\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
+|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
+|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
 \end{align}
 $$
 
+Each of these undergoes an SVD:
+
+
+
+
+
 We finish this step by stacking these matrices into a $(4 \times 4)$ matrix
 
-$$\Psi^2 = |\sigma_2\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2}\rangle =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix}.$$
+$$|\Phi_{\alpha_1,\sigma_2}^{\sigma_3\sigma_4} \rangle = \sum_{\sigma_2} |\sigma_2\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2}\rangle =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix}.$$
 
 
 
 **Second SVD**
 
-The SVD decomposition of $\Psi^2$ yields:
+The SVD decomposition of $|\Phi_{\alpha_1,\sigma_2}^{\sigma_3\sigma_4} \rangle$ yields:
 
 
 $$
@@ -447,12 +453,12 @@ V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
 \end{align}
 $$
 
-Like the previous step, we identify $\Gamma_{\alpha_1,\alpha_2}^{\sigma_2} = U$, where $\sigma_2$ labels upper/lower $(2 \times 4)$ submatrices. We slice $|\Phi_{\alpha_1,\alpha_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$ again
+Like the previous step, we identify $\Gamma_{\alpha_1,\alpha_2}^{\sigma_2} = U$, where $\sigma_2$ labels upper/lower $(2 \times 4)$ submatrices. We slice $|\Phi_{\alpha_2,\sigma_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$ again
 
 $$
 \begin{align}
-|\sigma_3 = 0\rangle|\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0 \\0&0 \\0 & 1\\ 1 & 0\end{pmatrix} \\
-|\sigma_3 = 1\rangle|\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}1&0 \\0&1 \\0 & 0\\ 0 & 0\end{pmatrix}
+|\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0 \\0&0 \\0 & 1\\ 1 & 0\end{pmatrix} \\
+|\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}1&0 \\0&1 \\0 & 0\\ 0 & 0\end{pmatrix}
 \end{align}
 $$
 
@@ -473,9 +479,6 @@ S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0&0&0 \\ 0&1&0&0 \\ 0&0&0&0 \\ 0&
 V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
 \end{align}
 $$
-
-
-
 
 
 ### Example with PBC
