@@ -411,20 +411,20 @@ where we can identify $\Gamma_{\alpha_1}^{\sigma_1} = U$ ($\sigma_1$ labels the 
 
 $$
 |\psi\rangle =
-\sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle =
-\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle,
+\sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle =
+\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle,
 $$
 
 and we identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as 
 
 $$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0&0&0&1_{1110}&0 \\ 0&0&0&1_{0011}&0&0&0&0\end{pmatrix}$$.
 
-To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, and $\alpha_1$ labels the rows of $SV^\dagger$.
+To continue, we slice $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, and $\alpha_1$ labels the rows of $SV^\dagger$. In Vidal's notation
 
 $$
 \begin{align}
-|0\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
-|1\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
+|\sigma_2 = 0\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
+|\sigma_2 = 1\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
 \end{align}
 $$
 
@@ -448,7 +448,7 @@ V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
 \end{align}
 $$
 
-Like the previous step, to we need to slice $|\Phi_{\alpha_1,\alpha_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$
+Like the previous step, we identify $\Gamma_{\alpha_1,\alpha_2}^{\sigma_2} = U$, where $\sigma_2$ labels each $(2 \times 4)$ submatrix . We slice $|\Phi_{\alpha_1,\alpha_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$ again
 
 
 **Third SVD**
