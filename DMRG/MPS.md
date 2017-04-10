@@ -359,14 +359,14 @@ We do a bipartite splitting on the first qubit,
 $$
 |\psi\rangle
 =
-\sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle =
-\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle
+\sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle =
+\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle
 $$
 
 
 where $\Gamma_{\alpha_1}^{\sigma_1}$ comes from the SVD decomposition and $\lambda_{\alpha_1}^1$ are the corresponding singular values, or Schmidt coefficients.
 
-**Preliminaries: Alternative Mode-1 unfolding (Left method)**
+**Preliminaries: Mode-1 unfolding (Left method)**
 
 To actually perform the SVD decomposition initially, the tensor $c_{\sigma_1...\sigma_4}$ needs to be flattened, or matricized.
 
@@ -388,10 +388,10 @@ Reinserting the normalization factor we get
 
 
 $$
-\Psi^{1} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011}&0&0&0&0 \\ 0&0&1_{1010}&0&0&0&1_{1110}&0\end{pmatrix}
+\Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4}) = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011}&0&0&0&0 \\ 0&0&1_{1010}&0&0&0&1_{1110}&0\end{pmatrix}
 $$
 
-where the superscript $1$ denotes the first SVD iteration.
+whichthat goes into the first SVD iteration.
 
 **First SVD**
 
@@ -415,7 +415,7 @@ $$
 \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle,
 $$
 
-and we identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as 
+and we identify $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ as 
 
 $$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0&0&0&1_{1110}&0 \\ 0&0&0&1_{0011}&0&0&0&0\end{pmatrix}$$.
 
@@ -434,7 +434,6 @@ $$\Psi^2 = |\sigma_2\rangle|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2}\rangle =
 
 
 
-
 **Second SVD**
 
 The SVD decomposition of $\Psi^2$ yields:
@@ -448,12 +447,23 @@ V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
 \end{align}
 $$
 
-Like the previous step, we identify $\Gamma_{\alpha_1,\alpha_2}^{\sigma_2} = U$, where $\sigma_2$ labels each $(2 \times 4)$ submatrix . We slice $|\Phi_{\alpha_1,\alpha_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$ again
+Like the previous step, we identify $\Gamma_{\alpha_1,\alpha_2}^{\sigma_2} = U$, where $\sigma_2$ labels upper/lower $(2 \times 4)$ submatrices. We slice $|\Phi_{\alpha_1,\alpha_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$ again
 
+$$
+\begin{align}
+|\sigma_3 = 0\rangle|\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0 \\0&0 \\0 & 1\\ 1 & 0\end{pmatrix} \\
+|\sigma_3 = 1\rangle|\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}1&0 \\0&1 \\0 & 0\\ 0 & 0\end{pmatrix}
+\end{align}
+$$
 
+which stacked becomes 
+
+$$
+\Psi^3 = |\sigma_3\rangle|\tau^{\sigma_4}_{\alpha_2,\sigma_3}\rangle =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0 \\0&0 \\0 & 1\\ 1 & 0\\ 1&0 \\0&1 \\0 & 0\\ 0 & 0\end{pmatrix}
+$$
 **Third SVD**
 
-The SVD decomposition of $\Psi^2$ yields:
+The SVD decomposition of $\Psi^3$ yields:
 
 
 $$
