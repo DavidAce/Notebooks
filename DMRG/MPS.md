@@ -424,11 +424,16 @@ $$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0&0&0&1_{1110}&0 \\
 
 To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, and $\alpha_1$ labels the rows of $SV^\dagger$.
 
-$$\Psi^2|_{\sigma_2 = 0} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix}$$
-$$\Psi^2|_{\sigma_2 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}$$
+$$
+\begin{align}
+\tau^{\sigma_3\sigma_4}_{\sigma_2 = 0} &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
+\tau^{\sigma_3\sigma_4}_{\sigma_2 = 1} &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
+\end{align}
+$$
 
- We finish this step by stacking these matrices into
- $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\sigma_2 = 0} \\ \Psi^2|_{\sigma_2 = 1}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix}.$$
+We finish this step by stacking these matrices into a $(4 \times 4)$ matrix
+
+$$\Psi^2 = \begin{pmatrix}\Psi^2|_{\sigma_2 = 0} \\ \Psi^2|_{\sigma_2 = 1}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix}.$$
 
 **Second SVD**
 
@@ -437,9 +442,9 @@ The SVD decomposition of $\Psi^2$ yields:
 
 $$
 \begin{align}
-U &= \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}\\
-S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
-V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&0&1&0&0&0&1&0 \\ 0&0&0&\sqrt{2}&0&0&0&0\end{pmatrix}
+U &= \frac{1}{\sqrt{2}}\begin{pmatrix}1&0&0&-1   \\ 0&\sqrt{2}&0&0 \\ 1&0&0&1 \\0&0&\sqrt{2}&0\end{pmatrix}\\
+S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0&0&0 \\ 0&1&0&0 \\ 0&0&0&0 \\ 0&0&0&0\end{pmatrix}\\
+V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
 \end{align}
 $$
 
