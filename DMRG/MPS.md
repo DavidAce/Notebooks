@@ -169,9 +169,9 @@ When a unitary operation $V$, like a two-qubit gate, is applied to qubits $l$ an
 
 
 
-### Example 1: Three Qubits, following Schollwöck
+### Example 1: Three Qubits, following Schollw?ck
 This example tries to follow the steps in
-[Schollwoeck, U. (2010). The density-matrix renormalization group in the age of matrix product states. Annals of Physics, 326(1), 96–192.]( https://doi.org/10.1016/j.aop.2010.09.012)
+[Schollwoeck, U. (2010). The density-matrix renormalization group in the age of matrix product states. Annals of Physics, 326(1), 96192.](https://doi.org/10.1016/j.aop.2010.09.012)
 
 
 **Step 1:**
@@ -349,12 +349,13 @@ It would seem that it is simpler to do the decomposition for unnormalized states
 
 
 
-### Example 2: Four Qubits, following Vidal
+[comment]:<> (<iframe height='260' width='400' src="https://www.youtube.com/embed/Q8bFmV6tHBs" frameborder="0" allowfullscreen align="middle"></iframe>)
+
+### Example 2: Four Qubits, following Vidal 
 
 Let $|\psi\rangle = \frac{1}{\sqrt{3}}(|1110\rangle + |0011\rangle + |1010\rangle)$
 
 
-For giggles, disregard the normalization factor for now.
 We do a bipartite splitting on the first qubit,
 
 
@@ -368,7 +369,7 @@ $$
 
 where $\Gamma_{\alpha_1}^{\sigma_1}$ comes from the SVD decomposition and $\lambda_{\alpha_1}^1$ are the corresponding singular values, or Schmidt coefficients.
 
-**Preliminaries: Mode-1 unfolding **
+**Preliminaries: Alternative Mode-1 unfolding (Left method)**
 
 To actually perform the SVD decomposition initially, the tensor $c_{\sigma_1...\sigma_4}$ needs to be flattened, or matricized.
 
@@ -377,154 +378,7 @@ We begin by doing a *mode-1* matrix unfolding (or flattening), where we get a ma
 
 The tensor $c_{\sigma_1...\sigma_4}$ has nonzero elements $c_{1100}, c_{0011} \text{ and } c_{1010}$ which, in a mode-1 unfolding, maps to matrix coordinates
 
-
-- $c_{1110} \rightarrow \Psi_{i_1 = 2,j=4}$. Here $j =1 + \sum_{k\neq 1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq1}^{k-1} I_m$. We can use qubit values directly, by instead rewriting $j =1 + \sum_{k\neq 1}^4 \sigma_kJ_k$. This gives $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*1 + 1*2 + 0*4 = 4$.
-
-- $c_{0011} \rightarrow {}$$\Psi_{i_1=1,j=7}$ Using the same method as above we get $j = 1+0*1 + 1*2 + 1*4 = 7$.
-
-- $c_{1010} \rightarrow {\Psi_{i_1=2,j=3}}$. And again, $j = 1+0*1 + 1*2 + 0*4 = 3$.
-
-
-Reinserting the normalization factor we get
-
-
-$$
-\Psi^{1} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1_{0011}&0 \\ 0&0&1_{1010}&1_{1110}&0&0&0&0\end{pmatrix}
-$$
-
-where the superscript $1$ denotes the first iteration.
-
-
-
-
-**First SVD**
-
-The SVD decomposition of $\Psi^1$ yields:
-
-
-$$
-\begin{align}
-U &= \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}\\
-S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
-V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&0&1&1&0&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}
-\end{align}
-$$
-
-
-where we can identify $\Gamma_{\alpha_1}^{\sigma_1} = U$ ($\sigma_1$ labels the row-vectors in $U$), and $\lambda^1_{\alpha_1} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We arrive at
-
-$$
-|\psi\rangle =
-\sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle =
-\sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2,3,4}\rangle,
-$$
-
-and we identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as 
-
-$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&1_{1110}&0&0&0&0 \\ 0&0&0&0&0&0&1_{0011}&0\end{pmatrix}$$.
-
-To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, and $\alpha_1$ labels the rows of $SV^\dagger$.
-
-> Pretend $\sigma_2$ denotes the rows of a $(2\times 1)$ matrix, where each element is a $(2 \times 4)$ matrix, and$\sigma_3\sigma_4$ the columns, i.e. do a mode-1 matricizations on $|\sigma_2\sigma_3\sigma_4\rangle$ for each row.
->
-> - If $\sigma_2 = 0$, we can accomodate $c_{1010}$ and $c_{0011}$. The nonzero elements are at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 0*2 = 2$ and at at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 1*2 = 4$.
-> - If $\sigma_2 = 1$, we can accomodate $c_{1110}$. The nonzero element is at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 0*2 = 2$ and at at $i = 1$ and $j = 1 + \sigma_3J_2 + \sigma_4J_3 = 1 + 1*1 + 1*2 = 4$.
-
-
-
-> If we simply reshape each row we get 
-> $$\Psi^2|_{\sigma_1 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1_{1010}&0&0 \\ 0&1_{1110}&0&0\end{pmatrix}$$
-> $$\Psi^2|_{\sigma_1 = 0} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011} \\ 0&0&0&0\end{pmatrix}$$
-> but then $c_{1110} = (1,0)\Psi^2|_{\sigma_1=1} = 1  $
-
-
-> If we use common sense, i.e. upper row on $SV$ is always $\sigma_1 = 1$, $\sigma_2$ chooses matrix (upper/lower) and $\sigma_3$ chooses left/right element, $\sigma_4$ choses left/right block in the matrix, we get 
-
-> $$\Psi^2|_{\sigma_2 = 0} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1_{1010}&0&0 \\ 0&0&0&1_{0011}\end{pmatrix}$$
-> $$\Psi^2|_{\sigma_2 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1_{1110}&0&0 \\ 0&0&0&0\end{pmatrix}$$
-> and then $c_{1110} = 1, c_{0011} = 1$ and $c_{1010} = 1$ by design.
-
->
-
-> If instead we follow matricization rules we get
->
-> $$\Psi^2|_{\sigma_2 = 0} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011} \\ 0&1_{1010}&0&0\end{pmatrix}$$
-> $$\Psi^2|_{\sigma_2 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0 \\ 0&1_{1110}&0&0\end{pmatrix}$$
->
-> but then $c_{1110} = 0$...
->
-> We finish this step by stacking these matrices into
-> $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\alpha_1 = 1} \\ \Psi^2|_{\alpha_1 = 2}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&1&0&0 \\  0&1&0&0\\ 0&0&0&1\\ 0&0&0&0\end{pmatrix}.$$
-
-
-> If we take Vidal's approach as close as possible we get
->
-> 1. Expand: $|\Psi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle = \sum_{\sigma_2} |\sigma_2\rangle |\tau_{\alpha_1,\sigma_2}^{\sigma_3\sigma_4}\rangle$. Here we have a vector $|\tau\rangle$, whose elements are matrices. 
-> The terms are $c_{1010}=|0\rangle|\tau_{\alpha_1,0}^{10}\rangle, c_{0011}=|0\rangle|\tau_{\alpha_1,0}^{11}\rangle$ and $c_{1110}=|1\rangle|\tau_{\alpha_1,1}^{10}\rangle$.
-
->The matrices are
->$$|\tau_{\alpha_1,0}^{\sigma_3\sigma_4}\rangle = \begin{pmatrix}0&0&0&1_{0011} \\ 0&1_{1010}&0&0\end{pmatrix} $$
->$$|\tau_{\alpha_1,1}^{\sigma_3\sigma_4}\rangle = \begin{pmatrix}0&0&0&1_{0011} \\ 0&1_{1010}&0&0\end{pmatrix} $$
->
-> 2. Magically write down  $|\tau_{\alpha_1,\sigma_2}^{\sigma_3\sigma_4}\rangle = \sum_{\alpha_2} \Gamma^{\sigma_2}
-_{\alpha_1,\alpha_2}\lambda^{\sigma_2}_{\alpha_2}|\Psi_{\alpha_2}^{\sigma_3\sigma_4}\rangle$.
-
-
-
-$$
-\begin{array}{c c}\fbox{NOTE: These two matrices (should be) what we get if we reshape the rows of SV somehow!} \\ \fbox{This is useful for implementation in code!} \end{array}
-$$
-
-**Second SVD**
-
-
-
-
-$$
-\begin{align}
-U &= \begin{pmatrix}1&0 \\ 0&1\end{pmatrix}\\
-S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
-V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&1&1&0&0&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}
-\end{align}
-$$
-
-
-where we can identify $\Gamma_{\alpha_2}^{\sigma_2} = U$ ($\sigma_2$ labels the row-vectors in $U$), and $\lambda^2_{\alpha_2} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We also identify $|\Phi_{\alpha_2}^{3,4}\rangle$ as $SV^\dagger$.
-
-
-
-
-
-Now do step 1 to 3 in Vidal's approach. Essentially these steps do the decomposition above on $|\sigma_2\sigma_3\sigma_4\rangle$. We have two sets of these vectors depending on the value of $\sigma_1$?
-
-
-
-
-
-1. $|\Phi_{\alpha_1}^{2,3,4}\rangle = \sum_{\sigma_2} |\sigma_2\rangle|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle=|0\rangle|\tau^{3,4}_{\alpha_1,0}\rangle + |1\rangle|\tau^{3,4}_{\alpha_1,1}\rangle=|0\rangle(|10\rangle + |11\rangle) + |1\rangle(|00\rangle)$?
-This means that we should have two different vectors $\tau$. One for each possible $\sigma_2$.
-
-
-
-
-2. $|\tau_{\alpha_1,\sigma_2}^{3,4}\rangle = \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3,4}\rangle$
-This can be accomplished by doing a Schmidt decomposition on each of $|\psi\rangle|_{\sigma_2 = 0}$
-
-
-
-
-
-$$
-\fbox{Comment: Check these}
-$$
-
-[comment]:<> (<iframe height='260' width='400' src="https://www.youtube.com/embed/Q8bFmV6tHBs" frameborder="0" allowfullscreen align="middle"></iframe>)
-
-### Example 2: Four Qubits, following Vidal (method 2)
-
-**Preliminaries: Alternative Mode-1 unfolding (method 2) **
-
-Using method 2 (see earlier in this section), the tensor $c_{\sigma_1...\sigma_4}$ maps to matrix coordinates
+Using the "Left-method" (see earlier in this section), the tensor $c_{\sigma_1...\sigma_4}$ maps to matrix coordinates
 
 
 - $c_{1110} \rightarrow \Psi_{i_1 = 2,j=7}$. Here $j =1 + \sum_{k\neq 1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq1}^{N-k} I_m$. We can use qubit values directly, by instead rewriting $j =1 + \sum_{k\neq 1}^4 \sigma_kJ_k$. This gives $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*4 + 1*2 + 0*1 = 7$.
@@ -533,13 +387,14 @@ Using method 2 (see earlier in this section), the tensor $c_{\sigma_1...\sigma_4
 
 - $c_{1010} \rightarrow {\Psi_{i_1=2,j=3}}$. And again, $j = 1+0*4 + 1*2 + 0*1 = 3$.
 
-
 Reinserting the normalization factor we get
 
 
 $$
 \Psi^{1} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011}&0&0&0&0 \\ 0&0&1_{1010}&0&0&0&1_{1110}&0\end{pmatrix}
 $$
+
+where the superscript $1$ denotes the first SVD iteration.
 
 **First SVD**
 
@@ -565,10 +420,28 @@ $$
 
 and we identify $|\Phi_{\alpha_1}^{2,3,4}\rangle$ as 
 
-$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&&0&0&1_{1110}&0 \\ 0&0&0&1_{0011}&0&0&0&0\end{pmatrix}$$.
+$$SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0&0&0&1_{1110}&0 \\ 0&0&0&1_{0011}&0&0&0&0\end{pmatrix}$$.
 
 To continue, we slice $|\Phi_{\alpha_1}^{2,3,4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, and $\alpha_1$ labels the rows of $SV^\dagger$.
 
+$$\Psi^2|_{\sigma_2 = 0} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix}$$
+$$\Psi^2|_{\sigma_2 = 1} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}$$
+
+ We finish this step by stacking these matrices into
+ $$\Psi^2 = \begin{pmatrix}\Psi^2|_{\sigma_2 = 0} \\ \Psi^2|_{\sigma_2 = 1}\end{pmatrix} =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix}.$$
+
+**Second SVD**
+
+The SVD decomposition of $\Psi^2$ yields:
+
+
+$$
+\begin{align}
+U &= \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}\\
+S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
+V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&0&1&0&0&0&1&0 \\ 0&0&0&\sqrt{2}&0&0&0&0\end{pmatrix}
+\end{align}
+$$
 
 
 ### Example with PBC
