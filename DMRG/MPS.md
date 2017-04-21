@@ -254,7 +254,7 @@ $$
 $$
 gauge conditions, respectively.
 
-![Orthogonality Center](figs/orthogonality-center.png)
+<img class="center-block" height="130px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/orthogonality-center.png">
 
 ---
 
