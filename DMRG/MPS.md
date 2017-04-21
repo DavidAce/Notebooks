@@ -1,8 +1,10 @@
-# HOWTO
+# HOW-TO
+
 - (**Recommended**) [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
 - Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
-- Open this file on your pc/mac with the [`Atom`](https://atom.io/) editor with the `markdown-preview-plus` -plugin installed.
-- Open this file on your pc/mac with the [`ReText`](https://github.com/retext-project/retext) editor. To get inline equations showing nicely, do the following (copy-paste to terminal):
+- Open in [Typora](https://typora.io/) editor.
+- Open this file on your pc/mac with the [Atom](https://atom.io/) editor with the `markdown-preview-enhanced` -plugin installed. (Optional: Select Katex renderer in settings).
+- Open this file on your pc/mac with the [ReText](https://github.com/retext-project/retext) editor. To get inline equations showing nicely, do the following (copy-paste to terminal):
     - `sudo apt install python3-pyqt5.qtwebkit`
     - `echo "mathjax" >> ~/.config/markdown-extensions.txt`.
     - Finally enable webkit inside ReText: `Edit -> Use WebKit Renderer`.
@@ -24,13 +26,10 @@ A general quantum state $|\psi\rangle$ on a chain with N sites can be written in
 
 
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle = \sum_{\sigma_1...\sigma_N} A^{\sigma_1}...A^{\sigma_N}|\sigma_1...\sigma_N\rangle,
-\end{equation}
+\end{aligned}
 $$
-
-
-
 
 where $A^{\sigma_i}$ is a $r_{i-1}\times r_{i}$ matrix, $r_i$ being the rank of the Schmidt decomposition at site $i$. Note that at the boundary we have $r_0 = r_N = 1$, which means that $A^{\sigma_1}$ and $A^{N}$ are vectors, and therefore the matrix product returns a scalar coefficient.
 
@@ -39,9 +38,9 @@ We can rewrite the matrices $A^{\sigma_i}$ as a product of $r_{i-1}\times r_i$ c
 
 
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle = \sum_{\sigma_1...\sigma_N} \Gamma^{\sigma_1}\Lambda^1\Gamma^{\sigma_2}\Lambda^2...\Lambda^{N-1}\Gamma^{\sigma_N}|\sigma_1...\sigma_N\rangle,
-\end{equation}
+\end{aligned}
 $$
 
 
@@ -55,17 +54,13 @@ We can define a set of $\chi_n$ wave functions $|\alpha\rangle_{L/R}^n$ to the l
 
 
 $$
-\begin{equation}
-|\psi\rangle = \sum_{\alpha=1}^\chi \Lambda_\alpha^n |\alpha\rangle^n_L\otimes |\alpha\rangle^n_R , \quad |\alpha\rangle \in H_{L/R}
-\end{equation}
+\begin{aligned}
+|\psi\rangle = \sum_{\alpha=1}^\chi \Lambda_\alpha^n |\alpha\rangle^n_L\otimes |\alpha\rangle^n_R , \quad |\alpha\rangle \in H_{L/R} \\
+\end{aligned}
 $$
 
----
 
-**The MPS representation $\{\Gamma^{\sigma_1} \Lambda^1\Gamma^{\sigma_2} \Lambda^2...\Lambda^{N-1} \Gamma^{\sigma_N}\}$ is canonical if for every bond, the set of wave functions $|\alpha\rangle_{L/R}^n$ along with $\Lambda^i$ form a Schmidt decomposition of $\psi$.
-In other words we must have $\langle \hat{\alpha}|\alpha\rangle^n_L = \delta_{\hat{\alpha}\alpha}$, $\langle \hat{\alpha}|\alpha\rangle^n_R  = \delta_{\hat{\alpha}\alpha}$ and $\sum {\Lambda_{\alpha}^i}^2 = 1$ on every bond. Equivalently, $A^{\sigma_i\dagger}A^{\sigma_i} = \mathbf{1}$.**
-
----
+**The MPS representation $\{\Gamma^{\sigma_1} \Lambda^1\Gamma^{\sigma_2} \Lambda^2...\Lambda^{N-1} \Gamma^{\sigma_N}\}$ is canonical if for every bond, the set of wave functions $|\alpha\rangle_{L/R}^n$ along with $\Lambda^i$ form a Schmidt decomposition of $\psi$. In other words we must have $\langle \hat{\alpha}|\alpha\rangle^n_L = \delta_{\hat{\alpha}\alpha}$, $\langle \hat{\alpha}|\alpha\rangle^n_R  = \delta_{\hat{\alpha}\alpha}$ and $\sum {\Lambda_{\alpha}^i}^2 = 1$ on every bond. Equivalently, $A^{\sigma_i\dagger}A^{\sigma_i} = \mathbf{1}$.**
 
 
 
@@ -85,9 +80,9 @@ The local decomposition of the state $|\psi\rangle \in H_2^{\otimes n}$ in terms
 
 
 $$
-\begin{equation}
-|\psi\rangle \leftrightarrow \Gamma^{\sigma_1}\lambda^1\Gamma^{\sigma_2}\lambda^2...\lambda^{n-1}\Gamma^{\sigma_n}
-\end{equation}
+\begin{aligned}
+|\psi\rangle \leftrightarrow  \Gamma^{\sigma_1}\lambda^1\Gamma^{\sigma_2}\lambda^2...\lambda^{n-1}\Gamma^{\sigma_n}
+\end{aligned}
 $$
 
 
@@ -95,9 +90,9 @@ Here, tensor $\Gamma^{\sigma_l}$ has at most three indices $\Gamma^{\sigma_1}_{\
 
 
 $$
-\begin{equation}
+\begin{aligned}
 c_{\sigma_1...\sigma_n}= \sum_{\alpha_1...\alpha_{n-1}} \Gamma^{\sigma_1}_{\alpha_1}\lambda^1_{\alpha_1}\Gamma^{\sigma_2}_{\alpha_1\alpha_2}\lambda^1_{\alpha_2}...\Gamma^{\sigma_n}_{\alpha_{n-1}}
-\end{equation}
+\end{aligned}
 $$
 
 
@@ -106,12 +101,10 @@ so that $2^n$ coefficients in $c_{\sigma_1...\sigma_n}$ are expressed in terms o
 ## Procedure
 This is essentially a concatenation of $n-1$ Schmidt decompositions, and depends on how the qubits have been ordered from $1$ to $n$. We first compute the Schmidt decomposition according to the bipartite splitting of $|\psi\rangle$ into qubit $1$ and the $n-1$ remaining qubits.
 
-
-
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle = \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{2...n}\rangle = \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{2...n}\rangle
-\end{equation}
+\end{aligned}
 $$
 
 
@@ -123,10 +116,10 @@ We then proceed according to the following three steps:
 
 
 $$
-\begin{align}
+\begin{aligned}
 |\Phi_{\alpha_1}^{2...n}\rangle &=\sum_{\sigma_2}|\sigma_2\rangle  \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle \\
 &=\sum_{\sigma_2,\alpha_2} \Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\sigma_2\rangle |\Phi_{\alpha_2}^{3...n}\rangle
-\end{align}
+\end{aligned}
 $$
 
 
@@ -134,10 +127,10 @@ followed by
 
 
 $$
-\begin{align}
+\begin{aligned}
 |\psi\rangle &= \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle\sum_{\sigma_2}|\sigma_2\rangle  \sum_{\alpha_2}\Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\Phi_{\alpha_2}^{3...n}\rangle \\
 &=\sum_{\sigma_1\sigma_2,\alpha_1\alpha_2}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}  \Gamma_{\alpha_1\alpha_2}^{\sigma_2}\lambda_{\alpha_2}^2|\sigma_1\rangle|\sigma_2\rangle|\Phi_{\alpha_2}^{3...n}\rangle
-\end{align}
+\end{aligned}
 $$
 
 Repeating steps 1 to 3 for the Schmidt vectors $|\Phi_{\alpha_3}^{4...n}\rangle , |\Phi_{\alpha_4}^{5...n}\rangle...$ gives us the state $|\psi\rangle$ in terms of tensors $\Gamma^{\sigma_l}$ and $\lambda^l$.
@@ -150,8 +143,6 @@ Basically, to begin a decomposition we do a mode-1 unfolding to write the tensor
 Steps 1. and 2. above then amount to taking $V^\dagger$ and **doing the mode-1 unfolding backwards**, giving something like $V^{\dagger}_{\sigma_1...\sigma_N}$, and then refolding into $V^\dagger_{\sigma_1\sigma_2,\sigma_3...\sigma_N}$.
 
 The reason for taking the extra step back and forth is to avoid having to keep track on which reshaping algorithm is being used; any reshaping order will do!
-
- 
 
 
 ### Tensor decomposition (matrix unfolding)
@@ -167,18 +158,71 @@ And also here:
 [Bengua, J. a., Phien, H. N., Tuan, H. D., & Do, M. N. (2015). Matrix Product State for Feature Extraction of Higher-Order Tensors, (1944), 10.](http://arxiv.org/abs/1503.0516)
 
 <img class="center-block" height="200px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm.png">
+
+
+
+**NOTE**: The method above works best for decompositions from the right. We want neighboring qubits to pick the "largest" subsections of the flattened matrix! To go from the left, define instead $J_k =  \prod_{m=1, m\neq n}^{N-k} I_m$.
+Notice the product limits! Let's call this the "Left-method", for decompositions from the left, and the other one the "Right-method". But this doesn't really matter much if you undo flattening between each step.
+
+For qubits this is simply $j = 1+ \sum_{k=1,k\neq n} \sigma_k 2^{k-1}$, which allows for a representation in binary numbers!
+
+For a general "bipartite" flattening of a tensor down to a matrix, $c_{\sigma_1...\sigma_N} \rightarrow c_{[\sigma_1...\sigma_n],[\sigma_{n+1}...\sigma_N]}=c_{ij}$, we can find the indices as
+
+
+
+$$
+\begin{aligned}
+i &= \sum_{k=1}^{n}\sigma_k J_k \text{ with } J_k = \prod_{m=1}^{n-k}I_m\\
+j &= \sum_{k=n+1}^{N}\sigma_k J_{k} \text{ with } J_k = \prod_{m=n+1}^{N-k}I_m 
+\end{aligned}
+$$
+
+which for qubits simplifies to
+
+
+$$
+\begin{aligned}
+i &= 1+\sum_{k=1}^n \sigma_k 2^{k-1} \\
+j &= 1+ \sum_{k=n+1}^N \sigma_k 2^{k-n-1}
+\end{aligned}
+$$
+
+
+
+
+
+
+The inverse process, i.e. going  $ c_{ij} \rightarrow c_{\sigma_1...\sigma_N}$,  is very simple for qubits: Just write $i$ and $j$ in binary form!
+
+Otherwise, for general local dimension $I_k$ we have
+
+
+$$
+\begin{aligned}
+i & =  \sigma_n + \sigma_{n-1}I_n + \sigma_{n-2}I_nI_{n-1}+ ...+ \sigma_1 I_{n}I_{n-1}I_{n-2}...I_2\\
+j & =  \sigma_N + \sigma_{N-1}I_N + \sigma_{N-2}I_NI_{N-1}+ ... +\sigma_{n+1} I_{N}I_{N-1}I_{N-2}...I_{n+2}
+\end{aligned}
+$$
+
+
+
+```c++
+//Let i and j be indices to tensor element c_ij. N is the total number of spins, and n  the last spin indexed by i in this matricization.
+int C = j-1;
+sigma[N] = mod(C,dim[N])
+for(k = N; k > 0; k--){
+    if(k == n){
+        C = (i-1);
+	}
+    C = (C-sigma[k+1])/dim[k+1];
+	sigma[k] = mod(C,dim[k]);
+}
+```
+
+
+
+
 <img class="center-block" height="350px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm2.png">
-
-
-
-$$
-\begin{array}{c c}\fbox{NOTE: The method above works best for decompositions from the right. } \\ \fbox{We want neighboring qubits to pick the "largest" subsections of the flattened matrix!} \\ \text{To go from the left, define instead } J_k =  \prod_{m=1, m\neq n}^{N-k} I_m  \\ 
-\fbox{Notice the product limits!} \\ \fbox{Let's call this the "Left-method", for decompositions from the left, and the other one the "Right-method". } 
-\end{array}
-$$
-
----
-
 
 ### Local updates
 
@@ -188,23 +232,54 @@ When a unitary operation $V$, like a two-qubit gate, is applied to qubits $l$ an
 
 
 
+### Orthogonality Center
+
+---
+
+From page 5 and 6 of [Wall, M. L., & Carr, L. D. (2012). Out of equilibrium dynamics with Matrix Product States, *125015*, 35.](https://doi.org/10.1088/1367-2630/14/12/125015)
+
+---
+
+In general an MPS has *gauge freedom*, meaning that the tensors $A$ are not uniquely defined. For Open Boundary Conditions (OBS) on can specify the state uniquely (up to possible degeneracies in the Schmidt decomposition) by choosing a site $k$, called the *orthogonality center* of the MPS, and requiring that all sites $i$ to the left and right of $k$, satisfy the left
+$$
+\begin{aligned}
+\sum_i {A^{i}}^\dagger A^i = I
+\end{aligned}
+$$
+and right
+$$
+\begin{aligned}
+\sum_i {A^{i}}{ A^i}^\dagger = I
+\end{aligned}
+$$
+gauge conditions, respectively.
+
+![Orthogonality Center](figs/orthogonality-center.png)
+
+---
+
+
+
+
+
 ### Example 1 (Not thorough): Three Qubits, following Schollwoeck
+
+---
+
 This example tries to follow the steps in
 [Schollwoeck, U. (2010). The density-matrix renormalization group in the age of matrix product states. Annals of Physics, 326(1), 96192.](https://doi.org/10.1016/j.aop.2010.09.012)
+
+---
 
 
 **Step 1:**
 
 In general, a 3 qubit state can be written as:
-
-
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle = \sum_{\sigma_1\sigma_2\sigma_3} c_{\sigma_1 \sigma_2 \sigma_3} |\sigma_1\sigma_2\sigma_3\rangle,
-\end{equation}
+\end{aligned}
 $$
-
-
 where each $\sigma_i\in \{0,1\}$ and the coefficients $c_{\sigma_1 \sigma_2 \sigma_3}$ are $2^3$ complex numbers. These numbers can be visualized as being on the corners of a (hyper)cube, or simply a long list of numbers corresponding to the 8 possible states.
 
 Consider the following state with 3 qubits: $|\psi\rangle = \frac{1}{\sqrt{2}} ( |010\rangle + |101\rangle)$. The cube would look as in the figure below.
@@ -213,19 +288,14 @@ Consider the following state with 3 qubits: $|\psi\rangle = \frac{1}{\sqrt{2}} (
 
 
 or simply,
-
 $$
 \begin{array}{c|c}   0 & |000\rangle  \\    0 & |001\rangle \\   2^{-1/2} & |010\rangle \\     0 & |011\rangle \\ 0 & |100\rangle \\ 2^{-1/2} & |101\rangle \\ 0 & |110\rangle \\ 0 & |111\rangle
 \end{array}
 $$
 
-
-
 The first step in the decomposition is to define a $d\times d^{L-1} = 2\times 2^2$ matrix that flattens the tensor:
-
-
 $$
-\begin{equation}
+\begin{aligned}
 \Psi_{\sigma_1,(\sigma_2\sigma_3)} =
 \begin{array}{c|c c c c}
     & \mathbf{\sigma_1 = 0, \sigma_3 = 0} & \mathbf{\sigma_1 = 0, \sigma_3 = 1} & \mathbf{\sigma_1 = 1, \sigma_3 = 0 }& \mathbf{\sigma_1 = 1, \sigma_3 = 1} & \\ \mathbf{\sigma_2 = 0} & 0 & 0 & 0 & 2^{-1/2} \\ \mathbf{\sigma_2 = 1} & 2^{-1/2} & 0 &0 & 0  
@@ -233,18 +303,14 @@ $$
 =
 \begin{pmatrix} 0 & 0 & 0 & 2^{-1/2} \\ 2^{-1/2} & 0 & 0 & 0
 \end{pmatrix}
-\end{equation}
+\end{aligned}
 $$
-
-
 
 Note how the cube has been sliced and concatenated. Basically, the matrix is composed of two $(2\times 2)$ matrices side by side, one for each value of $\sigma_1$.
 
 Now we perform the single value decomposition on  $\Psi_{\sigma_1,(\sigma_2\sigma_3)} = USV^\dagger$:
-
-
 $$
-\begin{align}
+\begin{aligned}
 \begin{pmatrix}
   0 & 0 & 0 & 2^{-1/2} \\
   2^{-1/2} & 0 & 0 & 0
@@ -263,16 +329,12 @@ $$
 \end{pmatrix} \\
 &= \sum_{a_1}^{r_1} U_{\sigma_1, a_1} S_{a_1,a_1} V^\dagger_{a_1,\sigma_2\sigma_3} \\
 &\equiv \sum_{a_1}^{r_1} U_{\sigma_1,a_1} c_{a_1,\sigma_2\sigma_3}
-\end{align}
+\end{aligned}
 $$
-
-
 where $r_1\leq d=2$ is the rank of the decomposition, i.e., the number of nonzero items in $S$, and $a_1 \in \{0,1\}$. In the last equality $S$ and $V^\dagger$ have been multiplied. It can then be reshaped into a matrix of dimension $(r_1d\times d) = (4\times 2)$, called $\Psi_{(a_1\sigma_2),(\sigma_3)}$. This is NOT done by stacking the $(2\times 2)$ matrices. Instead, note how the $\sigma_2$ index selects the upper/lower row, which then become matrices. Pythons numpy.reshape() does this.  **Here the label** $a_1$**is the index being summed over (by matrix multiplication), and** $\sigma_2,\sigma_3$ **serve to select appropriate matrices.**
 
-
-
 $$
-\begin{equation}
+\begin{aligned}
 c_{a_1,\sigma_2\sigma_3} =
 \begin{pmatrix} 0 & 0 & 0 & 2^{-1/2} \\ 2^{-1/2} & 0 & 0 & 0  \end{pmatrix}
 \rightarrow
@@ -281,18 +343,14 @@ c_{a_1,\sigma_2\sigma_3} =
   \begin{pmatrix} \binom{2^{-1/2}}{0} &\binom{0}{0}\end{pmatrix}_{\sigma_3}
 \end{pmatrix}_{\sigma_2}
 =\Psi_{(a_1\sigma_2),(\sigma_3)}
-\end{equation}
+\end{aligned}
 $$
-
-
 $U$ is now sliced into $d=2$ row vectors $A^{\sigma_1}$, which we interpret as $(1\times 2)$ matrices, i.e., $A^{\sigma_1}_{a_1}=U_{\sigma_1,a_1} \rightarrow \begin{pmatrix}\begin{pmatrix}1&0\end{pmatrix}\\ \begin{pmatrix}0&1\end{pmatrix}\end{pmatrix}_{\sigma_1}$, where $\sigma_1$ labels each row vector.
 
 By now we have achieved the following:
 
-
-
 $$
-\begin{equation}
+\begin{aligned}
 c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1}^{r_1} A^{\sigma_1}_{a_1} \Psi_{(a_1\sigma_2),(\sigma3)}
 =
 \begin{pmatrix}
@@ -302,10 +360,8 @@ c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1}^{r_1} A^{\sigma_1}_{a_1} \Psi_{(a_1\si
 \begin{pmatrix}
   \begin{pmatrix}\binom{0}{0}&\binom{0}{2^{-1/2}}  \end{pmatrix}_{\sigma_3}\\  \begin{pmatrix} \binom{2^{-1/2}}{0} &\binom{0}{0} \end{pmatrix}_{\sigma_3}
 \end{pmatrix}_{\sigma_2}
-\end{equation}
+\end{aligned}
 $$
-
-
 where the labels $\sigma_1,\sigma_2,\sigma_3$ serve to index the inner elements.
 
 So for instance if $|\sigma_1 \sigma_2 \sigma_3 \rangle = |101\rangle$ we get $c_{101} = (0,1)\binom{0}{2^{-1/2}} = 2^{-1/2}$ as expected (check this!).
@@ -314,26 +370,21 @@ So for instance if $|\sigma_1 \sigma_2 \sigma_3 \rangle = |101\rangle$ we get $c
 **Step 2:**
 
 Next, we apply the SVD decomposition once more
-
-
 $$
-\begin{align}
+\begin{aligned}
 \Psi_{(a_1\sigma_2),(\sigma_3)} = U S V^\dagger &=
 \begin{pmatrix}0 & 0 \\ 0 &1 \\ -1 & 0 \\ 0 & 0\end{pmatrix}
 \begin{pmatrix}2^{-1/2} &0 \\ 0 & 2^{-1/2} \end{pmatrix}
 \begin{pmatrix} -1 &0 \\ 0 & 1 \end{pmatrix} \\
 &= \sum_{a_2}^{r_2}U_{(a_1\sigma_2),a_2}S_{a_2,a_2}(V^\dagger)_{a_2,(\sigma_3)} \\
 &=\sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}
-\end{align}
+\end{aligned}
 $$
-
-
 where $U$ is replaced by a set of $d$ matrices $A^{\sigma_2}$ of dimension $r_1\times r_2 = (2\times 2)$ with entries $A^{\sigma_2}_{a_1,a_2} = U_{(a_1\sigma_2),a_2}$. As before, $SV^\dagger$ has been reshaped into a matrix $\Psi$ of dimension $r_2d\times d^{L-3} = (4\times 1)$.
 
 Explicitly, this reads:
-
 $$
-\begin{equation}
+\begin{aligned}
 \sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}
 =
 \begin{pmatrix}
@@ -341,82 +392,62 @@ $$
   \begin{pmatrix}-1 & 0\\ 0 & 0 \end{pmatrix}
 \end{pmatrix}_{\sigma_2}
 \begin{pmatrix}\binom{-2^{-1/2}}{0} \\ \binom{0}{2^{-1/2}} \end{pmatrix}_{\sigma_3}
-\end{equation}
+\end{aligned}
 $$
-
 So far we have achieved the following:
-
 $$
-\begin{equation}
+\begin{aligned}
 c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1,a_2}^{r_1,r_2} A^{\sigma_1}_{a_1} A^{\sigma_2}_{a_1,a_2} \Psi_{a_2\sigma_3}
-\end{equation}
+\end{aligned}
 $$
-
 So for instance $c_{101} = A^{\sigma_1 = 1}A^{\sigma_2=0}\Psi_{a_2\sigma_3=1} = (0,1)\begin{pmatrix}0 & 0 \\ 0 & 1 \end{pmatrix}\binom{0}{2^{-1/2}}= 2^{-1/2}$, as expected.
 
 Step 3:
 We perform the SVD decomposition for the last time:
-
-
 $$
-\begin{equation}
+\begin{aligned}
 \Psi_{(a_1\sigma_2),(\sigma_3)} = U S V^\dagger =  \begin{pmatrix} -2^{-1/2}\\0 \\ 0 \\2^{-1/2} \end{pmatrix} \times 1 \times 1
-\end{equation}
+\end{aligned}
 $$
-
-
 where as before we split $U$ into a collection of $d$ vectors with elements $A^{\sigma_3}_{a_2} = U_{(a_2\sigma_3)}$.
 
 
 Following the previous prescription, we set $A^{\sigma_3} = \begin{pmatrix}\binom{-2^{-1/2}}{0} \\ \binom{0}{2^{-1/2}} \end{pmatrix}_{\sigma_3}$, and we are done.
 
 We now have
-
-
 $$
-\begin{equation}
-|\psi\rangle=\sum_{\sigma_1\sigma_2\sigma_3} c_{\sigma_1\sigma_2\sigma_3}|\sigma_1\sigma_2\sigma_3\rangle = 
+\begin{aligned}
+|\psi\rangle=\sum_{\sigma_1\sigma_2\sigma_3} c_{\sigma_1\sigma_2\sigma_3}|\sigma_1\sigma_2\sigma_3\rangle =
 \sum_{a_1,a_2,a_3}^{r_1,r_2,r_3}A^{\sigma_1}_{a_1}A^{\sigma_2}_{a_1,a_2}A^{\sigma_3}_{a_3} |\sigma_1\sigma_2\sigma_3\rangle
-\end{equation}
+\end{aligned}
 $$
-
-
 where
-
-
 $$
-\begin{align}
+\begin{aligned}
 A_{\alpha_1}^{\sigma_1} &= \{(1,0) , (0,1)\}\\
 A_{\alpha_1\alpha_2}^{\sigma_2} &= \{\begin{pmatrix}0&0\\0&1\end{pmatrix} , \begin{pmatrix}-1&0\\0&0\end{pmatrix} \} \\
 A_{\alpha_2}^{\sigma_3} &= \{\begin{pmatrix}-2^{-1/2}\\0\end{pmatrix} , \begin{pmatrix}0\\2^{-1/2}\end{pmatrix} \}
-\end{align}
+\end{aligned}
 $$
-
 **Remark on Normalization**
 It would seem that it is simpler to do the decomposition for unnormalized states using ones everywhere, and then normalize by $1/\sqrt{2}$  perhaps?
 
 
 
-[comment]:&lt;> "<iframe height='260' width='400' src="https://www.youtube.com/embed/Q8bFmV6tHBs" frameborder="0" allowfullscreen align="middle"></iframe>"
-
-### Example 2: Four Qubits, following Vidal 
+### Example 2: Four Qubits, following Vidal
 
 Let $|\psi\rangle = \frac{1}{\sqrt{3}}(|1110\rangle + |0011\rangle + |1010\rangle)$
 
 
 We do a bipartite splitting on the first qubit,
-
-
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle
 =
 \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle =
 \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle
-\end{equation}
+\end{aligned}
 $$
-
-
 
 where $\Gamma_{\alpha_1}^{\sigma_1}$ comes from the SVD decomposition and $\lambda_{\alpha_1}^1$ are the corresponding singular values, or Schmidt coefficients.
 
@@ -439,123 +470,104 @@ Using the "Left-method" (see earlier in this section), the tensor $c_{\sigma_1..
 - $c_{1010} \rightarrow {\Psi_{i_1=2,j=3}}$. And again, $j = 1+0*4 + 1*2 + 0*1 = 3$.
 
 Reinserting the normalization factor we get
-
-
 $$
-\begin{equation}
+\begin{aligned}
 \Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4)} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011}&0&0&0&0 \\ 0&0&1_{1010}&0&0&0&1_{1110}&0\end{pmatrix}
-\end{equation}
+\end{aligned}
 $$
-
 which goes into the first SVD iteration.
 
 **First SVD**
 
 The SVD decomposition of $\Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4)} $ yields:
 
-
 $$
-$$\begin{align}
+\begin{aligned}
 U &= \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}\\
 S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
 V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&0&1&0&0&0&1&0 \\ 0&0&0&\sqrt{2}&0&0&0&0\end{pmatrix}
-\end{align}$$
+\end{aligned}
 $$
 
-
-where we can identify $\Gamma_{\alpha_1}^{\sigma_1} = U$ ($\sigma_1$ labels the row-vectors in $U$), and $\lambda^1_{\alpha_1} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We arrive at
-
+where we can identify $\Gamma^{\sigma_1}_{\alpha_1} = U$ (here $\sigma_1$ labels the row-vectors in $U$), and $\lambda^1_{\alpha_1} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}}\}$. We arrive at
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle =
 \sum_{\alpha_1} \lambda_{\alpha_1}^1 |\Phi_{\alpha_1}^1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle =
 \sum_{\sigma_1,\alpha_1}\Gamma^{\sigma_1}_{\alpha_1}\lambda^{1}_{\alpha_1}|\sigma_1\rangle|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle,
-\end{equation}
+\end{aligned}
 $$
+and we identify $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ as $V^\dagger$.
 
-and we identify $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ as 
 
-$$
-\begin{equation}
-SV^\dagger = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0&0&0&1&0 \\ 0&0&0&1&0&0&0&0\end{pmatrix}.
-\end{equation}
-$$
+
+Now we apply step $1.$ in Vidal's paper: *"expand each Schmidt vector $|\Phi_{\alpha_1}^{\sigma_2...\sigma_3}\rangle$ in a local basis for qubit 2": $|\Phi_{\alpha_1}^{\sigma_2...\sigma_3}\rangle = \sum_{\sigma_2}|\sigma_2\rangle|\tau_{\alpha_1,\sigma_2}^{\sigma_3\sigma_4}\rangle$".*
+
+This simply means to take $V^\dagger$ back to tensor form $V^\dagger_{\sigma_1...\sigma_4}$ and then flatten it down to a matrix $ V^\dagger_{[\sigma_1\sigma_2],[\sigma_3\sigma_4]}$. For nonzero elements this means:
+
+- $V^\dagger_{1,3} \rightarrow V^\dagger_{}$
+
+
 
 
 
 
 
 To continue, we slice $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ for each possible value of $\sigma_2$, i.e., two $(2\times 4)$ matrices, with $\alpha_1$ labeling the rows. In Vidal's notation
-
 $$
-\begin{align}
+\begin{aligned}
 |\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1010}&0 \\ 0&0&0&1_{0011}\end{pmatrix} \\
 |\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1_{1110}&0 \\ 0&0&0&0\end{pmatrix}
-\end{align}
+\end{aligned}
 $$
-
-
 
 
 We finish this step by stacking these matrices into a $(4 \times 4)$ matrix
-
 $$
-\begin{equation}
+\begin{aligned}
 |\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2}\rangle =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&1&0 \\  0&0&0&1\\ 0&0&1&0\\ 0&0&0&0\end{pmatrix},
-\end{equation}
+\end{aligned}
 $$
-
 which goes into the next step.
 
 
 **Second SVD**
 
 The SVD decomposition of $|\tau^{\sigma_3\sigma_4}_{\alpha_1,\sigma_2}\rangle$ yields:
-
-
 $$
-\begin{align}
+\begin{aligned}
 U &= \frac{1}{\sqrt{2}}\begin{pmatrix}1&0&0&-1   \\ 0&\sqrt{2}&0&0 \\ 1&0&0&1 \\0&0&\sqrt{2}&0\end{pmatrix}\\
 S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0&0&0 \\ 0&1&0&0 \\ 0&0&0&0 \\ 0&0&0&0\end{pmatrix}\\
 V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
-\end{align}
+\end{aligned}
 $$
-
 Like the previous step, we identify $\Gamma_{\alpha_1,\alpha_2}^{\sigma_2} = U$, where $\sigma_2$ labels upper/lower $(2 \times 4)$ submatrices, and $\lambda^{\sigma_2}_{\alpha_2} = \{\sqrt{\frac{2}{3}}, \frac{1}{\sqrt{3}},0,0\}$.
 
 Furthermore, we set $|\Phi_{\alpha_2}^{\sigma_3\sigma_4} \rangle = SV^\dagger$ and split again for each possible value of $\sigma_3$:
-
 $$
-\begin{align}
+\begin{aligned}
 |\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 0}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0 \\0&0 \\0 & 1\\ 1 & 0\end{pmatrix} \\
 |\tau^{\sigma_4}_{\alpha_2,\sigma_3 = 1}\rangle &=  \frac{1}{\sqrt{3}}\begin{pmatrix}1&0 \\0&1 \\0 & 0\\ 0 & 0\end{pmatrix}
-\end{align}
+\end{aligned}
 $$
-
-In stacked matrix form this becomes 
-
+In stacked matrix form this becomes
 $$
-\begin{equation}
+\begin{aligned}
 |\tau^{\sigma_4}_{\alpha_2,\sigma_3}\rangle =  \frac{1}{\sqrt{3}}\begin{pmatrix}0&0 \\0&0 \\0 & 1\\ 1 & 0\\ 1&0 \\0&1 \\0 & 0\\ 0 & 0\end{pmatrix}
-\end{equation}
+\end{aligned}
 $$
-
 which in turn feeds into the next iteration
 
 **Third SVD**
 
 The SVD decomposition of $|\tau^{\sigma_4}_{\alpha_2,\sigma_3}\rangle $ yields:
-
-
 $$
-\begin{align}
+\begin{aligned}
 U &= \frac{1}{\sqrt{2}}\begin{pmatrix}1&0&0&-1   \\ 0&\sqrt{2}&0&0 \\ 1&0&0&1 \\0&0&\sqrt{2}&0\end{pmatrix}\\
 S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0&0&0 \\ 0&1&0&0 \\ 0&0&0&0 \\ 0&0&0&0\end{pmatrix}\\
 V^\dagger &= \begin{pmatrix}0&0&1&0 \\ 0&0&0&1 \\ 0&1&0&0\\ 1&0&0&0\end{pmatrix}
-\end{align}
+\end{aligned}
 $$
-
-
 ### Example with PBC
 
 
@@ -584,37 +596,27 @@ On a spin-$S$ chain of length $N$, replace each $d$-dimensional system $|\sigma_
 
 
 Let every pair of virtual systems be maximally entangled with the respective neighboring system. This means that $r_i = l_{i+1} = \alpha_i$. The states are written in the form:
-
-
 $$
-\begin{equation}
+\begin{aligned}
 |I_{i,i+1}\rangle = \sum_{\alpha_i=1}^D |r_i=\alpha_i,l_{i+1}=\alpha_i\rangle
-\end{equation}
+\end{aligned}
 $$
-
 And for the whole chain:
-
 $$
-\begin{equation}
+\begin{aligned}
 |I\rangle = \sum_{\alpha_1,\alpha_2,...,\alpha_{N-1}}|\alpha_0,\alpha_1\rangle|\alpha_1,\alpha_2\rangle...|\alpha_{N-1},\alpha_N\rangle
-\end{equation}
+\end{aligned}
 $$
-
 where each sum denotes an *entangled bond*. **Note that without PBC the leftmost and rightmost sites have only one virtual particle**.
 
 Then, apply a map
-
 $$
 \mathcal{A}^i = \sum_{\sigma_i} \sum_{l_i,r_i} A^{\sigma_i}_{l_i,r_i}|\sigma_i\rangle\langle l_i,r_i|
 $$
-
 to each of the $N$ sites. We then obtain the MPS
-
 $$
 |\psi\rangle = (\bigotimes_i^N \mathcal{A}^i)(\bigotimes_i^{N-1} |I_{i,i+1}\rangle)= \sum_{\sigma_1...\sigma_N} A^{\sigma_1}...A^{\sigma_N} |\sigma_1...\sigma_N\rangle
 $$
-
-
 
 
 ### Example using valence bonds:
@@ -622,43 +624,36 @@ $$
 As before, let $|\psi\rangle = \frac{1}{\sqrt{2}}(|010\rangle + |101\rangle)$ be the state of 3 qubits, $d = 2$.
 
 Let each site be replaced by pairs of dimension $D=2$ in a maximally entangled state, i.e. rewrite it in the (unnormalized) form:
-
 $$
-\begin{align}
+\begin{aligned}
 |I_{1,2} \rangle &=
 \sum_{\alpha_1} |r_1 = \alpha_1, l_2=\alpha_1\rangle = |0,0\rangle_{r_1,l_2} + |1,1\rangle_{r_1,l_2} \\
 |I_{2,3} \rangle &=
 \sum_{\alpha_2} |r_2 = \alpha_2, l_3=\alpha_2\rangle = |0,0\rangle_{r_2,l_3} + |1,1\rangle_{r_2,l_3}
-\end{align}
+\end{aligned}
 $$
-
-
 where the subscripts $r_i,l_i$ are there to remind us that this is the right and left virtual particles corresponding to site $i$. Now apply the map $\mathcal{A}$ on each site. :
-
 $$
-\begin{align}
+\begin{aligned}
 \mathcal{A}^1|I_{1,2}\rangle &=
 \sum_{\sigma_1}\sum_{r_1}A^{\sigma_1}_{r_1}|\sigma_1\rangle\langle r_1|(\sum_{\alpha_1}|\alpha_1,\alpha_1\rangle)\\
 &= \sum_{\sigma_1} A_0^{\sigma_1} |\sigma_1\rangle _{r_1}\langle 0|0,0\rangle_{r_1,l_2} +
 A_1^{\sigma_1}|\sigma_1\rangle _{r_1}\langle 1|1,1\rangle_{r_1,l_2}\\
 &= \sum_{\sigma_1} A_0^{\sigma_1} |\sigma_1\rangle |0\rangle_{l_2} + A_1^{\sigma_1}|\sigma_1\rangle |1\rangle_{l_2}
-\end{align}
+\end{aligned}
 $$
-
-
 
 Similarly,
-
 $$
-\begin{align}
-\mathcal{A}^2 |I_{1,2}\rangle 
+\begin{aligned}
+\mathcal{A}^2 |I_{1,2}\rangle
 &=
 \sum_{\sigma_2}\sum_{l_2,r_2}A^{\sigma_2}_{l_2,r_2}|\sigma_2\rangle\langle l_2,r_2|(\sum_{\alpha_1}|\alpha_1,\alpha_1\rangle) \\
 &=
 \sum_{\sigma_2} (A_{0,0}^{\sigma_2} |\sigma_2\rangle\langle 0,0| + A_{0,1}^{\sigma_2}|\sigma_2\rangle\langle 0,1| + A_{1,0}^{\sigma_2}|\sigma_2\rangle\langle 1,0| + A_{1,1}^{\sigma_2}|\sigma_2\rangle\langle 1,1|)_{l_2,r_2} (|0,0\rangle_{r_1,l_2} + |1,1\rangle_{r_1,l_2}) \\
 &=
 \sum_{\sigma_2} A_{0,0}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 0|0\rangle_{r_1} + A_{0,1}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 0|1\rangle_{r_1} + A_{1,0}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 1|0\rangle_{r_1}+A_{1,1}^{\sigma_2} |\sigma_2\rangle _{r_2}\langle 1|1\rangle_{r_1} \\
-\mathcal{A}^2 |I_{2,3}\rangle 
+\mathcal{A}^2 |I_{2,3}\rangle
 &=
 \sum_{\sigma_2}\sum_{l_2,r_2}A^{\sigma_2}_{l_2,r_2}|\sigma_2\rangle\langle l_2,r_2|(\sum_{\alpha_2}|\alpha_2,\alpha_2\rangle) \\
 &=
@@ -670,40 +665,28 @@ $$
 \sum_{\sigma_3} A_0^{\sigma_3} |\sigma_3\rangle _{l_3}\langle 0|0,0\rangle_{r_2,l_3} + A_1^{\sigma_3}|\sigma_3\rangle _{l_3}\langle 1|1,1\rangle_{r_2,l_3} \\
 &=
 \sum_{\sigma_3} A_0^{\sigma_3} |\sigma_3\rangle |0\rangle_{r_2} + A_1^{\sigma_3}|\sigma_3\rangle |1\rangle_{r_2}
-\end{align}
+\end{aligned}
 $$
-
-
 
 All cross-terms such as $_{r_i}\langle n|m \rangle_{r_i} = _{l_i}\langle n|m\rangle_{l_i} = \delta_{nm}$. All other combinations are equal to zero, i.e. $\mathcal{A}^1|I_{2,3}\rangle =\mathcal{A}^3|I_{1,2}\rangle=0$.
 
 Now we multiply
-
 $$
-\begin{equation}
+\begin{aligned}
 (\mathcal{A}^1\otimes\mathcal{A}^2)(|I_{1,2}\rangle\otimes|I_{2,3}\rangle)
 =
 \sum_{\sigma_1,\sigma_2} A^{\sigma_1}_0 A^{\sigma_2}_{0,0}|0\rangle_{l_3} + A_0^{\sigma_1}A_{0,1}^{\sigma_2}|1\rangle_{l_3}
-\end{equation}
+\end{aligned}
 $$
 
-
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle=
 (\bigotimes_i^3 \mathcal{A}^i)(\bigotimes_i^{2} |I_{i,i+1}\rangle)
 =
-\end{equation}
+\end{aligned}
 $$
-
-
-
-
-$$
-\begin{equation}
-\fbox{Comment: Hmmm. This seems overly impractical... perhaps I've misunderstood something}
-\end{equation}
-$$
+**Comment: Hmmm. This seems overly impractical... perhaps I've misunderstood something**
 
 
 ## Bond Dimension
@@ -711,7 +694,6 @@ $$
 Each $A_{a_i,a_{i+1}}^{\sigma_i}$ above is an $(r_i\times r_{i+1})$ matrix, where $r_i$ is the rank of the Schmidt decomposition at each site $i$. The *bond dimension* of an MPS is defined by
 
 $$D\equiv \max_i r_i$$
-
 
 
 
@@ -731,7 +713,7 @@ We represent mathematical objects in the following way:
 <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/> Scalar
 <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/vector.png" height="35"/> Vector
 <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/dualvector.png" height="35"/> Dual Vector
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrix.png" height="35"/> Matrix 
+<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrix.png" height="35"/> Matrix
 
 <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/trace.png" height="50"/> Trace
 <img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/partialtrace.png" height="50"/> Partial Trace
@@ -741,28 +723,20 @@ We represent mathematical objects in the following way:
 Let $j_i$ be a particle with spin-$1/2$ at position $i$ on a chain with $n$ particles. Then the tensor $c_{j_1,j_2,...,j_n}$ is the collection of complex numbers that tells us in what linear combination a state is in, in terms of its basis vectors:
 
 <img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensor.png" height="75"/>
-
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle = \sum_{j_1,j_2...j_n}c_{j_1,j_2,...,j_n} |j_1,j_2,...,j_n\rangle
-\end{equation}
+\end{aligned}
 $$
-
-
 The Schmidt decomposition allows us to rewrite this tensor in terms of matrices. If we use periodic boundary conditions this looks like
 
 <img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/mps.png" height="75"/>
-
-
 $$
-\begin{equation}
+\begin{aligned}
 |\psi\rangle =
 \sum_{a_1,a_2...,a_n}^{r_1,r_2,...,r_n} \text{Tr}(A_{a_1,a_2}^{j_1}A_{a_2,a_3}^{j_2}...A_{a_n,a_1}^{j_n})|j_1,j_2,...,j_n\rangle
-\end{equation}
+\end{aligned}
 $$
 
 
 where the trace takes care of the periodic boundary.
-
-
-
