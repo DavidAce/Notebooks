@@ -715,7 +715,6 @@ $$
 |\psi\rangle = (\bigotimes_i^N \mathcal{A}^i)(\bigotimes_i^{N-1} |I_{i,i+1}\rangle)= \sum_{\sigma_1...\sigma_N} A^{\sigma_1}...A^{\sigma_N} |\sigma_1...\sigma_N\rangle
 $$
 
-
 ### Example using valence bonds:
 
 As before, let $|\psi\rangle = \frac{1}{\sqrt{2}}(|010\rangle + |101\rangle)$ be the state of 3 qubits, $d = 2$.
@@ -768,10 +767,10 @@ $$
 All cross-terms such as $_{r_i}\langle n|m \rangle_{r_i} = _{l_i}\langle n|m\rangle_{l_i} = \delta_{nm}$. All other combinations are equal to zero, i.e. $\mathcal{A}^1|I_{2,3}\rangle =\mathcal{A}^3|I_{1,2}\rangle=0$.
 
 Now we multiply
+
 $$
 \begin{aligned}
-(\mathcal{A}^1\otimes\mathcal{A}^2)(|I_{1,2}\rangle\otimes|I_{2,3}\rangle)
-=
+(\mathcal{A}^1\otimes\mathcal{A}^2)(|I_{1,2}\rangle\otimes|I_{2,3}\rangle)=
 \sum_{\sigma_1,\sigma_2} A^{\sigma_1}_0 A^{\sigma_2}_{0,0}|0\rangle_{l_3} + A_0^{\sigma_1}A_{0,1}^{\sigma_2}|1\rangle_{l_3}
 \end{aligned}
 $$
