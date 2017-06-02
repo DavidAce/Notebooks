@@ -1,6 +1,6 @@
 # HOW-TO
 
-- (**Recommended**) [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/DMRG/MPS.md), an online open-source markdown+tex editor.
+- (**Recommended**) [Open on StackEdit](https://stackedit.io/viewer#!url=https://raw.githubusercontent.com/DavidAce/Notebooks/master/MPS/MPS.md), an online open-source markdown+tex editor.
 - Install a MathJax renderer for your browser to read directly on the GitHub webpage. For instance, [Github with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima).
 - Open in [Typora](https://typora.io/) editor.
 - Open this file on your pc/mac with the [Atom](https://atom.io/) editor with the `markdown-preview-enhanced` -plugin installed. (Optional: Select Katex renderer in settings).
