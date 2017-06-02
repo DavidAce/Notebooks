@@ -458,10 +458,10 @@ $$
 where $U$ is replaced by a set of $d$ matrices $A^{\sigma_2}$ of dimension $r_1\times r_2 = (2\times 2)$ with entries $A^{\sigma_2}_{a_1,a_2} = U_{(a_1\sigma_2),a_2}$. As before, $SV^\dagger$ has been reshaped into a matrix $\Psi$ of dimension $r_2d\times d^{L-3} = (4\times 1)$.
 
 Explicitly, this reads:
+
 $$
 \begin{aligned}
-\sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}
-=
+\sum_{a_2}^{r_2} A_{a_1,a_2}^{\sigma_2} \Psi_{a_2\sigma_3}=
 \begin{pmatrix}
   \begin{pmatrix}0 & 0 \\ 0 & 1 \end{pmatrix} \\
   \begin{pmatrix}-1 & 0\\ 0 & 0 \end{pmatrix}
@@ -469,16 +469,20 @@ $$
 \begin{pmatrix}\binom{-2^{-1/2}}{0} \\ \binom{0}{2^{-1/2}} \end{pmatrix}_{\sigma_3}
 \end{aligned}
 $$
+
 So far we have achieved the following:
+
 $$
 \begin{aligned}
 c_{\sigma_1\sigma_2\sigma_3} = \sum_{a_1,a_2}^{r_1,r_2} A^{\sigma_1}_{a_1} A^{\sigma_2}_{a_1,a_2} \Psi_{a_2\sigma_3}
 \end{aligned}
 $$
+
 So for instance $c_{101} = A^{\sigma_1 = 1}A^{\sigma_2=0}\Psi_{a_2\sigma_3=1} = (0,1)\begin{pmatrix}0 & 0 \\ 0 & 1 \end{pmatrix}\binom{0}{2^{-1/2}}= 2^{-1/2}$, as expected.
 
 Step 3:
 We perform the SVD decomposition for the last time:
+
 $$
 \begin{aligned}
 \Psi_{(a_1\sigma_2),(\sigma_3)} = U S V^\dagger =  \begin{pmatrix} -2^{-1/2}\\0 \\ 0 \\2^{-1/2} \end{pmatrix} \times 1 \times 1
