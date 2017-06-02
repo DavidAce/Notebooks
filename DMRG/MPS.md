@@ -260,7 +260,82 @@ gauge conditions, respectively.
 
 
 
+### Example 1: Four Qubits in the GHZ-state
 
+---
+
+This example follows the steps in the book (p. 156 )
+[Quantum Many-Body Physics of Ultracold Molecules in Optical Lattices - Models and Simulation Methods](http://www.springer.com/in/book/9783319142517)
+
+---
+
+The Greenberger-Horne-Zeilinger (GHZ) state is defined as
+$$
+\begin{aligned}
+|\text{GHZ}\rangle = |00...0\rangle + |11...1\rangle
+\end{aligned}
+$$
+
+This represents a realization of Schrödinger's cat paradox, in which a quantum system exists in two very different macroscopic states simultaneously. With 4 qubits, we should get the following MPS in normalized left- or right-canonical form:
+
+$$
+\begin{aligned}
+A^{[j]i} = 
+\begin{pmatrix}
+\delta_{i,0}/\sqrt{2} & 0 \\
+0 & \delta_{i,1}/\sqrt{2} 
+\end{pmatrix}
+= 
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+1& 0 \\
+0 & 0
+\end{pmatrix}_{i=0}
+\text{ or }
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+0 & 0 \\
+0 & 1
+\end{pmatrix}_{i=1}
+\end{aligned}
+$$
+
+where $j$ is the location on the chain, and $i$ is the value of the qubit. In the Vidal canonical form (VCF), the normalized GHZ state takes the form
+
+$$
+\begin{aligned}
+\lambda^{[j]}&= 
+\begin{pmatrix}
+\frac{1}{\sqrt{2}} \\
+\frac{1}{\sqrt{2}}
+\end{pmatrix}\\
+\Gamma^{[j]i} &= 
+\begin{pmatrix}
+\delta_{i,0}/\sqrt{2} & 0 \\
+0 & \delta_{i,1}/\sqrt{2}
+\end{pmatrix}
+= \frac{1}{\sqrt{2}}  
+\begin{pmatrix}
+1 & 0  \\
+0 & 0  
+\end{pmatrix}_{i = 0}
+\text{ or }
+= \frac{1}{\sqrt{2}}  
+\begin{pmatrix}
+0 & 0  \\
+0 & 1  
+\end{pmatrix}_{i = 1}
+\end{aligned}
+$$
+for $2\leq j \leq L-1$ together with the boundaries
+
+$$
+\begin{aligned}
+\lambda^{[1]} &= \lambda^{[L+1]} = 1 \\ 
+\Gamma^{[1]i} &= (\delta_{i,0} \delta_{i,1}) = (1,0)_{i=0} \text{ or } (0,1)_{i=1} \\
+\Gamma^{[L]i} &= \begin{pmatrix}\delta_{i,0} \\ \delta_{i,1}\end{pmatrix} = \begin{pmatrix}1 \\ 0 \end{pmatrix}_{i=0} \text{ or } \begin{pmatrix}0 \\ 1 \end{pmatrix}_{i=1}
+\end{aligned}
+$$
 
 ### Example 1 (Not thorough): Three Qubits, following Schollwoeck
 
@@ -464,15 +539,25 @@ Using the "Left-method" (see earlier in this section), the tensor $c_{\sigma_1..
 
 
 - $c_{1110} \rightarrow \Psi_{i_1 = 2,j=7}$. Here $j =1 + \sum_{k\neq 1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq1}^{N-k} I_m$. We can use qubit values directly, by instead rewriting $j =1 + \sum_{k\neq 1}^4 \sigma_kJ_k$. This gives $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*4 + 1*2 + 0*1 = 7$.
-
 - $c_{0011} \rightarrow \Psi_{i_1=1,j=4}$ Using the same method as above we get $j = 1+0*4 + 1*2 + 1*1 = 4$.
-
 - $c_{1010} \rightarrow {\Psi_{i_1=2,j=3}}$. And again, $j = 1+0*4 + 1*2 + 0*1 = 3$.
 
 Reinserting the normalization factor we get
 $$
 \begin{aligned}
 \Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4)} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&1_{0011}&0&0&0&0 \\ 0&0&1_{1010}&0&0&0&1_{1110}&0\end{pmatrix}
+\end{aligned}
+$$
+Using the "Right-method" (see earlier in this section), the tensor $c_{\sigma_1...\sigma_4}$ maps to matrix coordinates
+
+- $c_{1110} \rightarrow \Psi_{i_1 = 2,j=5}$. Here $j =1 + \sum_{k\neq i_1}^4 (i_k -1)J_k$ with $J_k = \prod_{m\neq i_1}^{k-1} I_m$. We can use qubit values directly, by instead rewriting $j =1 + \sum_{k\neq i_1}^{k-1} \sigma_kJ_k$. This gives $j = 1+ \sigma_2J_2 + \sigma_3J_3 + \sigma_4J_4 = 1 + 1*2 + 1*2 + 0*4 = 5$.
+- $c_{0011} \rightarrow \Psi_{i_1=1,j=7}$ Using the same method as above we get $j = 1+0*2 + 1*2 + 1*4 = 7$.
+- $c_{1010} \rightarrow {\Psi_{i_1=2,j=3}}$. And again, $j = 1+0* 2+ 1*2 + 0*4= 3$.
+
+Reinserting the normalization factor we get
+$$
+\begin{aligned}
+\Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4)} = \frac{1}{\sqrt{3}}\begin{pmatrix}0&0&0&0&0&0&1_{0011}&0 \\ 0&0&1_{1010}&0&1_{1110}&0&0&0\end{pmatrix}
 \end{aligned}
 $$
 which goes into the first SVD iteration.
@@ -499,6 +584,14 @@ $$
 $$
 and we identify $|\Phi_{\alpha_1}^{\sigma_2\sigma_3\sigma_4}\rangle$ as $V^\dagger$.
 
+Note that the SVD decomposition of $\Psi_{\sigma_1,(\sigma_2\sigma_3\sigma_4)} $ with the "right method" yields:
+$$
+\begin{aligned}
+U &= \begin{pmatrix}0&1 \\ 1&0\end{pmatrix}\\
+S &= \frac{1}{\sqrt{3}}\begin{pmatrix}\sqrt{2}&0 \\ 0&1\end{pmatrix}\\
+V^\dagger &= \frac{1}{\sqrt{2}}\begin{pmatrix}0&0&1&0&1&0&0&0 \\ 0&0&0&0&0&0&\sqrt{2}&0\end{pmatrix}
+\end{aligned}
+$$
 
 
 Now we apply step $1.$ in Vidal's paper: *"expand each Schmidt vector $|\Phi_{\alpha_1}^{\sigma_2...\sigma_3}\rangle$ in a local basis for qubit 2": $|\Phi_{\alpha_1}^{\sigma_2...\sigma_3}\rangle = \sum_{\sigma_2}|\sigma_2\rangle|\tau_{\alpha_1,\sigma_2}^{\sigma_3\sigma_4}\rangle$".*
@@ -738,5 +831,38 @@ $$
 \end{aligned}
 $$
 
-
 where the trace takes care of the periodic boundary.
+
+
+
+
+
+# Remarks on Implementation
+
+### The unsupported Eigen::Tensor
+
+| Pro                                      | Con                        |
+| ---------------------------------------- | -------------------------- |
+| Fast vectorized operations               | Can it contract?           |
+| Easy reshaping?                          | Need to flatten before SVD |
+| A wrapper with map functions enables many representations. | Lacking documentation      |
+|                                          |                            |
+|                                          |                            |
+
+
+
+
+
+
+
+
+
+### The ITensor library
+
+| Pro                                      | Con                                 |
+| ---------------------------------------- | ----------------------------------- |
+| Reasonably fast, intelligent (minimal number of operations in contractions) | Black box                           |
+| Easy contractions                        |                                     |
+| Can perform SVD on tensors directly      | Documentation is unclear on syntax. |
+|                                          |                                     |
+|                                          |                                     |
