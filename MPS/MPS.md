@@ -46,7 +46,7 @@ $$
 
 which diagrammatically looks like
 
-<img class="center-block" height="50px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensortrain.png">
+<img class="center-block" height="50px" src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/tensortrain.png">
 
 This form allows for many possible representations of the same wave function, giving us the opportunity to define a “canonical form” of the MPS.
 
@@ -151,13 +151,13 @@ The reason for taking the extra step back and forth is to avoid having to keep t
 There are more details on higher-order tensor decomposition (matrix unfolding) here:
 [De Lathauwer, L., De Moor, B., & Vandewalle, J. (2000). A Multilinear Singular Value Decomposition. - Society for Industrial and Applied Mathematics. Journal on Matrix Analysis and Applications](http://epubs.siam.org/doi/pdf/10.1137/S0895479896305696)
 
-<img class="center-block" height="450px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding.png">
+<img class="center-block" height="450px" src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/matrixunfolding.png">
 
 And also here:
 
 [Bengua, J. a., Phien, H. N., Tuan, H. D., & Do, M. N. (2015). Matrix Product State for Feature Extraction of Higher-Order Tensors, (1944), 10.](http://arxiv.org/abs/1503.0516)
 
-<img class="center-block" height="200px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm.png">
+<img class="center-block" height="200px" src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/matrixunfolding_algorithm.png">
 
 
 
@@ -222,7 +222,7 @@ for(k = N; k > 0; k--){
 
 
 
-<img class="center-block" height="350px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrixunfolding_algorithm2.png">
+<img class="center-block" height="350px" src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/matrixunfolding_algorithm2.png">
 
 ### Local updates
 
@@ -254,7 +254,7 @@ $$
 $$
 gauge conditions, respectively.
 
-<img class="center-block" height="130px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/orthogonality-center.png">
+<img class="center-block" height="130px" src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/orthogonality-center.png">
 
 ---
 
@@ -359,7 +359,7 @@ where each $\sigma_i\in \{0,1\}$ and the coefficients $c_{\sigma_1 \sigma_2 \sig
 
 Consider the following state with 3 qubits: $|\psi\rangle = \frac{1}{\sqrt{2}} ( |010\rangle + |101\rangle)$. The cube would look as in the figure below.
 
-<img class="center-block" height="150px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/cube.jpg">
+<img class="center-block" height="150px" src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/cube.jpg">
 
 
 or simply,
@@ -685,7 +685,7 @@ $$
 On a spin-$S$ chain of length $N$, replace each $d$-dimensional system $|\sigma_i\rangle$ at site $i$, with two *virtual systems* $|l_i,r_i\rangle$ of dimension $D_i=1+2S'$, called the bond dimension. These are sometimes called *auxiliary* systems. In general $D_i$ can be different for each site but it it needs to be larger than the bond dimension. Note that $l$ and $r$ stand for left and right.
 
 
-<img class="center-block" height="150px" src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/valence.png">
+<img class="center-block" height="150px" src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/valence.png">
 
 
 Let every pair of virtual systems be maximally entangled with the respective neighboring system. This means that $r_i = l_{i+1} = \alpha_i$. The states are written in the form:
@@ -803,19 +803,19 @@ $$D\equiv \max_i r_i$$
 
 We represent mathematical objects in the following way:
 
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalar.png" height="35"/> Scalar
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/vector.png" height="35"/> Vector
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/dualvector.png" height="35"/> Dual Vector
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/matrix.png" height="35"/> Matrix
+<img src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/scalar.png" height="35"/> Scalar
+<img src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/vector.png" height="35"/> Vector
+<img src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/dualvector.png" height="35"/> Dual Vector
+<img src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/matrix.png" height="35"/> Matrix
 
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/trace.png" height="50"/> Trace
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/partialtrace.png" height="50"/> Partial Trace
-<img src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/scalarproduct.png" height="45"/> Scalar Product
+<img src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/trace.png" height="50"/> Trace
+<img src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/partialtrace.png" height="50"/> Partial Trace
+<img src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/scalarproduct.png" height="45"/> Scalar Product
 
 
 Let $j_i$ be a particle with spin-$1/2$ at position $i$ on a chain with $n$ particles. Then the tensor $c_{j_1,j_2,...,j_n}$ is the collection of complex numbers that tells us in what linear combination a state is in, in terms of its basis vectors:
 
-<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/tensor.png" height="75"/>
+<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/tensor.png" height="75"/>
 $$
 \begin{aligned}
 |\psi\rangle = \sum_{j_1,j_2...j_n}c_{j_1,j_2,...,j_n} |j_1,j_2,...,j_n\rangle
@@ -823,7 +823,7 @@ $$
 $$
 The Schmidt decomposition allows us to rewrite this tensor in terms of matrices. If we use periodic boundary conditions this looks like
 
-<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/DMRG/figs/mps.png" height="75"/>
+<img class="center-block"  src="https://github.com/DavidAce/Notebooks/raw/master/MPS/figs/mps.png" height="75"/>
 $$
 \begin{aligned}
 |\psi\rangle =
