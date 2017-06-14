@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{anslistings} %Include this file to highlight code!
+\usepackage{tensorgraphics}
+
+\usetikzlibrary{external}
+\tikzexternalize[optimize=false,prefix=figures/] %You need to create this directory manually
+%\input{tensortikz}
+
+\begin{document}
+
+\section*{Tensors}
+\subsection*{Rank 2 (matrix)}
+\lstinline[style=latexcode]|\tensorII{name}{left index}{right index}|
+\begin{figure}[H]
+\centering
+\tensorII{A}{\alpha}{\beta}
+\end{figure}
+
+
+\subsection*{Rank 3}
+\lstinline[style=latexcode]|\tensorIII{name}{physical index}{left index}{right index}|
+\begin{figure}[H]
+\centering
+\tensorIII{\Gamma}{i}{j}{k}
+\end{figure}
+
+\subsection*{Rank 4}
+\lstinline[style=latexcode]|\tensorIV{name}{physical index 1}{physical index 2}{left index}{right index}|
+\begin{figure}[H]
+\centering
+\tensorIV{\theta}{i}{j}{k}{l}
+\end{figure}
+
+These figures also work in a math environment, as seen below.
+\begin{align}
+\tensorIV{\theta}{j}{k}{\alpha}{\beta} =
+\tensorIII{\Gamma^A}{j}{\alpha}{\gamma} +
+\tensorIII{\Gamma^B}{k}{\gamma}{\beta}
+\end{align}
+
+
+\section*{Matrix Product States}
+An MPS can be drawn using  
+
+\lstinline[style=latexcode]|\mps{name}{length}{physical index}{left index}{right index}|
+
+\begin{figure}[H]
+\centering
+\mps{A}{4}{\sigma}{\alpha}{\beta} 
+\end{figure}
+
+Similarly, the Vidal canonical form of an MPS can be drawn with
+\lstinline[style=latexcode]|\mpsVidal{name rank 3}{name singular values}{length}{physical index}{left index}{right index}|
+
+\begin{figure}[H]
+\centering
+\mpsVidal{\Gamma}{\Lambda}{4}{\sigma}{\alpha}{\beta} 
+\end{figure}
+
+
+
+
+\end{document}

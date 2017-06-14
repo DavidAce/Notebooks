@@ -1,0 +1,154 @@
+---
+title: "R Markdown"
+author: "David Aceituno"
+output:
+  pdf_document:
+    highlight: pygments
+    toc: true
+    toc_depth: 3
+header-includes: 
+  - \usepackage{tikz}
+  - \usepackage{pgfplots}
+  - \usepackage{float}
+  - \usepackage{tensorgraphics}
+  - \usepackage{anslistings}
+---
+
+# R Markdown
+
+This is an R Markdown document compiled with knitr. Normal Markdown syntax applies. For instance, the title above was written as ` # Introduction`.
+
+## Math
+Regular math can be done by `MathJax` where using double dollar signs will create a latex-style mathematical chunk.
+
+$$
+y = kx + m
+$$
+
+## Latex
+We can write plain latex directly in this document, which will call knitr -> pandoc -> pdflatex for that block of code.
+For instance, the following block includes a .png image.
+
+\begin{latexcode}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.3\textwidth]{hydrostaticparadox.png}
+\caption{Hydrostatic paradox}
+\end{figure}
+\end{latexcode}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.3\textwidth]{hydrostaticparadox.png}
+\caption{Hydrostatic paradox}
+\end{figure}
+
+
+## Tikz
+There are two ways of using tikz. Either we write it as an R chunk like
+
+\lstinline[style=latexcode]|```{r,engine='tikz'}\n tikzcode \n```|
+
+where backslash n are newlines, or directly into the file, like
+
+\begin{latexcode}
+\usetikzlibrary{arrows}
+\centering
+\begin{tikzpicture}
+tikzcode
+\end{tikzpicture}
+\end{latexcode}
+
+
+
+
+## Tensors
+We can draw tensors after  `\usepackage{tensorgraphics}` which calls commands in the file `tensorgraphics.sty`.
+
+### Rank 2 (matrix)
+\lstinline[style=latexcode]|\tensorII{name}{left index}{right index}|
+\begin{figure}[H]
+\centering
+\tensorII{A}{\alpha}{\beta}
+\end{figure}
+
+
+### Rank 3
+\lstinline[style=latexcode]|\tensorIII{name}{physical index}{left index}{right index}|
+\begin{figure}[H]
+\centering
+\tensorIII{\Gamma}{i}{j}{k}
+\end{figure}
+
+### Rank 4
+\lstinline[style=latexcode]|\tensorIV{name}{physical index 1}{physical index 2}{left index}{right index}|
+\begin{figure}[H]
+\centering
+\tensorIV{\theta}{i}{j}{k}{l}
+\end{figure}
+
+These figures also work in a math environment, as seen below.
+
+\begin{align}
+\tensorIV{\theta}{j}{k}{\alpha}{\beta} =
+\tensorIII{\Gamma^A}{j}{\alpha}{\gamma} +
+\tensorIII{\Gamma^B}{k}{\gamma}{\beta}
+\end{align}
+
+
+### Matrix Product States
+An MPS can be drawn using  
+
+\lstinline[style=latexcode]|\mps{name}{length}{physical index}{left index}{right index}|
+
+\begin{figure}[H]
+\centering
+\mps{A}{4}{\sigma}{\alpha}{\beta} 
+\end{figure}
+
+Similarly, the Vidal canonical form of an MPS can be drawn with
+\lstinline[style=latexcode]|\mpsVidal{name rank 3}{name singular values}{length}{physical index}{left index}{right index}|
+
+\begin{figure}[H]
+\centering
+\mpsVidal{\Gamma}{\Lambda}{4}{\sigma}{\alpha}{\beta} 
+\end{figure}
+
+# Rcpp
+We can write and execute C++ code directly in an `Rcpp` chunk, such as the one below. I don't know yet how to see the output from std::cout.
+
+```{Rcpp, cache=TRUE}
+#include <iostream>
+// [[Rcpp::export]]
+int myfunction(){
+  std::cout << " HEJ" << std::endl;
+  return 0;
+}
+```
+
+The Rcpp::export line makes `myfunction()` available to the R environment, so it can be called like
+
+```{r}
+myfunction()
+```
+
+
+# More about R Markdown
+
+Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

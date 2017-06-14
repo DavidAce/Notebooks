@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{anslistings} %Include this file to highlight code!
+
+
+\begin{document}
+
+We can do inline code with \lstinline[style=latexcode]|\lstinline[style=SOMESTYLE]!snippet!| where ``!'' are used to delimit the code snippet. Other delimiters are possible, such as + or $|$.
+The styles can be found in the file \texttt{anslistings.sty}
+
+
+Blocks of code are written with
+
+\begin{latexcode}
+\begin{SOMESTYLE}
+...line of code
+...line of code
+\end{SOMESTYLE}
+\end{latexcode}
+
+
+\end{document}
