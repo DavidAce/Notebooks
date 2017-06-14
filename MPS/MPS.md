@@ -778,12 +778,10 @@ $$
 $$
 \begin{aligned}
 |\psi\rangle=
-(\bigotimes_i^3 \mathcal{A}^i)(\bigotimes_i^{2} |I_{i,i+1}\rangle)
-=
+(\bigotimes_i^3 \mathcal{A}^i)(\bigotimes_i^{2} |I_{i,i+1}\rangle)=
 \end{aligned}
 $$
 **Comment: Hmmm. This seems overly impractical... perhaps I've misunderstood something**
-
 
 ## Bond Dimension
 
@@ -844,13 +842,13 @@ where the trace takes care of the periodic boundary.
 
 ### The unsupported Eigen::Tensor
 
-| Pro                                      | Con                        |
-| ---------------------------------------- | -------------------------- |
-| Fast vectorized operations               | Can it contract?           |
-| Easy reshaping?                          | Need to flatten before SVD |
-| A wrapper with map functions enables many representations. | Lacking documentation      |
-|                                          |                            |
-|                                          |                            |
+| Pro                                      | Con                                  |
+| ---------------------------------------- | ------------------------------------ |
+| Fast vectorized operations               | Very strict about correct dimensions |
+| Easy reshaping and contracting.          | Need to flatten before SVD           |
+| A wrapper with map functions enables matrix representations. | Lacking documentation                |
+|                                          |                                      |
+|                                          |                                      |
 
 
 
@@ -864,8 +862,8 @@ where the trace takes care of the periodic boundary.
 
 | Pro                                      | Con                                 |
 | ---------------------------------------- | ----------------------------------- |
-| Reasonably fast, intelligent (minimal number of operations in contractions) | Black box                           |
-| Easy contractions                        |                                     |
-| Can perform SVD on tensors directly      | Documentation is unclear on syntax. |
+| "Intelligent" (minimal number of operations in contractions) | Black box                           |
+| Can perform SVD on tensors directly      | Counterintuitive contractions       |
+|                                          | Documentation is unclear on syntax. |
 |                                          |                                     |
 |                                          |                                     |

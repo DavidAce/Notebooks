@@ -61,11 +61,29 @@
 
 	\tensorIII{#1^1}{#4_1}{#5}{\phantom{}}\hspace{-0.6cm}
 	\tensorII{#2^1}{\phantom{}}{\phantom{}}\hspace{-0.8cm}
-	\pgfmathsetmacro{\nexttolast}{#3-1}
+	\pgfmathsetmacro{\nexttolast}{max(#3-1, 2)}
 	\foreach \i in {2,...,\nexttolast}
 	{
 	\tensorIII{#1^\i}{#4_\i}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
 	\tensorII{#2^\i}{\phantom{}}{\phantom{}}\hspace{-0.7cm}
 	}
 	\tensorIII{#1^#3}{#4_#2}{\phantom{}}{#6}
+}
+
+
+\newcommand{\mpsVidalPBC}[6]{% nameIII,nameII, number of spins, physical index , left index, right index
+
+	\tensorIII{#1^1}{#4_1}{#5}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^1}{\phantom{}}{\phantom{}}\hspace{-0.9cm}
+	\pgfmathsetmacro{\nexttolast}{max(#3-1, 2)}
+	\foreach \i in {2,...,\nexttolast}
+	{
+	\if \nexttolast > 2
+	  \tensorIII{#1^\i}{#4_\i}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	  \tensorII{#2^\i}{\phantom{}}{\phantom{}}\hspace{-0.9cm}
+	\fi
+	}
+	\tensorIII{#1^#3}{#4_#3}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^#3}{\phantom{}}{#6}
+
 }
