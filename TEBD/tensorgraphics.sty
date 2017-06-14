@@ -1,0 +1,89 @@
+%% Commands for tensor graphics using tikz.
+%% Last modified: 2013-10-11
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tensorgraphics}[2017/06/13 Tensor Graphics; provided by David Aceituno <aceituno@kth.se>]
+
+% Load required packages
+\usepackage{pgfplots,tikz}
+\pgfplotsset{compat=1.13}
+
+\newcommand{\tensorII}[3]{%name, i,j
+\begin{tikzpicture}[baseline=-0.65ex]
+\usetikzlibrary{positioning}
+\tikzstyle{tensor}=[rectangle,draw,minimum width=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\draw (A.west) -- ++(-0.3cm, 0     ) node [above] {$#2$};
+\draw (A.east) -- ++( 0.3cm, 0     ) node [above] {$#3$};
+\end{tikzpicture}
+}
+
+\newcommand{\tensorIII}[4]{%name, i,j,k
+\begin{tikzpicture}[baseline=-0.65ex]
+\usetikzlibrary{positioning}
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em,
+              inner sep=1mm, outer sep=0mm]
+\node[tensor] (A) at (0, 0)  {$#1$};
+\draw (A.north)-- ++(0     , 0.3cm ) node [above] {$#2$};
+\draw (A.west) -- ++(-0.3cm, 0     ) node [above] {$#3$};
+\draw (A.east) -- ++( 0.3cm, 0     ) node [above] {$#4$};
+\end{tikzpicture}
+}
+
+
+\newcommand{\tensorIV}[5]{%name, i,j,k,l
+\begin{tikzpicture}[baseline=-0.65ex]
+\usetikzlibrary{positioning}
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=2.5em,
+              inner sep=1mm, outer sep=0mm]
+  \node[tensor](A) at (0, 0){$#1$};
+  \draw (A.north west)++( 2mm,0) -- ++(0     , 0.3cm ) node [above] {$#2$};
+  \draw (A.north east)++(-2mm,0)  -- ++(0     , 0.3cm ) node [above] {$#3$};
+  \draw (A.west) -- ++(-0.3cm, 0     ) node [above] {$#4$};
+  \draw (A.east)  -- ++( 0.3cm, 0     ) node [above] {$#5$};
+\end{tikzpicture}
+}
+
+
+\newcommand{\mps}[5]{% name, number of spins, physical index , left index, right index 
+	\tensorIII{#1^1}{#3_1}{#4}{\phantom{}}\hspace{-0.75cm}
+	\pgfmathsetmacro{\nexttolast}{#2-1}
+	\foreach \i in {2,...,\nexttolast}
+	{
+	\tensorIII{#1^\i}{#3_\i}{\phantom{}}{\phantom{}}\hspace{-0.65cm}
+	}
+	\tensorIII{#1^#2}{#3_#2}{\phantom{}}{#5}
+}
+
+\newcommand{\mpsVidal}[6]{% nameIII,nameII, number of spins, physical index , left index, right index
+
+	\tensorIII{#1^1}{#4_1}{#5}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^1}{\phantom{}}{\phantom{}}\hspace{-0.8cm}
+	\pgfmathsetmacro{\nexttolast}{max(#3-1, 2)}
+	\foreach \i in {2,...,\nexttolast}
+	{
+	\tensorIII{#1^\i}{#4_\i}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^\i}{\phantom{}}{\phantom{}}\hspace{-0.7cm}
+	}
+	\tensorIII{#1^#3}{#4_#2}{\phantom{}}{#6}
+}
+
+
+\newcommand{\mpsVidalPBC}[6]{% nameIII,nameII, number of spins, physical index , left index, right index
+
+	\tensorIII{#1^1}{#4_1}{#5}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^1}{\phantom{}}{\phantom{}}\hspace{-0.9cm}
+	\pgfmathsetmacro{\nexttolast}{max(#3-1, 2)}
+	\foreach \i in {2,...,\nexttolast}
+	{
+	\if \nexttolast > 2
+	  \tensorIII{#1^\i}{#4_\i}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	  \tensorII{#2^\i}{\phantom{}}{\phantom{}}\hspace{-0.9cm}
+	\fi
+	}
+	\tensorIII{#1^#3}{#4_#3}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^#3}{\phantom{}}{#6}
+
+}
