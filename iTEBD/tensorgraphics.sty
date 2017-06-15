@@ -8,13 +8,15 @@
 \usepackage{pgfplots,tikz}
 \pgfplotsset{compat=1.13}
 
+\newcommand{\leglen}{4mm}
+
 \newcommand{\tensorII}[3]{%name, i,j
 \begin{tikzpicture}[baseline=-0.65ex]
 \usetikzlibrary{positioning}
 \tikzstyle{tensor}=[rectangle,draw,minimum width=1em,inner sep=1mm,outer sep=0]
 \node[tensor]  (A) at (0, 0) {$#1$};
-\draw (A.west) -- ++(-0.3cm, 0     ) node [above] {$#2$};
-\draw (A.east) -- ++( 0.3cm, 0     ) node [above] {$#3$};
+\draw (A.west) -- ++(-\leglen, 0     ) node [above] {$#2$};
+\draw (A.east) -- ++( \leglen, 0     ) node [above] {$#3$};
 \end{tikzpicture}
 }
 
@@ -22,12 +24,12 @@
 \begin{tikzpicture}[baseline=-0.65ex]
 \usetikzlibrary{positioning}
 \tikzstyle{tensor}=[rectangle,
-              draw, fill=white, minimum width=1em,
+              draw, fill=white, minimum width=1.5em,
               inner sep=1mm, outer sep=0mm]
 \node[tensor] (A) at (0, 0)  {$#1$};
-\draw (A.north)-- ++(0     , 0.3cm ) node [above] {$#2$};
-\draw (A.west) -- ++(-0.3cm, 0     ) node [above] {$#3$};
-\draw (A.east) -- ++( 0.3cm, 0     ) node [above] {$#4$};
+\draw (A.north)-- ++(0     , \leglen ) node [above] {$#2$};
+\draw (A.west) -- ++(-\leglen, 0     ) node [above] {$#3$};
+\draw (A.east) -- ++( \leglen, 0     ) node [above] {$#4$};
 \end{tikzpicture}
 }
 
@@ -36,13 +38,13 @@
 \begin{tikzpicture}[baseline=-0.65ex]
 \usetikzlibrary{positioning}
 \tikzstyle{tensor}=[rectangle,
-              draw, fill=white, minimum width=2.5em,
+              draw, fill=white, minimum width=2.8em,
               inner sep=1mm, outer sep=0mm]
   \node[tensor](A) at (0, 0){$#1$};
-  \draw (A.north west)++( 2mm,0) -- ++(0     , 0.3cm ) node [above] {$#2$};
-  \draw (A.north east)++(-2mm,0)  -- ++(0     , 0.3cm ) node [above] {$#3$};
-  \draw (A.west) -- ++(-0.3cm, 0     ) node [above] {$#4$};
-  \draw (A.east)  -- ++( 0.3cm, 0     ) node [above] {$#5$};
+  \draw (A.north west)++( 2mm,0) -- ++(0    , \leglen ) node [above] {$#2$};
+  \draw (A.north east)++(-2mm,0)  -- ++(0   , \leglen ) node [above] {$#3$};
+  \draw (A.west) -- ++(-\leglen, 0     ) node [above] {$#4$};
+  \draw (A.east)  -- ++(\leglen, 0     ) node [above] {$#5$};
 \end{tikzpicture}
 }
 
