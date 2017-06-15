@@ -1,0 +1,14 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.rdb
+.rdx
+tikzcache/
+*_cache/
+*_files/
+*.log
+*.aux
+*.auxlock
+*.synctex.gz
+
