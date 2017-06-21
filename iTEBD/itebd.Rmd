@@ -37,7 +37,12 @@ In C++ these are explicitly objects of type  \lstinline[style=cppstyle]|Eigen::T
 # Model
 
 ## Hamiltonian
-We study the 1D Ising model with the following two-site Hamiltonian
+We study the 1D Ising model with a transverse field, given by the following Hamiltonian
+
+$$
+H = \frac{1}{2}\sum_{i} JS_i^zS_{i+1}^z + gS_i^x.
+$$
+For two sites this can be written out explicitly
 
 
 $$
@@ -49,6 +54,12 @@ H =
           0		&	 -g / 2	&	 -g / 2	&	J
           \end{pmatrix}.
 $$
+
+and is obtained by the following code:
+
+\begin{c++}
+MatrixType H = 0.5*(2*J*kroneckerProduct(sz,sz) - g*(kroneckerProduct(sx,I) + kroneckerProduct(I,sx));
+\end{c++}
 
 
 ## Time Evolution Operator
