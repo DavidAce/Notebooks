@@ -1,5 +1,5 @@
 ---
-title: "TEBD"
+title: "iTEBD"
 author: "David Aceituno"
 output:
   pdf_document:
@@ -221,3 +221,15 @@ B[ib] = np.tensordot(C, Z.conjugate(), axes=([1, 3], [0, 2]))
 
 
 I.e., equation 19 in [1]. Unfortunately, this gives me the wrong results... Is Hastings paper flawed? In that case Schollwöck's paper is also flawed in eq. 274 in [2].
+
+**Update!! (25 june 2017)**
+
+As seen in TenPyLight, my error was forgetting to normalize. See `invsq` below:
+
+\begin{python}
+invsq = np.sqrt(sum(Y ** 2))
+Z = np.transpose(np.reshape(Z, (chi2, d, chic)), (1, 0, 2))
+B[ib] = np.tensordot(C, Z.conjugate(), axes=([1, 3], [0, 2])) / invsq
+\end{python}
+
+
