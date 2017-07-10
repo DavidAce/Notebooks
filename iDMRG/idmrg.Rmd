@@ -14,26 +14,53 @@ header-includes:
   - \usepackage{anslistings}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
-## R Markdown
+# iDMRG on C++
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The code follows the steps outlined in the following paper
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+> [Kjäll, J. A., Zaletel, M. P., Mong, R. S. K., Bardarson, J. H. & Pollmann, F. Phase diagram of the anisotropic spin-2 XXZ model: Infinite-system density matrix renormalization group study. *Phys. Rev. B* **87,** 235106 (2013).](https://link.aps.org/doi/10.1103/PhysRevB.87.235106)
 
-```{r cars}
-summary(cars)
-```
+and the file [itebd.py](https://www.pks.mpg.de/~frankp/comp-phys/idmrg.py).
 
-## Including Plots
 
-You can also embed plots, for example:
+# Notation
+Latin letters are reserved for physical indices, and greek indices for bond indices. The order of indices in all tensors is \textit{physical indices  $\rightarrow$ bond indices}. 
+In diagrammatic notation we have
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+\begin{align}
+\Lambda_{\alpha}{\beta} &=  \tensorII{\Lambda}{\alpha}{\beta} = \tensorII{\Lambda}{0}{1} \\
+\Gamma^{i}_{\alpha\beta} &= \tensorIII{\Gamma}{i}{\alpha}{\beta} = \tensorIII{\Gamma}{0}{1}{2} \\
+\theta^{ij}_{\alpha\beta} &= \tensorIV{\theta}{i}{j}{\alpha}{\beta} = \tensorIV{\theta}{0}{1}{2}{3}
+\end{align}
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+In C++ these are explicitly objects of type  \lstinline[style=cppstyle]|Eigen::Tensor<double,rank,Eigen::ColMajor>;|, which are `typedef`'ed into shorthand `TensorR`, where `R` is the rank (0 to 4).
+
+
+
+# Model
+
+## Hamiltonian
+We study the 1D Ising model with a transverse field, given by the following Hamiltonian
+
+$$
+H = \frac{1}{2}\sum_{i} JS_i^zS_{i+1}^z + gS_i^x.
+$$
+For two sites this can be written out explicitly
+
+
+$$
+H = 
+\begin{pmatrix}
+	J	&	-g / 2	&	-g / 2	&	0 \\
+	-g / 2	&	 -J	&	 0	&	 -g / 2 \\
+	-g / 2	&	 0	&	 -J	&	 -g / 2 \\
+          0		&	 -g / 2	&	 -g / 2	&	J
+          \end{pmatrix}.
+$$
+
+and is obtained by the following code:
+
+\begin{c++}
+MatrixType H = 0.5*(2*J*kroneckerProduct(sz,sz) - g*(kroneckerProduct(sx,I) + kroneckerProduct(I,sx));
+\end{c++}
