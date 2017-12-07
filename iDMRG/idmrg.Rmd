@@ -4,14 +4,16 @@ author: "David Aceituno"
 output:
   pdf_document:
     highlight: pygments
-    toc: true
-    toc_depth: 3
+    latex_engine: pdflatex
+    toc: yes
 header-includes: 
   - \usepackage{tikz}
   - \usepackage{pgfplots}
   - \usepackage{float}
   - \usepackage{tensorgraphics}
   - \usepackage{anslistings}
+
+
 ---
 
 
@@ -94,7 +96,8 @@ Returning to $H_{\text{MPO}}$, remember that it should follow column-major notat
 Likewise for the $(2\times 3)$ rows, denoted $(a_2 \times b_2)$, note that $a_2$ ticks before $b_2$.
 Therefore to get a rank 4 MPO we should simply reshape into indices $(a_1,b_1,a_2,b_2) = (2,3,2,3)$.
 
-Next we should reorder the indices to get the right diagram above. To do this, we do a transpose, or shuffle like $(1,3,0,2)$ to get the order of indices $(b_1,b_2,a_1,a_2) = (3,3,2,2)$. Then the first index $b_1$ selects the outer matrix row, and $b_2$ the outer matrix column, while $a_1$ selects inner row, and $a_2$ inner column.
+Next we should reorder the indices to get the right diagram above. To do this, we do a transpose, or shuffle like $(1,3,0,2)$ to get the order of indices $(b_1,b_2,a_1,a_2) = (3,3,2,2)$. Then the first index $b_1$ selects the outer matrix row, and $b_2$ the outer matrix column, while $a_1$ selects inner row, and $a_2$ inner column. 
+
 
 
 
