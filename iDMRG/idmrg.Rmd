@@ -44,7 +44,11 @@ In C++ these are explicitly objects of type  \lstinline[style=cppstyle]|Eigen::T
 We study the 1D Ising model with a transverse field, given by the following Hamiltonian
 
 $$
-H = \frac{1}{2}\sum_{i} JS_i^zS_{i+1}^z + gS_i^x.
+H = \frac{1}{2}\sum_{i} \left[ -J\sigma_i^z\sigma_{i+1}^z  -g\sigma_i^x \right].
+$$
+or equivalently 
+$$
+H = \frac{1}{2}\sum_{i} \left[-J\sigma_i^z\sigma_{i+1}^z -\frac{g}{2}(\sigma_i^x + \sigma_{i+1}^x)\right].
 $$
 For two sites this can be written out explicitly
 
@@ -64,3 +68,34 @@ and is obtained by the following code:
 \begin{c++}
 MatrixType H = 0.5*(2*J*kroneckerProduct(sz,sz) - g*(kroneckerProduct(sx,I) + kroneckerProduct(I,sx));
 \end{c++}
+
+
+# Hamiltonian in MPO form
+In MPO form the Hamiltonian above reads 
+
+$$
+H_{\text{MPO}} = 
+\begin{pmatrix}
+	I & 0 & 0 \\
+	\sigma^z & 0 & 0 \\
+	-g \sigma^x & -J \sigma^z & I
+\end{pmatrix}.
+$$
+
+where each element is a $2\times 2$ -matrix.
+To transform into an MPO note that this matrix is essentially an outer $(3\times 3)$ matrix containing inner $(2\times 2)$ matrices, or equivalently a $(2\times 3) \times (2 \times 3)$ matrix. The goal is to obtain an MPO with dimensions $(3,3,2,2)$, depicted as
+
+\begin{align}
+\mpoI{H}{0_{dim=3}}{1_{dim=3}}{2_{dim=2}}{3_{dim=2}} = \mpoI{H}{b_1}{b_2}{a_1}{a_2},
+\end{align}
+where the left figure indicates the numbering of the indices and also their dimension.
+
+Returning to $H_{\text{MPO}}$, remember that it should follow column-major notation in C++, such that the left $(2\times 3)$ column is counted first. Calling these indices $(a_1 \times b_1)$, we note that $a_1$ should "tick"  before $b_1$. 
+Likewise for the $(2\times 3)$ rows, denoted $(a_2 \times b_2)$, note that $a_2$ ticks before $b_2$.
+Therefore to get a rank 4 MPO we should simply reshape into indices $(a_1,b_1,a_2,b_2) = (2,3,2,3)$.
+
+Next we should reorder the indices to get the right diagram above. To do this, we do a transpose, or shuffle like $(1,3,0,2)$ to get the order of indices $(b_1,b_2,a_1,a_2) = (3,3,2,2)$. Then the first index $b_1$ selects the outer matrix row, and $b_2$ the outer matrix column, while $a_1$ selects inner row, and $a_2$ inner column.
+
+
+
+
