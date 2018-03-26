@@ -5,10 +5,15 @@
 .rdb
 .rdx
 tikzcache/
+_markdown_*/
+.directory
 *_cache/
 *_files/
 *.log
 *.aux
 *.auxlock
 *.synctex.gz
+*.lua
+*.in
+*.out
 
