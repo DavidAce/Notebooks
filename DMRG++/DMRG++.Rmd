@@ -429,12 +429,15 @@ Because each term in $\langle H^2 \rangle - \langle E \rangle^2$ grows quadratic
 
 ### Variance from characteristic functions
 
+---
+
   > The method below will follow the steps given in 
 
   > [West, C. G., Garcia-Saez, A., & Wei, T. C. (2015). Efficient evaluation of high-order moments and cumulants in tensor network states. Physical Review B - Condensed Matter and Materials Physics, 92(11), 1–20.](https://doi.org/10.1103/PhysRevB.92.115103)
 
-This is perhaps the simplest method to implement and performs very well for generic observables. Most details are clear in the article except for just a few pitfalls that had me stuck for a while, so I'll just sumarize those here.
+  > This is perhaps the simplest method to implement and performs very well for generic observables. Most details are clear in the article except for just a few pitfalls that had me stuck for a while, so I'll just sumarize those here.
 
+---
 
 For a given operator $M$, the characteristic function $G(a) = \langle e^{iaM} \rangle$ contains all of the nonlocal information about the higher order moments $\langle M^n \rangle$. This is clear from a Taylor expansion about $a=0$:
 
@@ -531,6 +534,9 @@ Two important remarks are in order here
 
 
 ### Variance from local Hamiltonian
+
+---
+
   > The method below will follow the steps given in 
 
   > [Vanderstraeten, L. (n.d.). Tangent space methods for matrix product states](http://quantumtensor.pks.mpg.de/wp-content/uploads/2016/06/notes_2.pdf)
@@ -541,6 +547,7 @@ Two important remarks are in order here
 
   > where you can also read more.
 
+---
 
 We can compute the variance by calculating the series for the squared Hamiltonian explicitly.
 
@@ -643,7 +650,7 @@ where the last inverse can be safely computed due to the regularization.
 Finally we can collect the results from each term $\textbf{I-IV}$ to obtain the $\langle H^2\rangle$. Of course, since we are really after the per-site variance, we can leave out all the $L$ prefactors to get instead $\langle (h_\text{even} + h_\text{odd})^2 \rangle$. Then $\text{Var}(H)/L = \langle (h_\text{even} + h_\text{odd})^2 \rangle - \langle e \rangle^2$
 
 
-An additional simplification can be made if we work with reduced local Hamiltonians, where we've subtracted the current per-site energy from the diagonal:  $\tilde h_\text{even} = h_\text{even} - \langle \Phi_\text{even} | h_\text{even}| \Phi_\text{even} \rangle$ and similarly for $\tilde h_\text{even}$. Then the same diagrams above will directly give us the per-site variance, i.e. $\text{Var}(H)/L = \langle (\tilde h_\text{even} + \tilde h_\text{odd})^2 \rangle$.
+An additional simplification can be made if we work with reduced local Hamiltonians, where we've subtracted the current per-site energy from the diagonal:  $\tilde h_\text{even} = h_\text{even} - \langle \Phi_\text{even} | h_\text{even}| \Phi_\text{even} \rangle$ (using $l_e$ and $r_e$ as environments!) and similarly for $\tilde h_\text{even}$. Then the same diagrams above will directly give us the per-site variance, i.e. $\text{Var}(H)/L = \langle (\tilde h_\text{even} + \tilde h_\text{odd})^2 \rangle$.
 
 
 
