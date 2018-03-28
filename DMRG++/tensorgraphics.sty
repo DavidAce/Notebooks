@@ -381,8 +381,7 @@
 
 
 \newcommand{\idmrgTwoSite}[3]{% nameA, nameL, nameB, 
-\begin{tikzpicture}[baseline=-0.65ex]
-
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
 \tikzstyle{tensor}=[rectangle,
               draw, fill=white, minimum width=1em, minimum height=1em,
               inner sep=1mm, outer sep=0mm]
@@ -390,8 +389,8 @@
   \draw (A.west) -- ++(-\leglen,0);
   \draw (A.east) -- ++(\leglen+5mm,0) node (L) [tensor] {$#2$};
   \draw (L.east) -- ++(\leglen+5mm,0) node (B) [tensor] {$#3$};
-  \draw (A.north) -- ++(0, \leglen ) node [above] {};
-  \draw (B.north) -- ++(0, \leglen ) node [above] {};
+  \draw (A.south) -- ++(0, -\leglen ) node [below] {};
+  \draw (B.south) -- ++(0, -\leglen ) node [below] {};
   \draw (B.east) -- ++(\leglen,0);
 \end{tikzpicture}
 }
@@ -411,21 +410,21 @@
               draw, fill=white, minimum width=3.5em, minimum height=1em,
               inner sep=1mm, outer sep=0mm]
   \node[tensorIV] (theta) at (0,0) {$#1$};
-  \draw(theta.155) --++ (0, 2mm + \leglen) node (M1)[tensor] {$#4$};
-  \draw(theta.25 ) --++ (0, 2mm + \leglen) node (M2)[tensor] {$#4$};
+  \draw(theta.-150)  --++ (0, -1.5*\leglen) node (M1)[tensor] {$#4$};
+  \draw(theta.-30 )  --++ (0, -1.5*\leglen) node (M2)[tensor] {$#4$};
 
 
-  \draw (M1.west) -- ++ (-\leglen-2mm,0) node (L) [tensor] {$#2$};
-  \draw (M2.east) -- ++ ( \leglen+2mm,0) node (R) [tensor] {$#3$};
+  \draw (M1.west) -- ++ (-1.5*\leglen,0) node (L) [tensor] {$#2$};
+  \draw (M2.east) -- ++ ( 1.5*\leglen,0) node (R) [tensor] {$#3$};
   \draw (M1.east) -- (M2.west);
-  \draw (theta.west) -| (L.south);
-  \draw (theta.east) -| (R.south);
-  \draw (M1.north) -- ++(0, \leglen );
-  \draw (M2.north) -- ++(0, \leglen );
-  \draw (L.north) -- ++(0, \leglen+3mm ) node (LN) {};
-  \draw (LN.center) -- ++(\leglen, 0);
-  \draw (R.north) -- ++(0, \leglen+3mm ) node (RN) {};
-  \draw (RN.center) -- ++(-\leglen, 0);
+  \draw (theta.west) -| (L.north);
+  \draw (theta.east) -| (R.north);
+  \draw (M1.south) -- ++(0, -\leglen );
+  \draw (M2.south) -- ++(0, -\leglen );
+  \draw (L.south)  -- ++(0, -1.5*\leglen ) node (LS) {};
+  \draw (LS.center) -- ++(\leglen, 0);
+  \draw (R.south)   -- ++(0, -1.5*\leglen ) node (RS) {};
+  \draw (RS.center) -- ++(-\leglen, 0);
 \end{tikzpicture}
 }
 

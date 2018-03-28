@@ -291,17 +291,18 @@ The energy expectation value  $\langle \psi | H | \psi \rangle$ computed as
 The two-site algorithm considers neighbouring sites $AB$ embedded in a chain of increasing length, n = 2,4,6.. At each iteration states are discarded to keep the Hilbert space size manageable. The chain is always represented by a block-site-site-block structure, $L\text{ } AB \text{ } R$, where $L$ and $R$ represent left/right environments. One iteration absorbs sites into the environments i.e. $LA \rightarrow L$ and $BR \rightarrow R$ and then inserts two new particles $AB$ in the middle. After a certain number of iterations the algorithm converges when a fix-point in Hilbert space is reached. The 4 steps involved in an iteration are shown below in tensor diagram notation.
 
 \begin{center}
-\begin{tcolorbox}[width=0.9\linewidth, title={\centering\large{\textbf{iDMRG}}}]
+\begin{tcolorbox}[height=28em, width=0.9\linewidth, title={\centering\large{\textbf{iDMRG}}}]
 \begin{center}
 	\begin{tabular}{l l c }
 	\toprule
 	Step 		& Operation	& Diagram\\
 	\toprule
   	1		&	Merge 2 sites 	& \idmrgTwoSite{A}{\Lambda}{B} $\rightarrow$ \tensorIV{\Theta}{}{}{}{}{} \\
- 	2		&	\vbox to 1em{\hbox{\shortstack[l]{Find smallest \\ eigenstate using \\ an iterative solver\\ $H\Theta = E_{GS}\Theta$} }\vss}			& \idmrgMPO{\Theta}{L}{R}{H} $\rightarrow$ $E_{GS}$\tensorIV{\Theta_{\text{GS}}}{}{}{}{}{}\\
- 	3		&	\vbox to 1em{\hbox{\shortstack[l]{SVD\\ Split and keep only the \\ largest singular values} }\vss}						&  \tensorIV{\Theta_\text{GS}}{}{}{}{}{} $\xrightarrow{\text{SVD}} $  \idmrgTwoSite{\tilde{A}}{\tilde{\Lambda}}{\tilde{B}} \vspace{0.5cm} \\
- 	4		&	Update environments	& \idmrgContractLeft {L}{A}{H}{2} $\rightarrow$ \idmrgLeft{L}{2} \hspace{1cm} \idmrgContractRight{R}{B}{H}{2} $\rightarrow$ \idmrgRight{R}{2}   \\
- 	5		& Swap $A$ and $B$ &  \\
+ 	2		&	\vbox to 1em{\hbox{\shortstack[l]{Find smallest \\ eigenstate using \\ an iterative solver\\ $H\tilde\Theta = E_\text{GS}\tilde\Theta$} }\vss}			& \idmrgMPO{\Theta}{L}{R}{H} $\rightarrow$ $E_\text{GS}$\tensorIV{\tilde\Theta}{}{}{}{}{}\\
+ 	& & \\
+ 	3		&	\vbox to 1em{\hbox{\shortstack[l]{SVD\\ Split and keep only the \\ largest singular values} }\vss}						&  \tensorIV{\tilde \Theta}{}{}{}{}{} $\xrightarrow{\text{SVD}} $  \idmrgTwoSite{\tilde{A}}{\tilde{\Lambda}}{\tilde{B}} \vspace{0.5cm} \\
+ 	4		&	Update environments	& \idmrgContractLeft {L}{\tilde A}{H}{2} $\rightarrow$ \idmrgLeft{L}{2} \hspace{1cm} \idmrgContractRight{R}{\tilde B}{H}{2} $\rightarrow$ \idmrgRight{R}{2}   \\
+ 	5		& \vbox to 1em{\hbox{\shortstack[l]{Swap $A$ and $B$ \\ $\tilde A \rightarrow B$ \\  $\tilde B \rightarrow A$ }}\vss} &  \\
 	%\bottomrule
 	\end{tabular}
 \end{center}
@@ -397,12 +398,12 @@ Where we have enforced an upper limit on the bond dimension $\chi = \chi_\text{m
 ## Energy Variance
 The energy variance $\mathrm{Var}(H) = \langle (H - \langle H \rangle )^2\rangle = \langle H ^2\rangle - E^2$ signals how close a given MPS is to an eigenstate of the Hamiltonian, independently of implementation details, and as such it is a more robust alternative to the truncation error. The total variance is extensive, growing linearly with $L$, so in practice we want to measure the per-site variance $\mathrm{Var}(H) / L$, which should converge as $L\rightarrow\infty$.
 
-There are four ways to compute the energy variance of an MPS, described in the following articles
+There are four ways to compute the energy variance of an MPS
 
 1. Using a double-layer of MPO's
 2. Using the moments calculated from the characteristic function of the transfer matrix
 3. Using the local 2-site Hamiltonians
-4. Using an approximation, the 2-site variance
+4. Using an approximation, the 2-site variance, [suggested by Hubig](http://arxiv.org/abs/1711.01104). This method will not be used here.
 
 
 
