@@ -8,6 +8,8 @@ output:
     highlight: pygments
     latex_engine: xelatex
     toc: yes
+    toc_depth: 3
+
 urlcolor: blue
 header-includes: 
   - \usepackage{tikz}
@@ -297,7 +299,7 @@ The two-site algorithm considers neighbouring sites $AB$ embedded in a chain of 
   	1		&	Merge 2 sites 	& \idmrgTwoSite{A}{\Lambda}{B} $\rightarrow$ \tensorIV{\Theta}{}{}{}{}{} \\
  	2		&	\vbox to 1em{\hbox{\shortstack[l]{Find smallest \\ eigenstate using \\ an iterative solver\\ $H\Theta = E_{GS}\Theta$} }\vss}			& \idmrgMPO{\Theta}{L}{R}{H} $\rightarrow$ $E_{GS}$\tensorIV{\Theta_{\text{GS}}}{}{}{}{}{}\\
  	3		&	\vbox to 1em{\hbox{\shortstack[l]{SVD\\ Split and keep only the \\ largest singular values} }\vss}						&  \tensorIV{\Theta_\text{GS}}{}{}{}{}{} $\xrightarrow{\text{SVD}} $  \idmrgTwoSite{\tilde{A}}{\tilde{\Lambda}}{\tilde{B}} \vspace{0.5cm} \\
- 	4		&	Update environments	& \idmrgContractLeft {L}{A}{H}{2} $\rightarrow$ \idmrgLeft{L}{2} \hspace{1cm} \idmrgContractRight{R}{B^\dagger}{H}{2} $\rightarrow$ \idmrgRight{R}{2}   \\
+ 	4		&	Update environments	& \idmrgContractLeft {L}{A}{H}{2} $\rightarrow$ \idmrgLeft{L}{2} \hspace{1cm} \idmrgContractRight{R}{B}{H}{2} $\rightarrow$ \idmrgRight{R}{2}   \\
  	5		& Swap $A$ and $B$ &  \\
 	%\bottomrule
 	\end{tabular}
@@ -397,8 +399,8 @@ The energy variance $\mathrm{Var}(H) = \langle (H - \langle H \rangle )^2\rangle
 There are four ways to compute the energy variance of an MPS, described in the following articles
 
 1. Using a double-layer of MPO's
-2. Using the local 2-site Hamiltonians
-3. Using the moments calculated from the characteristic function of the transfer matrix
+2. Using the moments calculated from the characteristic function of the transfer matrix
+3. Using the local 2-site Hamiltonians
 4. Using an approximation, the 2-site variance
 
 
@@ -422,7 +424,124 @@ Because each term in $\langle H^2 \rangle - \langle E \rangle^2$ grows quadratic
 \end{align}
 
 
+
+
+### Variance from characteristic functions
+
+  > The method below will follow the steps given in 
+
+  > [West, C. G., Garcia-Saez, A., & Wei, T. C. (2015). Efficient evaluation of high-order moments and cumulants in tensor network states. Physical Review B - Condensed Matter and Materials Physics, 92(11), 1–20.](https://doi.org/10.1103/PhysRevB.92.115103)
+
+This is perhaps the simplest method to implement and performs very well for generic observables. Most details are clear in the article except for just a few pitfalls that had me stuck for a while, so I'll just sumarize those here.
+
+
+For a given operator $M$, the characteristic function $G(a) = \langle e^{iaM} \rangle$ contains all of the nonlocal information about the higher order moments $\langle M^n \rangle$. This is clear from a Taylor expansion about $a=0$:
+
+\begin{align}
+G(a) = 1 + ia\langle M \rangle + \frac{(ia)^2}{2}\langle M^2 \rangle + ... 
+\end{align}
+
+and subsequently we can obtain every moment $\langle M^n \rangle$ from the $n$-th derivative of $G(a)$.
+
+A useful quantity is $\log G(a)$, the derivatives of which gives us the $n$-th cumulants $\kappa_n$ directly. This can be seen from the same Taylor expansion as above
+
+\begin{align}
+\log G(a) \approx \log (1 + ia\langle M \rangle + \frac{(ia)^2}{2}\langle M^2 \rangle + ... )
+\end{align}
+
+together with the expansion $\log(1+x) \approx x - \frac{1}{2} x^2+ ...$ for small $x$, which gives us 
+
+\begin{align}
+\log G(a) &= ia \langle M \rangle + \frac{(ia)^2}{2} \langle M^2\rangle - \frac{(ia)^2}{2} \langle M \rangle^2 + O(a^3) \\
+          &= ia \kappa_1 +  \frac{(ia)^2}{2} \kappa_2 ...
+\end{align}
+
+
+If $M$ is the sum of single-site operators (such as the total spin) the computation $\langle e^{iaM} \rangle$ is straightforward. Let's here consider an infinite chain, and a 2-site DMRG algorithm as usual (see the article for the finite and 1-site cases). Define a transfer matrix with the operator applied
+
+\begin{align}
+\dmrgTransferMatrixOperator{\Lambda^A}{\Gamma^A}{\Lambda^B}{\Gamma^B}{e^{iaM}}{2}
+\end{align}
+
+Then in the infinite limit it is shown that
+
+\begin{align}
+G_{\infty} (a) = \lim_{L\to\infty} \langle e^{iaM} \rangle ^{l/L} = \left(\frac{\lambda(a)}{ \lambda(0)}\right)^{1/l},
+\end{align}
+
+where 
+
+- $l$ is the number of sites in the transfer matrix, (here $l=2$),
+- $\lambda(a)$ is the largest eigenvalue of the transfer matrix, and
+- $\lambda(0)$ is the largest eigenvalue for the case $a=0$, which is used if the MPS isn't normalized already.
+
+
+If on the other hand $M$ is a sum of multi-site operator (such as the Ising Hamiltonian), the operator can to be approximated by a Suzuki-Trotter decomposition which produces layers of two-body terms. For instance, the second-order in $a$ Suzuki-Trotter approximation results in three unitary gates
+
+\begin{align}
+e^{iaH} = e^{iaH_\text{even} + iaH_\text{odd}} \approx e^{\frac{ia}{2}H_\text{even}} e^{iaH_\text{odd}}  e^{\frac{ia}{2}H_\text{even}}. 
+\end{align}
+
+
+The resulting transfer matrix is obtained by applying these layers in exactly the same way one does a single ´TEBD´-step, i.e. one evolves the MPS layer by layer,  
+
+1. Merge $AB$ into $\Theta^{AB}$
+2. Contract (or "time evolve") $\Theta^{AB}$ with the gate $e^{(...)}$ to obtain an updated $\tilde \Theta^{AB}$.
+3. Split by SVD $\tilde \Theta^{AB}$ down to $\tilde A$ and $\tilde B$. If this iteration used the last gate, end here.
+4. Do the $AB$ swap by setting $\tilde A \rightarrow B$ and $\tilde B \rightarrow A$.
+5. Start again from 1, using the next gate.
+
+When all the gates have been applied, the transfer matrix can be constructed by simply overlapping the evolved MPS with the original, i.e., 
+
+\begin{align}
+\dmrgTransferMatrixEvolved{\Lambda^A}{\Gamma^A}{\Lambda^B}{\Gamma^B}{2}
+\end{align}
+
+The energy variance per site for an infinite system can now be obtained from the second cumulant, which is simply the second derivative of $\log G(a)$:
+
+\begin{align}
+\lim_{L\to\infty} \text{Var}(H)/L = \lim_{L\to\infty} \frac{\kappa_2}{L} = \frac{\log G_\infty(a) + \log G_\infty(-a) - 2\log G_\infty(0)}{a^2} + O(a^2)
+\end{align}
+
+However, note that $G(-a) = G(a)^*$ and $G(0) = 1$, so the relation above simplifies to
+
+\begin{align}
+\text{Var}(H)/L = \frac{\log |G_\infty(a)|^2}{a^2} + O(a^2)
+\end{align}
+
+Incidentally, the energy per site itself is also obtained easily through the first derivative
+
+\begin{align}
+\langle e \rangle = \frac{\log G_\infty(a) - \log G_\infty(-a) }{2a} + O(a^2)
+\end{align}
+
+
+---
+
+**NOTE**
+
+Two important remarks are in order here
+
+- The SVD split in step 3 should not truncate too much. This is a high-precision calculation, and rather than keeping a set number of singular values, prefer keeping all the singular values above some small threshold, like $10^{-14}$. 
+- The choice of $a$ can be tricky. Too small means some of the calculations suffer from underflow of double precision. Too big gives significant errors. Empirically, choosing $a$ around $10^{-2}- 10^{-4}$ has worked best for me.  
+
+---
+
+
+
+
+
 ### Variance from local Hamiltonian
+  > The method below will follow the steps given in 
+
+  > [Vanderstraeten, L. (n.d.). Tangent space methods for matrix product states](http://quantumtensor.pks.mpg.de/wp-content/uploads/2016/06/notes_2.pdf)
+
+  > and the appendix in 
+
+  > [Zauner-Stauber, V., Vanderstraeten, L., Fishman, M. T., Verstraete, F., & Haegeman, J. (2017). Variational optimization algorithms for uniform matrix product states, 1–32](https://doi.org/10.1103/PhysRevB.97.045145)
+
+  > where you can also read more.
+
 
 We can compute the variance by calculating the series for the squared Hamiltonian explicitly.
 
@@ -439,13 +558,13 @@ Below, each term \textbf{I}-\textbf{IV} can be further decomposed into
 \begin{align}
 \textbf{I}   &= \langle \sum_{i=i'} h_i h_{i'}  \rangle +  \langle \sum_{i-i' \geq 2} h_i h_{i'}  \rangle +  \langle \sum_{i'-i \geq 2} h_i h_{i'}  \rangle &= \textbf{I}_a + \textbf{I}_b + \textbf{I}_c \\
 \textbf{II}  &= \langle \sum_{j=j'} h_j h_{j'}  \rangle +  \langle \sum_{j-j' \geq 2} h_j h_{j'}  \rangle +  \langle \sum_{j'-j \geq 2} h_i h_{i'}  \rangle &= \textbf{II}_a + \textbf{II}_b + \textbf{II}_c \\
-\textbf{III} &= \langle \sum_{i+1=j'} h_i h_{j'}  \rangle +  \langle \sum_{i = j'+1} h_i h_{j'}  \rangle +  \langle \sum_{|i-j'| > 1} h_i h_{j'}  \rangle &= \textbf{III}_a + \textbf{III}_b + \textbf{III}_c \\
-\textbf{IV}  &= \langle \sum_{j+1=i'} h_j h_{i'}  \rangle +  \langle \sum_{j = i'+1} h_j h_{i'}  \rangle +  \langle \sum_{|j-i'| > 1} h_j h_{i'}  \rangle &= \textbf{IV}_a + \textbf{IV}_b + \textbf{IV}_c 
+\textbf{III} &= \langle \sum_{i+1=j'} h_i h_{j'}  \rangle +  \langle \sum_{i = j'+1} h_i h_{j'}  \rangle +  \langle \sum_{i-j' \geq 3} h_i h_{j'}  \rangle +  \langle \sum_{j' - i \geq 3} h_i h_{j'}  \rangle &= \textbf{III}_a + \textbf{III}_b + \textbf{III}_c  +  \textbf{III}_d \\
+\textbf{IV}  &= \langle \sum_{j+1=i'} h_j h_{i'}  \rangle +  \langle \sum_{j = i'+1} h_j h_{i'}  \rangle +  \langle \sum_{j-i' \geq 3} h_j h_{i'}  \rangle +  \langle \sum_{i' - j \geq 3} h_j h_{i'}  \rangle &= \textbf{IV}_a + \textbf{IV}_b + \textbf{IV}_c  + \textbf{IV}_d 
 \end{align}
 
 
 
-To translate all these terms into tensor contractions, we need to introduce some definitions. Let  $T_e$ and $T_o$ be even and odd transfer matrices, defined as
+To translate all these terms into tensor contractions, we first need to introduce some useful notation. Let  $T_e$ and $T_o$ be even and odd transfer matrices, defined as
 
 \begin{align}
 T_e &=\dmrgTransferMatrix{\Lambda^A}{\Gamma^A}{\Lambda^B}{\Gamma^B}{2} = \tensorIVcontraction{\Phi_e}{\Phi_e^\dagger}{}{}{}{}{2}   \\
@@ -470,15 +589,65 @@ The transfer matrices can be rescaled so that their largest eigenvalue becomes o
 \end{align}
 
 
-
-$$
-\tilde h_e = h_\text{even} - \langle e\rangle_\text{even} \\ 
-\tilde h_o = h_\text{odd} - \langle e\rangle_\text{odd}
-$$
+With these definitions we can now identify all the terms with the following tensor contractions. *Remember to use rescaled MPS (divided by $\eta$) everywhere!*
 
 
 
+\begin{align}
+\textbf{I}_a &= \frac{L}{2}\hspace{1em} \dmrgIa{\Lambda^A}{\Gamma^A}{\Lambda^B}{\Gamma^B}{l_e}{r_e}{h_\text{even}}{h_\text{even}}{2} \\
+\textbf{I}_b &= \frac{L}{2}\hspace{1em} \dmrgIc{\Lambda^A,\Gamma^A,\Lambda^B,\Gamma^B,l_e,r_e,h_\text{even},h_\text{even}, \sum_{n=0}^{L/2-1}(T_e)^n,2}\\
+\textbf{I}_c &= \frac{L}{2}\hspace{1em} \dmrgIc{\Lambda^B,\Gamma^B,\Lambda^A,\Gamma^A,l_o,r_o,h_\text{odd },h_\text{odd }, \sum_{n=0}^{L/2-1}(T_o)^n,2}
+\end{align}
+
+\begin{align}
+\textbf{II}_a &= \frac{L}{2}\hspace{1em}\dmrgIa{\Lambda^B}{\Gamma^B}{\Lambda^A}{\Gamma^A}{l_o}{r_o}{h_\text{odd }}{h_\text{odd }}{2} \\
+\textbf{II}_b &= \frac{L}{2}\hspace{1em}\dmrgIc{\Lambda^B,\Gamma^B,\Lambda^A,\Gamma^A,l_o,r_o,h_\text{odd },h_\text{odd }, \sum_{n=0}^{L/2-1}(T_o)^n,2}\\
+\textbf{II}_c &= \frac{L}{2}\hspace{1em}\dmrgIc{\Lambda^A,\Gamma^A,\Lambda^B,\Gamma^B,l_e,r_e,h_\text{even},h_\text{even}, \sum_{n=0}^{L/2-1}(T_e)^n,2}
+\end{align}
 
 
-### Variance from characteristic functions
+\begin{align}
+\textbf{III}_a &= \frac{L}{2}\hspace{1em}\dmrgIIIa{\Lambda^A}{\Gamma^A}{\Lambda^B}{\Gamma^B}{l_e}{r_o}{h_\text{even}}{h_\text{odd }}{2}\\
+\textbf{III}_b &= \frac{L}{2}\hspace{1em}\dmrgIIIb{\Lambda^B}{\Gamma^B}{\Lambda^A}{\Gamma^A}{l_o}{r_e}{h_\text{odd }}{h_\text{even}}{2}\\
+\textbf{III}_c &= \frac{L}{2}\hspace{1em}\dmrgIIIc{\Lambda^B,\Gamma^B,\Lambda^A,\Gamma^A,l_o,r_e,h_\text{odd },h_\text{even}, \sum_{n=0}^{L/2-1}(T_o)^n,2}\\
+\textbf{III}_d &= \frac{L}{2}\hspace{1em}\dmrgIIIc{\Lambda^A,\Gamma^A,\Lambda^B,\Gamma^B,l_e,r_o,h_\text{even},h_\text{odd }, \sum_{n=0}^{L/2-1}(T_e)^n,2}
+\end{align}
+
+\begin{align}
+\textbf{IV}_a &= \frac{L}{2}\hspace{1em}\dmrgIIIb{\Lambda^B}{\Gamma^B}{\Lambda^A}{\Gamma^A}{l_o}{r_e}{h_\text{odd }}{h_\text{even}}{2}\\
+\textbf{IV}_b &= \frac{L}{2}\hspace{1em}\dmrgIIIa{\Lambda^A}{\Gamma^A}{\Lambda^B}{\Gamma^B}{l_e}{r_o}{h_\text{even}}{h_\text{odd }}{2}\\
+\textbf{IV}_c &= \frac{L}{2}\hspace{1em}\dmrgIIIc{\Lambda^A,\Gamma^A,\Lambda^B,\Gamma^B,l_e,r_o,h_\text{even},h_\text{odd }, \sum_{n=0}^{L/2-1}(T_e)^n,2}\\
+\textbf{IV}_d &= \frac{L}{2}\hspace{1em}\dmrgIIIc{\Lambda^B,\Gamma^B,\Lambda^A,\Gamma^A,l_o,r_e,h_\text{odd },h_\text{even}, \sum_{n=0}^{L/2-1}(T_o)^n,2}
+\end{align}
+
+
+
+
+Note that series of the form $\sum_{n=0}^{L/2-1} (T)^n$ diverge as $L\rightarrow\infty$ due to having leading eigenvalue $1$. However, the divergent contribution can safely be discarded, according to the references, as they correspond to a constant (albeit infinite) offset to the Hamiltonian.
+
+To discard the divergent contribution we regularize the transfer matrix by subtracting the eigenvector corresponding to the leading eigenvalue, $\tilde T = T - |0 \rangle\langle 0|$, or in diagrammatic notation
+
+\begin{align}
+\tilde T_e = T_e -  \dmrgRightLeftEigenvectorProduct{l_e}{r_e}{2}\\
+\tilde T_o = T_o -  \dmrgRightLeftEigenvectorProduct{l_o}{r_o}{2}
+\end{align}
+
+The contribution from powers of $T^n$ decay fast with increasing $n$, so for large enough $L$ the sum can be approximated by an infinite geometric series:
+
+\begin{align}
+\sum_{n=0}^{L/2-1}(\tilde T)^n \approx \sum_{n=0}^{\infty}(\tilde T)^n = (1-\tilde T)^{-1},
+\end{align}
+
+where the last inverse can be safely computed due to the regularization.
+
+
+Finally we can collect the results from each term $\textbf{I-IV}$ to obtain the $\langle H^2\rangle$. Of course, since we are really after the per-site variance, we can leave out all the $L$ prefactors to get instead $\langle (h_\text{even} + h_\text{odd})^2 \rangle$. Then $\text{Var}(H)/L = \langle (h_\text{even} + h_\text{odd})^2 \rangle - \langle e \rangle^2$
+
+
+An additional simplification can be made if we work with reduced local Hamiltonians, where we've subtracted the current per-site energy from the diagonal:  $\tilde h_\text{even} = h_\text{even} - \langle \Phi_\text{even} | h_\text{even}| \Phi_\text{even} \rangle$ and similarly for $\tilde h_\text{even}$. Then the same diagrams above will directly give us the per-site variance, i.e. $\text{Var}(H)/L = \langle (\tilde h_\text{even} + \tilde h_\text{odd})^2 \rangle$.
+
+
+
+
+
 
