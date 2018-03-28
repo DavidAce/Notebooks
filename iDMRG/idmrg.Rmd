@@ -23,17 +23,18 @@ header-includes:
 
 ---
 
-In these notes I try to collect some definitions, details, tricks and resources that are useful when implementing the DMRG algorithm. In particular those that I would have liked to seen explained somewhere in more detail during the development of my program. In other words, I write in these notes what I've learned after having been stuck on details for longer than I care to admit, with the hope of not having to get stuck again if I revisit the steps later. 
+In these notes I try to collect some definitions, details, tricks and resources that are useful when implementing the DMRG algorithm. In particular those that I would have liked to seen explained somewhere in more detail during the development of my program. In other words, I write in these notes what I've learned after having been stuck on details for too long, with the hope of not having to rediscover the same steps if I ever forget.
 
 
-I loosely follows the steps in these articles
+For most of the implementation I loosely follows the steps and notation in these articles
 
 > [Schollwoeck, U. (2010). The density-matrix renormalization group in the age of matrix product states. Annals of Physics, 326(1), 96–192.](https://doi.org/10.1016/j.aop.2010.09.012)
 
 > [Kjäll, J. A., Zaletel, M. P., Mong, R. S. K., Bardarson, J. H. & Pollmann, F. Phase diagram of the anisotropic spin-2 XXZ model: Infinite-system density matrix renormalization group study. *Phys. Rev. B* **87,** 235106 (2013).](https://link.aps.org/doi/10.1103/PhysRevB.87.235106)
 
 
-but I begin by establishing some definitions and notation specific to my implementation.
+but I will begin by establishing some definitions and notation specific to my implementation.
+
 
 # Notation
 
@@ -529,8 +530,6 @@ Two important remarks are in order here
 
 
 
-
-
 ### Variance from local Hamiltonian
   > The method below will follow the steps given in 
 
@@ -650,4 +649,6 @@ An additional simplification can be made if we work with reduced local Hamiltoni
 
 
 
+
+![Comparison of three different ways to obtain the per-site energy and variance. Here is a simulation running for 60000 iDMRG steps, with $\chi = 10$. On the right side we note that the MPO method suffers from a delayed convergence. This is presumably due to the inaccurate energies and MPS contracted into the environments at the earliest stages of the simulation. Conversely, the other two methods make the explicit assumption of having an infinite system, and thus only depend on the current MPS.](./figures/VarianceComparison.png){ width=100% }
 
