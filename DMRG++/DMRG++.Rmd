@@ -228,6 +228,9 @@ S_E = - \sum_{k=1}^\chi \lambda_k^2 \ln \lambda_k^2.
 
 Discarding small $\lambda_k$ amounts to throwing away entanglement information. In practice one enforces an upper limit $\chi = \chi_{\text{max}}$ on the bond dimension.
 
+In general singular values are different from eigenvalues; singular values $\lambda_k$ are always positive, whereas eigenvalues $e_k$ can be complex. Furthermore the SVD decomposition is defined for rectangular matrices whereas the eigenvalue decomposition is only defined for square matrices. Nevertheless, for square Hermitian matrices the relationship is simply $\lambda_k = |e_k|$. 
+
+
 ## Properties of the entanglement spectrum
 The success of the DMRG algorithm for 1D systems relies on the observation that the singular values decay fast if the system is gapped, exponentially in fact, and can be discarded if they are below some threshold. See the figure from Pollmann's article.
 
@@ -389,14 +392,21 @@ Where we have enforced an upper limit on the bond dimension $\chi = \chi_\text{m
 
 
 \begin{align}
-\epsilon(\chi_\text{max}) = \sum_{k > \chi_\text{max}} \lambda_k =  1 - \sum_{k = 1}^{\chi_\text{max}} \lambda_k.
+\epsilon(\chi_\text{max}) = \sum_{k > \chi_\text{max}} \lambda_k^2 =  1 - \sum_{k = 1}^{\chi_\text{max}} \lambda_k^2.
 \end{align}
 
 
 
 
 ## Energy Variance
-The energy variance $\mathrm{Var}(H) = \langle (H - \langle H \rangle )^2\rangle = \langle H ^2\rangle - E^2$ signals how close a given MPS is to an eigenstate of the Hamiltonian, independently of implementation details, and as such it is a more robust alternative to the truncation error. The total variance is extensive, growing linearly with $L$, so in practice we want to measure the per-site variance $\mathrm{Var}(H) / L$, which should converge as $L\rightarrow\infty$.
+The energy variance $\mathrm{Var}(H) = \langle (H - \langle H \rangle )^2\rangle = \langle H ^2\rangle - E^2$ signals how close a given MPS is to an eigenstate of the Hamiltonian. This is evident considering the norm of the residue
+
+\begin{align}
+| \phi \rangle &= \hat H | \psi \rangle - E |\psi \rangle \\
+\langle \phi | \phi \rangle &= \langle \psi | \hat H^2 | \psi \rangle - E^2.
+\end{align}
+
+As opposed to the truncation error, this measure is independent of implementation details. The total variance is extensive, growing linearly with $L$, so in practice we want to measure the per-site variance $\mathrm{Var}(H) / L$, which should converge as $L\rightarrow\infty$.
 
 There are four ways to compute the energy variance of an MPS
 
@@ -557,7 +567,7 @@ We can compute the variance by calculating the series for the squared Hamiltonia
     &=\left\langle \left( \sum_{i \text{ even}}^L h_i\right) \left(\sum_{i' \text{ even}}^L h_{i'} \right)\right\rangle \text{\hspace{2cm}\textbf{I}}  \\
     &+\left\langle \left( \sum_{j \text{ odd }}^L h_j\right) \left(\sum_{j' \text{ odd }}^L h_{j'} \right)\right\rangle \text{\hspace{2cm}\textbf{II}} \\
     &+\left\langle \left( \sum_{i \text{ even}}^L h_i\right) \left(\sum_{j' \text{ odd }}^L h_{j'} \right)\right\rangle \text{\hspace{2cm}\textbf{III}}\\
-    &+\left\langle \left( \sum_{j \text{ odd }}^L h_i\right) \left(\sum_{i' \text{ even}}^L h_{i'} \right)\right\rangle \text{\hspace{2cm}\textbf{IV}}
+    &+\left\langle \left( \sum_{j \text{ odd }}^L h_j\right) \left(\sum_{i' \text{ even}}^L h_{i'} \right)\right\rangle \text{\hspace{2cm}\textbf{IV}}
 \end{align}
 
 Below, each term \textbf{I}-\textbf{IV} can be further decomposed into

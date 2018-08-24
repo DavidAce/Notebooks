@@ -1,0 +1,1270 @@
+%% Commands for tensor graphics using tikz.
+%% Last modified: 2013-10-11
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tensorgraphics}[2017/06/13 Tensor Graphics; provided by David Aceituno <aceituno@kth.se>]
+
+% Load required packages
+\usepackage{pgfplots,tikz}
+\usepackage{listofitems}
+\usetikzlibrary{positioning, calc}
+\pgfplotsset{compat=1.15}
+
+\newcommand{\leglen}{0.8em}
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	TENSOR 0 (Scalar)
+%----------------------------------------------------------------------------------------
+\newcommand{\tensorO}[1]{%name,
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,draw, fill=white,minimum width=1em, minimum height=1em, minimum height=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	TENSOR 1 (Vector)
+%----------------------------------------------------------------------------------------
+
+
+\newcommand{\tensorI}[2]{%name, i,
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,draw, fill=white,minimum width=1em, minimum height=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\draw (A.west) -- ++(-\leglen, 0     ) node [left] {$#2$};
+\end{tikzpicture}
+}
+
+\newcommand{\tensorIdual}[2]{%name, i
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,draw, fill=white,minimum width=1em, minimum height=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\draw (A.east) -- ++(\leglen, 0     ) node [right] {$#2$};
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	TENSOR 2 (Matrix)
+%----------------------------------------------------------------------------------------
+
+
+\newcommand{\tensorII}[3]{%name, i,j
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,draw,fill=white,minimum width=1em, minimum height=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\draw (A.west) -- ++(-\leglen, 0     ) node [left] {$#2$};
+\draw (A.east) -- ++( \leglen, 0     ) node [right] {$#3$};
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	TENSOR 3
+%----------------------------------------------------------------------------------------
+
+\newcommand{\tensorIII}[4]{%name, i,j,k
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1.5em,
+              inner sep=1mm, outer sep=0mm]
+\node[tensor] (A) at (0, 0)  {$#1$};
+\draw (A.south)-- ++(0     , -\leglen ) node [below] {$#2$};
+\draw (A.west) -- ++(-\leglen, 0     ) node [left] {$#3$};
+\draw (A.east) -- ++( \leglen, 0     ) node [right] {$#4$};
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	TENSOR 4
+%----------------------------------------------------------------------------------------
+
+\newcommand{\tensorIV}[5]{%name, i,j,k,l
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=2.2em,
+              inner sep=1mm, outer sep=0mm]
+  \node[tensor](A) at (0, 0){$#1$};
+  \draw (A.-135) -- ++(0  , -\leglen ) node [below] {$#2$};
+  \draw (A.-45)  -- ++(0  , -\leglen ) node [below] {$#3$};
+  \draw (A.west) -- ++(-\leglen, 0     ) node [above] {$#4$};
+  \draw (A.east) -- ++( \leglen, 0     ) node [above] {$#5$};
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	TENSOR N
+%----------------------------------------------------------------------------------------
+
+\newcommand{\tensorN}[6]{%name, i,j,k, N,spacing
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=5em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#6*}
+  \node[tensor](A) at (0, 0){$#1$};
+  \node (dots) at (A.-23)[yshift=-0.5em]{$...$};
+  \draw (A.-167) -- ++(0, -0.5*\factor\leglen ) node [below] {$#2$};
+  \draw (A.-155) -- ++(0, -0.5*\factor\leglen ) node [below] {$#3$};
+  \draw (A.-90 ) -- ++(0, -0.5*\factor\leglen ) node [below] {$#4$};
+  \draw (A.-12 ) -- ++(0, -0.5*\factor\leglen ) node [below] {$#5$};
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	TENSOR bipartition
+%----------------------------------------------------------------------------------------
+
+\newcommand{\tensorBP}[5]{%name, spinName, L, i,j,k, N
+\begin{tikzpicture}[baseline=-0.65ex]
+\usetikzlibrary{positioning, decorations.pathreplacing,angles,quotes}
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1.1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{dots}=[rectangle,
+              fill=white, minimum width=1em, minimum height=1.1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{2*}
+  \node[tensor](A1) at (0, 0){$#1^{i-1}$};
+  \draw (A1.west) -- ++(-\leglen,0) node (D1) [dots,xshift=-6mm] {$...$};
+  \draw (A1.east) -- ++(\factor\leglen,0) node (A2) [tensor] {$#1^{i}$};
+  \draw (A2.east) -- ++(\factor\leglen,0) node (A3) [tensor] {$#3$};
+  \draw (A3.east) -- ++(2*\factor\leglen,0) node (A4) [tensor] {$#1^{i+1}$};
+  \draw (A4.east) -- ++(2*\factor\leglen,0) node (A5) [tensor] {$#1^{i+2}$};  
+  \draw (A5.east) -- ++(\factor\leglen,0) node (D2) [dots,xshift=6mm] {$...$};
+  \draw[decoration={brace,mirror,raise=1.5em},decorate,thick] (D1.west) -- node[below=2em] {$|\phi\rangle_L$} (A2.east);
+  \draw[decoration={brace,mirror,raise=1.5em},decorate,thick] (A4.west) -- node[below=2em] {$|\phi\rangle_R$} (D2.east);
+  
+  \draw (A1.north) -- ++(0, \leglen ) node [above] {$#2_{i-1}$};  
+  \draw (A2.north) -- ++(0, \leglen ) node [above] {$#2_{i}$};
+  \draw (A4.north) -- ++(0, \leglen ) node [above] {$#2_{i+1}$};  
+  \draw (A5.north) -- ++(0, \leglen ) node [above] {$#2_{i+2}$};  
+  %\draw (B.east) -- ++(\leglen,0) node (dots) [xshift=6mm] {$...$};
+  %\draw [xshift=5mm](dots.east) -- ++(\leglen,0) node (N)[tensor, xshift=5mm] {$#3$};
+  %\draw (B.north) -- ++(0, \leglen ) node [above] {$#5$};
+  %\draw (N.north) -- ++(0, \leglen ) node [above] {$#5$};
+\end{tikzpicture}
+}
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	OPERATIONS
+%----------------------------------------------------------------------------------------
+
+
+
+%----------------------------------------------------------------------------------------
+%	Scalar Product
+%----------------------------------------------------------------------------------------
+\newcommand{\tensorIdottensorI}[2]{%nameI, nameII,
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,draw, fill=white,minimum width=1em, minimum height=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\draw (A.east) -- ++(\leglen, 0     ) node[tensor] [right]{$#2$};
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	Matrix Trace
+%----------------------------------------------------------------------------------------
+\newcommand{\tensorIITrace}[1]{%name
+\begin{tikzpicture}[baseline=-0.65ex]
+\usetikzlibrary{positioning, arrows, shapes}
+\tikzstyle{line} = [draw]
+\tikzstyle{tensor}=[rectangle,draw, fill=white,minimum width=1em, minimum height=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\draw (A.west) -- ++(-\leglen, 0     ) node (L){};
+\draw (A.east) -- ++( \leglen, 0     )	 node (R){};
+\draw (L.center) -- ++(0,  1em ) node (UL){};
+\draw (R.center) -- ++(0,  1em ) node (UR){};
+\draw (UL.center) -- (UR.center);
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	Partial Trace
+%----------------------------------------------------------------------------------------
+\newcommand{\tensorIIPartialtrace}[3]{%name, i, j
+\begin{tikzpicture}[baseline=-0.65ex]
+\usetikzlibrary{positioning, arrows, shapes}
+\tikzstyle{line} = [draw]
+
+\tikzstyle{tensor}=[rectangle,draw, fill=white,minimum width=1em, minimum height=1em,inner sep=1mm,outer sep=0]
+\node[tensor]  (A) at (0, 0) {$#1$};
+\draw (A.160) -- ++(-\leglen, 0     ) node (L){};
+\draw (A.20) -- ++( \leglen, 0     )	node (R){};
+\draw (L.center) -- ++(0,  0.8em ) node (UL){};
+\draw (R.center) -- ++(0,  0.8em ) node (UR){};
+\draw (UL.center) -- (UR.center);
+\draw (A.200) -- ++(-\leglen, 0     ) node (E){$#2$};
+\draw (A.340) -- ++( \leglen, 0     )	node (W){$#3$};
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	Tensor4 contraction
+%----------------------------------------------------------------------------------------
+\newcommand{\tensorIVcontraction}[7]{%name A, name B, i, j, k, l, spacing
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\usetikzlibrary{positioning, arrows, shapes}
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=2em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\newcommand{\factor}{#7*}
+\node[tensor]  (A) at (0,0) {$#1$};
+\node[tensor]  (B) at (0, -1.5*\factor\leglen){$#2$};
+\draw (A.-135) -- (A.-135 |- B.north);
+\draw (A.-45)  -- (A.-45  |- B.north);
+\draw (A.west) -- ++(-0.5*\factor\leglen, 0) node  [left]  (LA){$#3$};
+\draw (A.east) -- ++( 0.5*\factor\leglen, 0) node  [right] (RA){$#4$};
+\draw (B.west) -- ++(-0.5*\factor\leglen, 0) node  [left]  (LB){$#5$};
+\draw (B.east) -- ++( 0.5*\factor\leglen, 0) node  [right] (RB){$#6$};
+\end{tikzpicture}
+}
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	MPO
+%----------------------------------------------------------------------------------------
+
+\newcommand{\mpoI}[5]{% nameMPO, index1,index2,index3,index4
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \node[tensor](A) at (0, 0)[above]{$#1$};
+  \draw (A.west)  -- ++(-\leglen,0)  node [left] {$#2$};
+  \draw (A.east)  -- ++( \leglen,0)  node [right] {$#3$};
+  \draw (A.north) -- ++(0,  \leglen) node [above] {$#4$};
+  \draw (A.south) -- ++(0, -\leglen) node [below] {$#5$};
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	MPS
+%----------------------------------------------------------------------------------------
+
+
+\newcommand{\mps}[5]{% name, number of spins, physical index , left index, right index 
+	\tensorIII{#1^1}{#3_1}{#4}{\phantom{}}\hspace{-0.75cm}
+	\pgfmathsetmacro{\nexttolast}{#2-1}
+	\foreach \i in {2,...,\nexttolast}
+	{
+	\tensorIII{#1^\i}{#3_\i}{\phantom{}}{\phantom{}}\hspace{-0.65cm}
+	}
+	\tensorIII{#1^#2}{#3_#2}{\phantom{}}{#5}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	MPS 1,2....N, open boundary condition
+%----------------------------------------------------------------------------------------
+
+
+\newcommand{\mpsNobc}[7]{% name1, name2, nameN, i,j,n
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#7*}
+  \node[tensor](A1) at (0, 0){$#1$};
+  \draw (A1.east) -- ++(\factor\leglen,0) node (A2) [tensor] {$#2$};
+  \node[tensor] (AN) at ([xshift=2*\factor\leglen]A2.east) {$#3$};
+  \draw (A2.east) -- (AN.west) node[midway,fill=white, minimum width = 1.5em] (dots) {$...$};
+  \draw (A1.south) --++ (0, -0.5*\factor\leglen) node[below] {$#4$};
+  \draw (A2.south) --++ (0, -0.5*\factor\leglen) node[below]  {$#5$};
+  \draw (AN.south) --++ (0, -0.5*\factor\leglen) node[below]  {$#6$};
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	MPS, Vidal canonical form 1,2....N, open boundary condition
+%----------------------------------------------------------------------------------------
+
+
+\newcommand{\mpsVidalNobc}[6]{% nameGamma, nameLambda, nameSpin, nameN, i,j,n
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \node[tensor](G1) at (0, 0){$#1^1$};
+  \draw (G1.east) -- ++(\leglen+5mm,0) node (L1) [tensor] {$#2^1$};
+  \draw (L1.east) -- ++(\leglen+5mm,0) node (G2) [tensor] {$#1^2$};
+  \draw (G2.east) -- ++(\leglen+5mm,0) node (L2) [tensor] {$#2^2$};
+  \draw (L2.east) -- ++(\leglen,0) node (dots) [xshift=6mm] {$...$};
+  \draw (dots.east) -- ++(\leglen,0) node (GN)[tensor,xshift=4mm] {$#1^#4$};
+  \draw (G1.north) -- ++(0, \leglen ) node [above] {$#3_1$};
+  \draw (G2.north) -- ++(0, \leglen ) node [above] {$#3_2$};
+  \draw (GN.north) -- ++(0, \leglen ) node [above] {$#3_{#4}$};
+
+  %\draw (L1.east) -- ++(\leglen,0) node (dots) [xshift=5mm] {$...$};
+  %\draw [xshift=5mm](dots.east) -- ++(\leglen,0) node (N)[tensor, xshift=5mm] {$#3$};
+  %\draw (A.north) -- ++(0, \leglen ) node [above] {$#4$};
+  %\draw (B.north) -- ++(0, \leglen ) node [above] {$#5$};
+  %\draw (N.north) -- ++(0, \leglen ) node [above] {$#6$};
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	MPS, Vidal canonical form
+%----------------------------------------------------------------------------------------
+
+
+\newcommand{\mpsVidal}[6]{% nameIII,nameII, number of spins, physical index , left index, right index
+
+	\tensorIII{#1^1}{#4_1}{#5}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^1}{\phantom{}}{\phantom{}}\hspace{-0.8cm}
+	\pgfmathsetmacro{\nexttolast}{max(#3-1, 2)}
+	\foreach \i in {2,...,\nexttolast}
+	{
+	\tensorIII{#1^\i}{#4_\i}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^\i}{\phantom{}}{\phantom{}}\hspace{-0.7cm}
+	}
+	\tensorIII{#1^#3}{#4_#2}{\phantom{}}{#6}
+}
+
+%----------------------------------------------------------------------------------------
+%	MPS, Vidal canonical form PBC
+%----------------------------------------------------------------------------------------
+
+
+
+\newcommand{\mpsVidalPBC}[6]{% nameIII,nameII, number of spins, physical index , left index, right index
+
+	\tensorIII{#1^1}{#4_1}{#5}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^1}{\phantom{}}{\phantom{}}\hspace{-0.9cm}
+	\pgfmathsetmacro{\nexttolast}{max(#3-1, 2)}
+	\foreach \i in {2,...,\nexttolast}
+	{
+	\if \nexttolast > 2
+	  \tensorIII{#1^\i}{#4_\i}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	  \tensorII{#2^\i}{\phantom{}}{\phantom{}}\hspace{-0.9cm}
+	\fi
+	}
+	\tensorIII{#1^#3}{#4_#3}{\phantom{}}{\phantom{}}\hspace{-0.6cm}
+	\tensorII{#2^#3}{\phantom{}}{#6}
+
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two-site state
+%----------------------------------------------------------------------------------------
+
+
+
+\newcommand{\idmrgTwoSite}[3]{% nameA, nameL, nameB, 
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \node[tensor](A) at (0, 0){$#1$};
+  \draw (A.west) -- ++(-\leglen,0);
+  \draw (A.east) -- ++(\leglen+5mm,0) node (L) [tensor] {$#2$};
+  \draw (L.east) -- ++(\leglen+5mm,0) node (B) [tensor] {$#3$};
+  \draw (A.south) -- ++(0, -\leglen ) node [below] {};
+  \draw (B.south) -- ++(0, -\leglen ) node [below] {};
+  \draw (B.east) -- ++(\leglen,0);
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG contract environments, MPO and theta
+%----------------------------------------------------------------------------------------
+
+\newcommand{\idmrgMPO}[4]{% nameTheta, nameL, nameR, nameMPO, 
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=3.5em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \node[tensorIV] (theta) at (0,0) {$#1$};
+  \draw(theta.-150)  --++ (0, -1.5*\leglen) node (M1)[tensor] {$#4$};
+  \draw(theta.-30 )  --++ (0, -1.5*\leglen) node (M2)[tensor] {$#4$};
+
+
+  \draw (M1.west) -- ++ (-1.5*\leglen,0) node (L) [tensor] {$#2$};
+  \draw (M2.east) -- ++ ( 1.5*\leglen,0) node (R) [tensor] {$#3$};
+  \draw (M1.east) -- (M2.west);
+  \draw (theta.west) -| (L.north);
+  \draw (theta.east) -| (R.north);
+  \draw (M1.south) -- ++(0, -\leglen );
+  \draw (M2.south) -- ++(0, -\leglen );
+  \draw (L.south)  -- ++(0, -1.5*\leglen ) node (LS) {};
+  \draw (LS.center) -- ++(\leglen, 0);
+  \draw (R.south)   -- ++(0, -1.5*\leglen ) node (RS) {};
+  \draw (RS.center) -- ++(-\leglen, 0);
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	DMRG update environment left
+%----------------------------------------------------------------------------------------
+
+\newcommand{\idmrgContractLeft}[4]{% nameL, nameA, nameMPO, spacing
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#4*}
+  \node[tensor] (L) at (0,0) {$#1$};
+  \node[tensor] (AN) at (L)[xshift=\factor\leglen, yshift =  \factor\leglen] {$#2$};
+  \node[tensor] (AS) at (L)[xshift=\factor\leglen, yshift = -\factor\leglen] {${#2}^\dagger$};
+  \node[tensor] (M) at  (L)[xshift=\factor\leglen]                           {$#3$};
+  \draw (L.east) -- (M.west);
+  \draw (AN.south) -- (M.north);
+  \draw (AS.north) -- (M.south);
+  \draw (L.north) |- (AN.west);
+  \draw (L.south) |- (AS.west);
+  \draw (M.east) -- ++  (0.5*\factor\leglen,0);
+  \draw (AN.east) -- ++ (0.5*\factor\leglen,0);
+  \draw (AS.east) -- ++ (0.5*\factor\leglen,0);
+\end{tikzpicture}
+}
+\newcommand{\idmrgContractLeftVidal}[5]{% nameL, nameLB,nameGA, nameMPO, spacing
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#5*}
+  \node[tensor] (L) at (0,0) {$#1$};
+  \node[tensor] (LBN) at (L)  [xshift=\factor\leglen, yshift =  \factor\leglen] {$#2$};
+  \node[tensor] (GAN) at (LBN)[xshift=\factor\leglen] {$#3$};
+  \node[tensor] (LBS) at (L)  [xshift=\factor\leglen, yshift = -\factor\leglen] {$#2$};
+  \node[tensor] (GAS) at (LBS)[xshift=\factor\leglen] {${#3}^\dagger$};
+ 	\draw (GAN) -- (GAS) node[tensor,midway] (M) {$#4$};
+  \draw (L.east) -- (M.west);
+  \draw (GAN.south) -- (M.north);
+  \draw (GAS.north) -- (M.south);
+  \draw (L.north) |- (LBN.west);
+  \draw (L.south) |- (LBS.west);
+  \draw (LBN.east) -- (GAN.west);
+  \draw (LBS.east) -- (GAS.west);
+  \draw (M.east) -- ++   (0.5*\factor\leglen,0);
+  \draw (GAN.east) -- ++ (0.5*\factor\leglen,0);
+  \draw (GAS.east) -- ++ (0.5*\factor\leglen,0);
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	DMRG environment left
+%----------------------------------------------------------------------------------------
+
+\newcommand{\idmrgLeft}[2]{% nameL, spacing
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#2*}
+  \node[tensor] (L) at (0,0) {$#1$};
+  \draw (L.east) -- ++ (0.5*\factor\leglen,0) node (LE){} ;
+  \draw [yshift=-0.5*\factor\leglen](L.north) |- ++ (LE.north) ;
+  \draw [yshift= 0.5*\factor\leglen](L.south) |- ++ (LE.south);
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	DMRG update environment right
+%----------------------------------------------------------------------------------------
+
+\newcommand{\idmrgContractRight}[4]{% nameL, nameA, nameMPO, spacing 
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#4*}
+  \node[tensor] (R) at (0,0) {$#1$};
+  \node[tensor] (BN) at (R)[xshift=-\factor\leglen, yshift =  \factor\leglen] {$#2$};
+  \node[tensor] (BS) at (R)[xshift=-\factor\leglen, yshift = -\factor\leglen] {$#2$};
+  \node[tensor] (M) at  (R)[xshift=-\factor\leglen]                           {$#3$};
+  \draw (R.west) -- (M.east);
+  \draw (BN.south) -- (M.north);
+  \draw (BS.north) -- (M.south);
+  \draw (R.north) |- (BN.east);
+  \draw (R.south) |- (BS.east);
+  \draw (M.west) -- ++  (-0.5*\factor\leglen,0);
+  \draw (BN.west) -- ++ (-0.5*\factor\leglen,0);
+  \draw (BS.west) -- ++ (-0.5*\factor\leglen,0);
+\end{tikzpicture}
+}
+
+\newcommand{\idmrgContractRightVidal}[5]{% nameL, nameGB, nameLB, nameMPO, spacing
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#5*}
+  \node[tensor] (R) at (0,0) {$#1$};
+  \node[tensor] (LBN) at (R)  [xshift=-\factor\leglen, yshift =  \factor\leglen] {$#3$};
+  \node[tensor] (GBN) at (LBN)[xshift=-\factor\leglen] {$#2$};
+  \node[tensor] (LBS) at (R)  [xshift=-\factor\leglen, yshift = -\factor\leglen] {$#3$};
+  \node[tensor] (GBS) at (LBS)[xshift=-\factor\leglen] {${#2}^\dagger$};
+ 	\draw (GBN) -- (GBS) node[tensor,midway] (M) {$#4$};
+  \draw (R.west) -- (M.east);
+  \draw (GBN.south) -- (M.north);
+  \draw (GBS.north) -- (M.south);
+  \draw (R.north) |- (LBN.east);
+  \draw (R.south) |- (LBS.east);
+  \draw (GBN.east) -- (LBN.west);
+  \draw (GBS.east) -- (LBS.west);
+  \draw (M.west) -- ++  (-0.5*\factor\leglen,0);
+  \draw (GBN.west) -- ++ (-0.5*\factor\leglen,0);
+  \draw (GBS.west) -- ++ (-0.5*\factor\leglen,0);
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG environment right
+%----------------------------------------------------------------------------------------
+
+\newcommand{\idmrgRight}[2]{% nameL, spacing
+\begin{tikzpicture}[baseline=-0.65ex]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#2*}
+  \node[tensor] (R) at (0,0) {$#1$};
+  \draw (R.west) -- ++ (-0.5*\factor\leglen,0) node (RW){} ;
+  \draw [yshift=-0.5*\factor\leglen](R.north) |- ++ (RW.north) ;
+  \draw [yshift= 0.5*\factor\leglen](R.south) |- ++ (RW.south);
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG expectation value energy
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgTwoSiteEnergy}[8]{% nameLA,nameGA,nameLB,nameGB,nameL, nameR, nameMPO, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#8*}
+  \node[tensor] (LBl) at (0,0) {$#3$};
+  \draw (LBl.east) --++ (\factor\leglen, 0) node (GA) [tensor] {$#2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA)[tensor] {$#1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$#4$};
+  \draw (GB.east) --++  (\factor\leglen, 0) node (LBr)[tensor] {$#3$};
+  \draw (GA.south) -- ++ (0,-\factor\leglen) node (M1) [tensor] {$#7$};
+  \draw (GB.south) -- ++ (0,-\factor\leglen) node (M2) [tensor] {$#7$};
+  \draw (M1.east) -- (M2.west);
+  \draw (M1.south) -- ++ (0,-\factor\leglen) node (GAc) [tensor] {${#2}^\dagger$};
+  \draw (M2.south) -- ++ (0,-\factor\leglen) node (GBc) [tensor] {${#4}^\dagger$};
+	\draw (GAc) -- (GBc) node[tensor,midway] (LAc) {$#1$};
+  \node (LBlc) [tensor] at (GAc -| LBl) {$#3$} ;
+  \node (LBrc) [tensor] at (GBc -| LBr) {$#3$};
+  \draw (GBc.east) -- (LBrc.west);
+  \draw (GAc.west) -- (LBlc.east);
+  
+  \node (L) [tensor, xshift=-\leglen] at (LBl.west |- M1.west) {$#5$};
+  \draw (L.north) |- (LBl.west);
+  \draw (L.east)  -- (M1.west);
+  \draw (L.south) |- (LBlc.west);
+
+  \node (R) [tensor, xshift=\leglen]  at (LBr.east |- M2.east) {$#6$};
+  \draw (R.north) |- (LBr.east);
+  \draw (R.west)  -- (M2.east);
+  \draw (R.south) |- (LBrc.east);
+
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG expectation value energy
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgLRcontraction}[4]{% nameLA,nameL, nameR, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#4*}
+  \node[tensor] (L)   at (0,0) {$#2$};
+  \node[tensor] (R)   at (3*\factor\leglen,0) {$#3$};
+  
+  \draw (L.east) -- (R.west) node [tensor,midway,yshift=-\factor\leglen](LAS){$#1$};
+  \draw (L.east) -- (R.west) node [tensor,midway,yshift= \factor\leglen](LAN){$#1$};
+  \draw (L.north) |- (LAN.west) (LAN.east) -| (R.north);
+  \draw (L.south) |- (LAS.west) (LAS.east) -| (R.south);
+  %node[tensor,midway] (LA) {$#1$}
+  %\draw (L.north)   |-  (\factor\leglen,\factor\leglen) node (LAN)[tensor]{$#1$};
+  %\draw (L.south)   |-  (\factor\leglen,\factor\leglen) node (LAN)[tensor]{$#1$};
+
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG energy variance using two layers of MPO's
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgTwoSiteVariance}[8]{% nameLA,nameGA,nameLB,nameGB,nameL, nameR, nameMPO, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#8*}
+  \node[tensor] (LBl) at (0,0) {$#3$};
+  \draw (LBl.east) --++ (\factor\leglen, 0) node (GA) [tensor] {$#2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA)[tensor] {$#1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$#4$};
+  \draw (GB.east) --++  (\factor\leglen, 0) node (LBr)[tensor] {$#3$};
+  
+  
+  \draw (GA.south) -- ++ (0,-\factor\leglen) node (M1n) [tensor] {$#7$};
+  \draw (GB.south) -- ++ (0,-\factor\leglen) node (M2n) [tensor] {$#7$};
+  \draw (M1n.south) -- ++ (0,-\factor\leglen) node (M1s) [tensor] {$#7$};
+  \draw (M2n.south) -- ++ (0,-\factor\leglen) node (M2s) [tensor] {$#7$};
+  
+  \draw (M1n.east) -- (M2n.west);
+  \draw (M1s.east) -- (M2s.west);
+
+  \draw (M1s.south) -- ++ (0,-\factor\leglen) node (GAc) [tensor] {${#2}^\dagger$};
+  \draw (M2s.south) -- ++ (0,-\factor\leglen) node (GBc) [tensor] {${#4}^\dagger$};
+	\draw (GAc) -- (GBc) node[tensor,midway] (LAc) {$#1$};
+  \node (LBlc) [tensor] at (GAc -| LBl) {$#3$} ;
+  \node (LBrc) [tensor] at (GBc -| LBr) {$#3$};
+  \draw (GBc.east) -- (LBrc.west);
+  \draw (GAc.west) -- (LBlc.east);
+  \draw (LBl.west) -|  ($ ([xshift=-\leglen]LBl.west)!.5!([xshift=-\leglen]LBlc.west) $) node [tensor, minimum height=3em] (L2){${#5}$} |- (LBlc.west);
+  \draw (LBr.east) -|  ($ ([xshift= \leglen]LBr.east)!.5!([xshift= \leglen]LBrc.east) $) node [tensor, minimum height=3em] (R2){${#6}$} |- (LBrc.east);
+
+  \draw (M1n) -- (M1n-|L2.east);
+  \draw (M2n) -- (M2n-|R2.west);
+  \draw (M1s) -- (M1s-|L2.east);
+  \draw (M2s) -- (M2s-|R2.west);
+
+
+\end{tikzpicture}
+}
+
+
+
+\newcommand{\dmrgLLRRcontraction}[4]{% nameLA,nameL, nameR, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#4*}
+  \node[tensor,minimum height=2em] (L)   at (0,0) {$#2$};
+  \node[tensor,minimum height=2em] (R)   at (3*\factor\leglen,0) {$#3$};
+  
+  %\draw (L.north east) -- (R.north west) node [tensor,midway,yshift=-\factor\leglen](LAS){$#1$};
+  %\draw (L.south east) -- (R.south west) node [tensor,midway,yshift= \factor\leglen](LAN){$#1$};
+  
+  \draw (L.north) |-  ($ ([yshift= \factor\leglen]L)!.5!([yshift= \factor\leglen]R) $) node [tensor](LAN) {$#1$} -| (R.north);
+  \draw (L.south) |-  ($ ([yshift=-\factor\leglen]L)!.5!([yshift=-\factor\leglen]R) $) node [tensor](LAS) {$#1$} -| (R.south);
+  \draw (L. 30) -- (L.150 -|R.west);
+  \draw (L.-30) -- (L.210 -|R.west);
+
+\end{tikzpicture}
+}
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two-site transfer matrix 
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgTransferMatrix}[5]{% nameLA,nameGA,nameLB,nameGB,nameL, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#5*}
+  \node[tensor] (LB) at (0,0) {$#3$};
+  \draw (LB.east) --++  (\factor\leglen, 0) node (GA) [tensor] {$#2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA) [tensor] {$#1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$#4$};
+  \draw (GB.east) --++  (0.5*\factor\leglen, 0);
+  \draw (LB.west) --++  (-0.5*\factor\leglen, 0);
+
+  \draw (GA.south) -- ++ (0,-\factor\leglen) node (GAs) [tensor] {${#2}^\dagger$};
+  \draw (GB.south) -- ++ (0,-\factor\leglen) node (GBs) [tensor] {${#4}^\dagger$};
+
+	\draw (GAs) -- (GBs) node[tensor,midway] (LAs) {$#1$};
+  \node (LBs) [tensor] at (GAs -| LB) {$#3$} ;
+  \draw (GAs.west) -- (LBs.east);
+  \draw (GBs.east) --++  (0.5*\factor\leglen, 0);
+  \draw (LBs.west) --++  (-0.5*\factor\leglen, 0);
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	DMRG two-site transfer matrix with evolved upper side
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgTransferMatrixEvolved}[5]{% nameLA,nameGA,nameLB,nameGB,nameL, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#5*}
+  \node[tensor] (LB) at (0,0) {$\tilde #3$};
+  \draw (LB.east) --++  (\factor\leglen, 0) node (GA) [tensor] {$\tilde #2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA) [tensor] {$\tilde #1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$\tilde #4$};
+  \draw (GB.east) --++  (0.5*\factor\leglen, 0);
+  \draw (LB.west) --++  (-0.5*\factor\leglen, 0);
+
+  \draw (GA.south) -- ++ (0,-\factor\leglen) node (GAs) [tensor] {${#2}^\dagger$};
+  \draw (GB.south) -- ++ (0,-\factor\leglen) node (GBs) [tensor] {${#4}^\dagger$};
+
+	\draw (GAs) -- (GBs) node[tensor,midway] (LAs) {$#1$};
+  \node (LBs) [tensor] at (GAs -| LB) {$#3$} ;
+  \draw (GAs.west) -- (LBs.east);
+  \draw (GBs.east) --++  (0.5*\factor\leglen, 0);
+  \draw (LBs.west) --++  (-0.5*\factor\leglen, 0);
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two-site transfer matrix sandwishing an operator
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgTransferMatrixOperator}[6]{% nameLA,nameGA,nameLB,nameGB,nameO, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#6*}
+  \node[tensor] (LB) at (0,0) {$#3$};
+  \draw (LB.east) --++  (\factor\leglen, 0) node (GA) [tensor] {$#2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA) [tensor] {$#1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$#4$};
+  \draw (GB.east) --++  (0.5*\factor\leglen, 0);
+  \draw (LB.west) --++  (-0.5*\factor\leglen, 0);
+
+  \draw (GA.south) -- ++ (0,-2*\factor\leglen) node (GAs) [tensor] {${#2}^\dagger$};
+  \draw (GB.south) -- ++ (0,-2*\factor\leglen) node (GBs) [tensor] {${#4}^\dagger$};
+
+	\draw (GAs) -- (GBs) node[tensor,midway] (LAs) {$#1$};
+  \node (LBs) [tensor] at (GAs -| LB) {$#3$} ;
+  \draw (GAs.west) -- (LBs.east);
+  \draw (GBs.east) --++  (0.5*\factor\leglen, 0);
+  \draw (LBs.west) --++  (-0.5*\factor\leglen, 0);
+  
+  \node [tensor] at ($ (GA)!0.5!(GAs) $) (O1) {$#5$};
+  \node [tensor] at ($ (GB)!0.5!(GBs) $) (O2) {$#5$};
+
+  
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two-site transfer matrix left eigenvector
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgTransferMatrixLeft}[6]{% nameLA,nameGA,nameLB,nameGB,nameL, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#6*}
+  \node[tensor] (LB) at (0,0) {$#3$};
+  \draw (LB.east) --++  (\factor\leglen, 0) node (GA) [tensor] {$#2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA) [tensor] {$#1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$#4$};
+  \draw (GB.east) --++  (0.5*\factor\leglen, 0);
+  
+  \draw (GA.south) -- ++ (0,-\factor\leglen) node (GAs) [tensor] {${#2}^\dagger$};
+  \draw (GB.south) -- ++ (0,-\factor\leglen) node (GBs) [tensor] {${#4}^\dagger$};
+
+	\draw (GAs) -- (GBs) node[tensor,midway] (LAs) {$#1$};
+  \node (LBs) [tensor] at (GAs -| LB) {$#3$} ;
+  \draw (GAs.west) -- (LBs.east);
+  \draw (GBs.east) --++  (0.5*\factor\leglen, 0);
+
+  \draw (LB.west) -|  ($ ([xshift=-\factor\leglen]LB.west)!.5!([xshift=-\factor\leglen]LBs.west) $) node [tensor] (L){${#5}$} |- (LBs.west);
+
+
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two-site transfer matrix right eigenvector
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgTransferMatrixRight}[6]{% nameLA,nameGA,nameLB,nameGB,nameR, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#6*}
+  \node[tensor] (LB) at (0,0) {$#3$};
+  \draw (LB.east) --++  (\factor\leglen, 0) node (GA) [tensor] {$#2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA) [tensor] {$#1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$#4$};
+  \draw (LB.west) --++  (-0.5*\factor\leglen, 0);
+  
+  \draw (GA.south) -- ++ (0,-\factor\leglen) node (GAs) [tensor] {${#2}^\dagger$};
+  \draw (GB.south) -- ++ (0,-\factor\leglen) node (GBs) [tensor] {${#4}^\dagger$};
+
+	\draw (GAs) -- (GBs) node[tensor,midway] (LAs) {$#1$};
+  \node (LBs) [tensor] at (GAs -| LB) {$#3$} ;
+  \draw (GAs.west) -- (LBs.east);
+  \draw (LBs.west) --++  (-0.5*\factor\leglen, 0);
+
+  \draw (GB.east) -|  ($ ([xshift=\factor\leglen]GB.east)!.5!([xshift=\factor\leglen]GBs.east) $) node [tensor] (R){${#5}$} |- (GBs.east);
+
+
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG eigenvector left
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgLeftEigenvector}[2]{% nameL, spacing
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#2*}
+  \node[tensor] (L) at (0,0) {$#1$};
+  \node at ([xshift=0.5*\factor\leglen]L.east) (LE){} ;
+  \draw (L.north) |- ++ ([yshift= 0.5*\factor\leglen]LE.west) ;
+  \draw (L.south) |- ++ ([yshift=-0.5*\factor\leglen]LE.west);
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	DMRG eigenvector right
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgRightEigenvector}[2]{% nameR, spacing
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#2*}
+  \node[tensor] (R) at (0,0) {$#1$};
+  \node at ([xshift=-0.5*\factor\leglen]L.west) (LW){} ;
+  \draw (L.north) |- ++ ([yshift= 0.5*\factor\leglen]LW.east) ;
+  \draw (L.south) |- ++ ([yshift=-0.5*\factor\leglen]LW.east);
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG dominant eigenvector left/right contraction
+%----------------------------------------------------------------------------------------
+\newcommand{\dmrgLeftRightEigenvectorNormalization}[3]{% nameL, nameR, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIV}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+\tikzstyle{tensorIII}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#3*}
+  \node[tensor] (L)   at (0,0) {$#1$};
+  \node[tensor] (R)   at (2*\factor\leglen,0) {$#2$};
+  \draw (L.north) |-  ($ ([yshift= \factor\leglen]L)!.5!([yshift= \factor\leglen]R) $) -| (R.north);
+  \draw (L.south) |-  ($ ([yshift=-\factor\leglen]L)!.5!([yshift=-\factor\leglen]R) $) -| (R.south);
+
+
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG eigenvector right/left contraction
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgRightLeftEigenvectorProduct}[3]{% nameL, nameR, spacing
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1.5em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#3*}
+  \node[tensor] (R) at (-0.5*\factor\leglen,0) {$#2$};
+  \draw (R.north) |- ++ ([yshift= 0.5*\factor\leglen]R.west);
+  \draw (R.south) |- ++ ([yshift=-0.5*\factor\leglen]R.west);
+  
+  \node[tensor] (L) at (0.5*\factor\leglen,0) {$#1$};
+  \draw (L.north) |- ++ ([yshift= 0.5*\factor\leglen]L.east);
+  \draw (L.south) |- ++ ([yshift=-0.5*\factor\leglen]L.east);
+\end{tikzpicture}
+}
+
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two sites contracted with local hamiltonian. Term "I_a".
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgIa}[9]{% nameLA,nameGA,nameLB,nameGB,nameL,nameR,nameH1, nameH2, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#9*}
+  \node[tensor] (LB) at (0,0) {$#3$};
+  \draw (LB.east) --++  (\factor\leglen, 0) node (GA) [tensor] {$#2$};
+  \draw (GA.east) --++  (\factor\leglen, 0) node (LA) [tensor] {$#1$};
+  \draw (LA.east) --++  (\factor\leglen, 0) node (GB) [tensor] {$#4$};
+  
+  \node [tensor] (LBs) at (0,-3.5*\factor\leglen) {$#3$};
+  \draw (LBs.east) --++  (\factor\leglen, 0) node (GAs) [tensor] {${#2}^\dagger$};
+  \draw (GAs.east) --++  (\factor\leglen, 0) node (LAs) [tensor] {$#1$};
+  \draw (LAs.east) --++  (\factor\leglen, 0) node (GBs) [tensor] {${#4}^\dagger$};
+
+  \path let \p1=(GA.west), \p2=(GB.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LA)!0.35!(LAs) $) (H1) {$#7$};
+  \path let \p1=(GA.west), \p2=(GB.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LA)!0.65!(LAs) $) (H2) {$#7$};
+
+  \draw (LB.west) -|  ($ ([xshift=-\factor\leglen]LB.west)!.5!([xshift=-\factor\leglen]LBs.west) $) node [tensor] (L){${#5}$} |- (LBs.west);
+  \draw (GB.east) -|  ($ ([xshift= \factor\leglen]GB.east)!.5!([xshift= \factor\leglen]GBs.east) $) node [tensor] (R){${#6}$} |- (GBs.east);
+  
+  
+  \draw(GA.south) |- (GA.south |- H1.north);
+  \draw(GB.south) |- (GB.south |- H1.north);
+  
+  \draw(GA.south) |- (GA.south |- H1.north);
+  \draw(GB.south) |- (GB.south |- H1.north);
+  
+  \draw(GAs.north) |- (GAs.north |- H2.south);
+  \draw(GBs.north) |- (GBs.north |- H2.south);
+  
+  \draw(H1.south) -| (H2.north -| GA.south);
+  \draw(H1.south) -| (H2.north -| GB.south);
+
+\end{tikzpicture}
+}
+
+%----------------------------------------------------------------------------------------
+%	DMRG two sites contracted with local hamiltonian. Term "I_c". This is the one computed using pseudoinverse
+%----------------------------------------------------------------------------------------
+\newcommand{\dmrgIc}[1]{% nameLA,nameGA,nameLB,nameGB,nameL,nameR,nameH1, nameH2, nameE , spacing (around 2 is good)
+\readlist*\args{#1}
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{\args[10]*}
+  
+  % Left side
+  \node[tensor] (LBl) at (0,0) {$\args[3]$};
+  \draw (LBl.east) --++  (\factor\leglen, 0) node (GAl) [tensor] {$\args[2]$};
+  \draw (GAl.east) --++  (\factor\leglen, 0) node (LAl) [tensor] {$\args[1]$};
+  \draw (LAl.east) --++  (\factor\leglen, 0) node (GBl) [tensor] {$\args[4]$};
+  
+  \node [tensor] (LBsl) at (0,-3.5*\factor\leglen) {$\args[3]$};
+  \draw (LBsl.east) --++  (\factor\leglen, 0) node (GAsl) [tensor] {${\args[2]}^\dagger$};
+  \draw (GAsl.east) --++  (\factor\leglen, 0) node (LAsl) [tensor] {$\args[1]$};
+  \draw (LAsl.east) --++  (\factor\leglen, 0) node (GBsl) [tensor] {${\args[4]}^\dagger$};
+  \path let \p1=(GAl.west), \p2=(GB.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LAl)!0.5!(LAsl) $) (H1) {$\args[7]$};
+  \draw (LBl.west) -|  ($ ([xshift=-\factor\leglen]LBl.west)!.5!([xshift=-\factor\leglen]LBsl.west) $) node [tensor] (L){${\args[5]}$} |- (LBsl.west);
+  \draw(GAl.south) |- (GAl.south |- H1.north);
+  \draw(GBl.south) |- (GBl.south |- H1.north);
+  \draw(GAsl.north) |- (GAsl.north |- H1.south);
+  \draw(GBsl.north) |- (GBsl.north |- H1.south);
+  
+
+  %Right side
+
+  \node[tensor] (LBr) at (14*\factor\leglen,0) {$\args[3]$};
+  \draw (LBr.east) --++  (\factor\leglen, 0) node (GAr) [tensor] {$\args[2]$};
+  \draw (GAr.east) --++  (\factor\leglen, 0) node (LAr) [tensor] {$\args[1]$};
+  \draw (LAr.east) --++  (\factor\leglen, 0) node (GBr) [tensor] {$\args[4]$};
+  
+  \node [tensor] (LBsr) at (LBr |- GBsl) {$\args[3]$};
+  \draw (LBsr.east) --++  (\factor\leglen, 0) node (GAsr) [tensor] {${\args[2]}^\dagger$};
+  \draw (GAsr.east) --++  (\factor\leglen, 0) node (LAsr) [tensor] {$\args[1]$};
+  \draw (LAsr.east) --++  (\factor\leglen, 0) node (GBsr) [tensor] {${\args[4]}^\dagger$};
+  \path let \p1=(GAr.west), \p2=(GBr.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LAr)!0.5!(LAsr) $) (H2) {$\args[7]$};
+ 
+  \draw (GBr.east) -|  ($ ([xshift= \factor\leglen]GBr.east)!.5!([xshift= \factor\leglen]GBsr.east) $) node [tensor] (R){${\args[6]}$} |- (GBsr.east);
+  \draw(GAr.south) |- (GAr.south |- H2.north);
+  \draw(GBr.south) |- (GBr.south |- H2.north);
+  \draw(GAsr.north) |- (GAsr.north |- H2.south);
+  \draw(GBsr.north) |- (GBsr.north |- H2.south);
+  
+  
+  % Middle
+  \path let \p1=([xshift= 2*\factor\leglen]GBl.north east),
+            \p2=([xshift=-2*\factor\leglen]LBsr.south west)
+            in node [tensor, minimum width=\x2-\x1-\pgflinewidth, minimum height=\y1-\y2-\pgflinewidth ]
+            at ($ (\p1)!0.5!(\p2) $)  (E) {$\args[9]$};
+  
+  \draw (E.north west |- GBl.east)  -- (GBl.east);
+  \draw (E.south west |- GBsl.east) -- (GBsl.east);
+  \draw (E.north east |- LBr.west)  -- (LBr.west);
+  \draw (E.south east |- LBsr.west) -- (LBsr.west);
+  
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two sites contracted with local hamiltonian. Term "III_c". This is the one computed using pseudoinverse and an extra half transfer matrix.
+%----------------------------------------------------------------------------------------
+\newcommand{\dmrgIIIc}[1]{% nameLA,nameGA,nameLB,nameGB,nameL,nameR,nameH1, nameH2, nameE , spacing (around 2 is good)
+\readlist*\args{#1}
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{\args[10]*}
+  
+  % Left side
+  \node[tensor] (LBl) at (0,0) {$\args[3]$};
+  \draw (LBl.east) --++  (\factor\leglen, 0) node (GAl) [tensor] {$\args[2]$};
+  \draw (GAl.east) --++  (\factor\leglen, 0) node (LAl) [tensor] {$\args[1]$};
+  \draw (LAl.east) --++  (\factor\leglen, 0) node (GBl) [tensor] {$\args[4]$};
+  
+  \node [tensor] (LBsl) at (0,-3.5*\factor\leglen) {$\args[3]$};
+  \draw (LBsl.east) --++  (\factor\leglen, 0) node (GAsl) [tensor] {${\args[2]}^\dagger$};
+  \draw (GAsl.east) --++  (\factor\leglen, 0) node (LAsl) [tensor] {$\args[1]$};
+  \draw (LAsl.east) --++  (\factor\leglen, 0) node (GBsl) [tensor] {${\args[4]}^\dagger$};
+  \path let \p1=(GAl.west), \p2=(GB.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LAl)!0.5!(LAsl) $) (H1) {$\args[7]$};
+  \draw (LBl.west) -|  ($ ([xshift=-\factor\leglen]LBl.west)!.5!([xshift=-\factor\leglen]LBsl.west) $) node [tensor] (L){${\args[5]}$} |- (LBsl.west);
+  \draw(GAl.south) |- (GAl.south |- H1.north);
+  \draw(GBl.south) |- (GBl.south |- H1.north);
+  \draw(GAsl.north) |- (GAsl.north |- H1.south);
+  \draw(GBsl.north) |- (GBsl.north |- H1.south);
+  
+
+  %Right side
+
+  \node[tensor] (LB1r) at (12*\factor\leglen,0) {$\args[3]$};
+  \draw (LB1r.east) --++  (\factor\leglen, 0) node (GA1r) [tensor] {$\args[2]$};
+  \draw (GA1r.east) --++  (\factor\leglen, 0) node (LAr) [tensor] {$\args[1]$};
+  \draw (LAr.east) --++   (\factor\leglen, 0) node (GBr) [tensor] {$\args[4]$};
+  \draw (GBr.east) --++   (\factor\leglen, 0) node (LBr) [tensor] {$\args[3]$};
+  \draw (LBr.east) --++   (\factor\leglen, 0) node (GAr) [tensor] {$\args[2]$};
+
+  
+  \node [tensor] (LB1sr) at (LB1r |- GBsl) {$\args[1]$};
+  \draw (LB1sr.east) --++  (\factor\leglen, 0) node (GA1sr) [tensor] {${\args[2]}^\dagger$};
+  \draw (GA1sr.east) --++  (\factor\leglen, 0) node (LAsr) [tensor]  {$\args[1]$};
+  \draw (LAsr.east) --++   (\factor\leglen, 0) node (GBsr) [tensor] {${\args[4]}^\dagger$};
+  \draw (GBsr.east) --++   (\factor\leglen, 0) node (LBsr) [tensor] {$\args[3]$};
+  \draw (LBsr.east) --++   (\factor\leglen, 0) node (GAsr) [tensor] {${\args[2]}^\dagger$};
+  
+  
+  \path let \p1=(GBr.west), \p2=(GAr.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LBr)!0.5!(LBsr) $) (H2) {$\args[7]$};
+ 
+  \draw (GAr.east) -|  ($ ([xshift= \factor\leglen]GAr.east)!.5!([xshift= \factor\leglen]GAsr.east) $) node [tensor] (R){${\args[6]}$} |- (GAsr.east);
+  
+  \draw(GA1r.south)|- (GA1r.south |- GA1sr.north);
+  \draw(GBr.south) |- (GBr.south |- H2.north);
+  \draw(GAr.south) |- (GAr.south |- H2.north);
+  \draw(GBsr.north) |- (GBsr.north |- H2.south);
+  \draw(GAsr.north) |- (GAsr.north |- H2.south);
+
+  % Middle
+  \path let \p1=([xshift= \factor\leglen]GBl.north east),
+            \p2=([xshift=-\factor\leglen]LB1sr.south west)
+            in node [tensor, minimum width=\x2-\x1-\pgflinewidth, minimum height=\y1-\y2-\pgflinewidth ]
+            at  ($ (\p1)!0.5!(\p2) $)  (E) {$\args[9]$};
+  
+  \draw (E.north west |- GBl.east)    -- (GBl.east);
+  \draw (E.south west |- GBsl.east)   -- (GBsl.east);
+  \draw (E.north east |- LB1r.west)   -- (LB1r.west);
+  \draw (E.south east |- LB1sr.west)  -- (LB1sr.west);
+  
+\end{tikzpicture}
+}
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two sites contracted with local hamiltonian with offset 1. Term "III_a".
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgIIIa}[9]{% nameLA,nameGA,nameLB,nameGB,nameL,nameR,nameH1, nameH2, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#9*}
+  \node[tensor] (LB1) at (0,0) {$#3$};
+  \draw (LB1.east) --++  (\factor\leglen, 0) node (GA1) [tensor] {$#2$};
+  \draw (GA1.east) --++  (\factor\leglen, 0) node (LA)  [tensor] {$#1$};
+  \draw (LA.east)  --++  (\factor\leglen, 0) node (GB)  [tensor] {$#4$};
+  \draw (GB.east)  --++  (\factor\leglen, 0) node (LB2) [tensor] {$#3$};
+  \draw (LB2.east) --++  (\factor\leglen, 0) node (GA2) [tensor] {$#2$};
+
+  \node [tensor] (LB1s) at (0,-3.5*\factor\leglen) {$#3$};
+  \draw (LB1s.east) --++  (\factor\leglen, 0) node (GA1s) [tensor] {${#2}^\dagger$};
+  \draw (GA1s.east) --++  (\factor\leglen, 0) node (LAs)  [tensor] {$#1$};
+  \draw (LAs.east)  --++  (\factor\leglen, 0) node (GBs)  [tensor] {${#4}^\dagger$};
+  \draw (GBs.east)  --++  (\factor\leglen, 0) node (LB2s) [tensor] {$#3$};
+  \draw (LB2s.east) --++  (\factor\leglen, 0) node (GA2s) [tensor] {${#2}^\dagger$};
+
+  \path let \p1=(GA1.west), \p2=(GB.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LA)!0.65!(LAs) $) (H1) {$#7$};
+  \path let \p1=(GB.west), \p2=(GA2.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LB2)!0.35!(LB2s) $) (H2) {$#8$};
+
+  \draw (LB1.west) -|  ($ ([xshift=-\factor\leglen]LB1.west)!.5!([xshift=-\factor\leglen]LB1s.west) $) node [tensor] (L){${#5}$} |- (LB1s.west);
+  \draw (GA2.east) -|  ($ ([xshift= \factor\leglen]GA2.east)!.5!([xshift= \factor\leglen]GA2s.east) $) node [tensor] (R){${#6}$} |- (GA2s.east);
+  
+  \draw(GA1.south) |- (GA1.south |- H1.north);
+  \draw(GB.south)  |- (GB.south  |- H2.north);
+  \draw(GA2.south) |- (GA2.south |- H2.north);
+  
+  \draw(GA1s.north) |- (GA1s.north |- H1.south);
+  \draw(GBs.north)  |- (GBs.north  |- H1.south);
+  \draw(GA2s.north) |- (GA2s.north |- H2.south);
+  
+  \draw(H2.south)  -| (H1.north   -| GB.south);
+
+\end{tikzpicture}
+}
+
+
+%----------------------------------------------------------------------------------------
+%	DMRG two sites contracted with local hamiltonian with offset 1. Term "III_b".
+%----------------------------------------------------------------------------------------
+
+\newcommand{\dmrgIIIb}[9]{% nameLA,nameGA,nameLB,nameGB,nameL,nameR,nameH1, nameH2, spacing (around 2 is good)
+\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
+\tikzstyle{tensor}=[rectangle,
+              draw, fill=white, minimum width=1em, minimum height=1em,
+              inner sep=1mm, outer sep=0mm]
+  \newcommand{\factor}{#9*}
+  \node[tensor] (LB1) at (0,0) {$#3$};
+  \draw (LB1.east) --++  (\factor\leglen, 0) node (GA1) [tensor] {$#2$};
+  \draw (GA1.east) --++  (\factor\leglen, 0) node (LA)  [tensor] {$#1$};
+  \draw (LA.east)  --++  (\factor\leglen, 0) node (GB)  [tensor] {$#4$};
+  \draw (GB.east)  --++  (\factor\leglen, 0) node (LB2) [tensor] {$#3$};
+  \draw (LB2.east) --++  (\factor\leglen, 0) node (GA2) [tensor] {$#2$};
+
+  \node [tensor] (LB1s) at (0,-3.5*\factor\leglen) {$#3$};
+  \draw (LB1s.east) --++  (\factor\leglen, 0) node (GA1s) [tensor] {${#2}^\dagger$};
+  \draw (GA1s.east) --++  (\factor\leglen, 0) node (LAs)  [tensor] {$#1$};
+  \draw (LAs.east)  --++  (\factor\leglen, 0) node (GBs)  [tensor] {${#4}^\dagger$};
+  \draw (GBs.east)  --++  (\factor\leglen, 0) node (LB2s) [tensor] {$#3$};
+  \draw (LB2s.east) --++  (\factor\leglen, 0) node (GA2s) [tensor] {${#2}^\dagger$};
+
+  \path let \p1=(GA1.west), \p2=(GB.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LA)!0.35!(LAs) $) (H1) {$#7$};
+  \path let \p1=(GB.west), \p2=(GA2.east) in node [tensor, minimum width=\x2-\x1-\pgflinewidth] at ($ (LB2)!0.65!(LB2s) $) (H2) {$#8$};
+  \draw (LB1.west) -|  ($ ([xshift=-\factor\leglen]LB1.west)!.5!([xshift=-\factor\leglen]LB1s.west) $) node [tensor] (L){${#5}$} |- (LB1s.west);
+  \draw (GA2.east) -|  ($ ([xshift= \factor\leglen]GA2.east)!.5!([xshift= \factor\leglen]GA2s.east) $) node [tensor] (R){${#6}$} |- (GA2s.east);
+  
+  \draw(GA1.south) |- (GA1.south |- H1.north);
+  \draw(GB.south)  |- (GB.south  |- H1.north);
+  \draw(GA2.south) |- (GA2.south |- H2.north);
+  
+  \draw(GA1s.north) |- (GA1s.north |- H1.south);
+  \draw(GBs.north)  |- (GBs.north  |- H2.south);
+  \draw(GA2s.north) |- (GA2s.north |- H2.south);
+  
+  \draw(H1.south)  -| (H2.north   -| GB.south);
+
+\end{tikzpicture}
+}
+

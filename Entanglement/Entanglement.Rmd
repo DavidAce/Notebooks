@@ -1,0 +1,536 @@
+---
+title: |
+       | Entanglement
+       | Notebook
+author: "David Aceituno"
+output:
+  pdf_document:
+    highlight: pygments
+    latex_engine: xelatex
+    toc: yes
+    toc_depth: 3
+
+urlcolor: blue
+header-includes: 
+  - \usepackage{tikz}
+  - \usepackage{pgfplots}
+  - \usepackage{float}
+  - \usepackage{tcolorbox}
+  - \usepackage{array}
+  - \usepackage{booktabs}
+
+---
+
+# Entanglement
+The following is a summary of [this thesis](http://www2.mpq.mpg.de/Theorygroup/CIRAC/wiki/images/9/9f/Eckholt_Diplom.pdf) and [this pdf](http://www.mpmueller.net/seminar/talk2.pdf).
+
+
+---
+
+If two systems interacted in the past it is, in general, not possible to assign a single state vector to either of the two subsystems. 
+
+Entanglement appears as the consequence of the combination of two of the quantum postulates:
+
+- Postulate 1: The state of a quantum system is described by a vector in a complex Hilbert space.
+- Postulate 2: The Hilbert space of a composite system is the tensor product of the two local spaces
+- As a consequence there is a superposition of pure states that cannot be written as the tensor product of pure states in each local space
+
+Antipodean to entangled states are the separable states, i.e., a state is entangled iff it is not separable.
+
+Whether a given state is entangled or just classically correlated is easy to determine for pure states. However, for arbitrary mixed states it is a hard problem. This is known as the *separability problem*.
+
+Note that there are two more postulates dealing with evolution of quantu states via unitary operators.
+
+
+--- 
+
+  > **Definition of Entanglement**: (from [wiki](https://en.wikipedia.org/wiki/Quantum_entanglement) ): 
+  > A general state in $H_A\otimes H_B$ is  $|\psi_{AB}\rangle = \sum_{jk} c_{jk} |j_A\rangle \otimes |k_B\rangle$.
+  > It is entangled if any pair $c_j^Ac_k^B \neq c_{jk}$, such that $|\psi_{AB}\rangle\neq \sum_j c_j^A |j_A\rangle \otimes \sum_k c_k^B |k_B\rangle = |\psi_A\rangle \otimes |\psi_B\rangle$,  for any basis. 
+
+---
+
+
+## Computational Basis
+
+A qubit is a quantum system in which states 0 and 1 are represented by a prescribed pair of normalised and mutually orthogonal quantum states labeled as $\{|0\rangle, |1\rangle\} = \{ \binom{1}{0}, \binom{0}{1}\}$. These two states form a a \textbf{computational basis}, and any other (pure) stateof the qubit can be written as a superposition $a |0\rangle + b |1\rangle$, where normalisation implies $|a|^2 + |b|^2 = 1$.
+
+### Tensor Product
+By the postulate of quantum mechanics, the Hilbert space of a composite system is the \textit{tensor product} of the two local spaces. 
+Let $|\psi_1\rangle = a|0\rangle + b|1\rangle$ and $|\psi_2\rangle= \alpha |0\rangle + \beta |1\rangle$ be states in Hilbert spaces $H_1$ and $H_2$. Then the joint state is given by
+
+$$
+\begin{aligned}
+| \psi \ \rangle &= |\psi_1 \rangle \otimes \ |\psi_2\rangle \\
+ &= (a|0\rangle + b|1\rangle) \otimes (\alpha |0\rangle + \beta |1\rangle) \\
+ &= a\alpha|00\rangle + a\beta|01\rangle + b\alpha|10\rangle + b\beta|11\rangle.
+\end{aligned}
+$$
+One is free to order the states in the joint basis $\{ |00\rangle, |01\rangle, |10\rangle, |11\rangle\}$, but this particular order is common in quantum information, known as the \textbf{computational basis}. Then $|\psi\rangle$ corresponds to a column vector 
+
+$$
+|\psi \rangle = \binom{a}{b} \otimes \binom{\alpha}{\beta} = \begin{pmatrix} a\alpha \\ a\beta \\ b\alpha \\ b\beta \end{pmatrix}.
+$$
+
+The inner products in tensor-product space is straightforward. Let $|v_i\rangle$ and $|w_i\rangle$ be elements of Hilbert spaces $V$ and $W$ respectively. Then an inner product on $V \otimes W$ will in general work like this:
+
+$$
+\left( \sum_i a_i |v_i\rangle \otimes |w_i\rangle , \sum_j a_j |v_j'\rangle \otimes |w_j'\rangle   \right) \equiv \sum_{ij} a_i^*b_j \langle v_i|v_j'\rangle\langle w_i|w_j'\rangle.
+$$
+
+For the states mentioned earlier, we have
+$$
+\langle |\psi\rangle , |\psi\rangle \rangle = \langle \psi|\psi \rangle = \langle \left( |\psi_1\rangle \otimes |\psi_2\rangle \right) ,   \left( |\psi_1\rangle \otimes |\psi_2\rangle \right)  \rangle = \langle \psi_1|\psi_1\rangle \langle \psi_2 | \psi_2 \rangle.
+$$
+
+---
+
+### Example
+**Introduce a notation where $X_2$ is the Pauli operator $\sigma_x$ acting on the second qubit. Show that the observable $X_1Z_2$ for a two qubit system measureed in the state $|\psi \rangle = (|00\rangle + |11\rangle)/\sqrt{2}$ is zero.** 
+
+We know that the pauli operators $\sigma_x$ and $\sigma_z$ have eigenvalues $\{-1,1\}$, with
+$$
+\begin{aligned}
+\sigma_x|\psi_1 \rangle &= \begin{pmatrix}0&1\\1&0\end{pmatrix} \begin{pmatrix}a\\b\end{pmatrix} =  \begin{pmatrix}b\\a\end{pmatrix}  = b \begin{pmatrix}0\\1\end{pmatrix}  + a  \begin{pmatrix}1\\0\end{pmatrix}  = b | 0 \rangle + a |1\rangle\\
+\sigma_z|\psi_2 \rangle &= \begin{pmatrix}1&0\\0&-1\end{pmatrix} \begin{pmatrix}\alpha\\\beta\end{pmatrix}  = \begin{pmatrix}\alpha\\-\beta\end{pmatrix}  = \alpha \begin{pmatrix}0\\1\end{pmatrix}  - \beta\begin{pmatrix}1\\0\end{pmatrix} = \alpha | 0 \rangle - \beta |1\rangle
+\end{aligned}
+$$
+
+Measuring the observable $X_1Z_2$ with $a = b = \alpha = \beta = 2^{1/4}$ should then give 
+
+$$
+\begin{aligned}
+\langle \psi | X_1Z_2|\psi\rangle &=
+   \langle \frac{1}{\sqrt{2}} (\langle00| + \langle 11|) | X_1Z_2  | \frac{1}{\sqrt{2}} (|00\rangle + |11\rangle )\rangle  \\
+& = \frac{1}{2} \langle (\langle00| + \langle 11|) | (|10\rangle - |01\rangle) \rangle  \hspace{1cm} (=0 \text{ orthonormal basis in the joint space)} \\
+& = \frac{1}{2} ( \langle 00|10\rangle + \langle00|01\rangle + \langle 11|01 \rangle + \langle 11|10 \rangle ) \\
+& = 0 \hspace{1cm}  (\text{because of orthogonality in the subspaces)}
+\end{aligned}
+$$
+
+
+
+---
+
+
+## Pure States
+
+The Schmidt theorem, or Schmidt decomposition, is useful for the deciding separability. Let’s define some concepts first.
+
+---
+
+  > **Definition of Pure state (or ensemble)**: In literature the words "state" and "ensemble" are often used interchangeably. By **pure** **state**, (or pure ensemble in Sakurai), we mean a collection of identically prepared physical systems, where all members can be described by the same ket $|\psi\rangle$. For instance, silver atoms coming out of a Stern-Gerlach filtering apparatus, where all spins come out pointing in some definite direction $\hat{n}$.
+  
+  > **Pure states and entanglement**: A **pure state** $|\psi_{AB}\rangle\in H_A\otimes H_B$ is **entangled** iff it is not **separable**, i.e., $|\psi_{AB}\rangle \neq |\psi_A\rangle \otimes |\psi_B\rangle$. Equivalently, if it were separable, it would not be entangled.
+
+
+  > **Definition of a Bipartite system**: A **pure state** of a composite system $A \cup B$ is called **bipartite** and can be written as $|\psi_{AB}\rangle = \sum_{jk} c_{jk} |j_A\rangle \otimes |k_B\rangle$, where $\{|j_A\rangle\}$ and $\{|k_B\rangle\}$ are bases in Hilbert spaces $H_A$ and $H_B$ respectively.
+
+---
+
+
+
+
+**Schmidt Theorem**: Suppose $|\psi_{AB}\rangle$ is a pure state of a composite system $AB$. Then there are orthonormal states $\{|i_A\rangle\}$ and  $\{|i_B\rangle\}$  in $H_A$ and $H_B$ respectively, such that
+
+
+$$
+|\psi_{AB}\rangle = \sum_i^n c_i |i_A\rangle \otimes |i_B\rangle
+$$
+              
+
+where $c_i$ are non-negative real numbers called **Schmidt coefficients**, satisfying $\sum_i^n c_i^2 = 1$, and $n = \min{(\text{dim } H_A, \text{dim } H_B)}$. Furthermore, $\lambda_i = c_i^2$ are the eigenvalues of the two partial traces of $\rho_{AB}$, i.e., $\rho_A$ and $\rho_B$.
+
+**Proof:** As per definition, let $|\psi_{AB}\rangle = \sum_{jk} c_{jk} |j_A\rangle \otimes |k_B\rangle = \sum_{jk} c_{jk}|jk\rangle$ be a bipartite system with some matrix $\bold{c}=c_{jk}$. By singular value decomposition we can write $\bold{c} = \bold{udv}$ where $\bold{d}$ is a nonnegative diagonal matrix, and $\bold{u}$ and $\bold{v}$ are unitary matrices:
+
+
+$$
+|\psi_{AB}\rangle = \sum_{jik} u_{ji} d_{ii} v_{ik} |j_A\rangle \otimes |k_B\rangle
+$$
+
+Define $|i_A\rangle = \sum_j u_{ji}|j_A\rangle$ and $|i_B\rangle = \sum_k v_{ik}|k_B\rangle$. Then by identifying $c_i = d_{ii}$ we get the desired result.
+
+
+
+---
+
+  > **Definition of the Schmidt rank**: The Schmidt rank is the number of non-vanishing Schmidt coefficients. Equivalently, it is defined as the number of non-zero eigenvalues of $\rho_A$ or $\rho_B$.
+
+---
+  
+  
+
+For pure states we can then say:
+
+- $|\psi_{AB}\rangle$ is **entangled** or **non-separable** if it has Schmidt rank $> 1$.
+- $|\psi_{AB}\rangle$ is **separable** *iff* there is only one non-zero Schmidt coefficient.
+- If all Schmidt coefficients are non-zero and equal, the state is **maximally entangled**.
+                
+
+
+## Mixed States
+
+A completely random state and a pure state can be regarded as extremes of what is known as a mixed state (or mixed ensemble). For a mixed ensemble we introduce the concept of **fractional population** or probability weight $p_i \geq 0$ with $\sum_{i=1}^N p_i = 1$, which as the name suggests tells us the fraction of the populations described by each state ket.
+
+A general density matrix  for a mixed state has the form
+
+
+$$
+\rho = \sum_i p_i [\sum_j c_{ij}(|\alpha_{ij}\rangle\otimes|\beta_{ij}\rangle)]\otimes [\sum_j c_{ij}(\langle\alpha_{ij}|\otimes\langle\beta_{ij}|)]
+$$
+
+A mixed state $\rho$ is entangled iff it is not separable, i.e.,
+
+
+$$
+\rho_{AB} \neq \sum_{i=1}^N p_i[|\psi^i_A\rangle\langle\psi_A^i| \otimes |\psi_B^i\rangle\langle\psi_B^i|] = \sum_{i=1}^N p_i \rho_A^{i} \otimes \rho_B^i
+$$                
+
+where $N$ is the number of populations. 
+
+Do not confuse $p_i$ with $c_i$: 
+
+- $p_i$ is a weight as encountered in classical probability theory. If $p_\text{male} = p_\text{female} = 0.5$ in a school, there is a 50% probability of picking a male student at random. This does not mean that the student is in a linear superposition of male and female.
+- $c_i$ is a *probability amplitude* or phase relation in a linear superposition of state kets. For instance, in  $\frac{1}{\sqrt{2}}(|\uparrow\rangle + |\downarrow\rangle)$ we have $c_1 = c_2 = \frac{1}{\sqrt{2}}$ and their squares represent the probability of measuring up or down respectively.
+
+
+---
+
+*Explanation from Sakurai*
+
+  In a mixed state (or *mixed ensemble* in Sakurai), we have a mixture of pure states. For instance, a fraction — say 70% — of the members may be characterized by state ket $|\psi_A\rangle$, and the remaining 30% by state ket $|\psi_B\rangle$. Note that $|\psi_A\rangle$ and $|\psi_B\rangle$ do not need to be orthogonal!
+
+---
+
+In a mixed state (or ensemble) there are many different ways to decide if it is entangled, i.e. there are many different entanglement measures.
+
+
+
+## Separable States
+
+Separable quantum states are states without quantum entanglement.
+
+Let $H_1$ and $H_2$ be quantum systems with basis states $\{ |a_i\rangle\}_{i=1}^n$ and $\{ |b_j\rangle\}_{j=1}^n$. By a postulate of quantum mechanics, the composite system is given by the tensor product 
+
+$$
+H_1 \otimes H_2
+$$
+
+with basis $\{ |a_i\rangle\ \otimes |b_j\rangle \} = \{ |a_ib_j\rangle \}$.
+
+If a pure state $|\psi\rangle \in H_1 \otimes H_2$ can be written in the form $|\psi\rangle = |\psi_1\rangle \otimes |\psi_2\rangle$, where $|\psi_i\rangle$ is a pure state in the $i$th subsystem, it is said to be **separable**. Otherwise it is **entangled**.
+
+For separable states the joint state of two systems can be expressed with the density
+
+\begin{align}
+\rho = \sum_k p_k \rho_A^k \otimes \rho_B^k.
+\end{align}
+
+
+
+## Product States
+
+A product state is a \textit{simply separable} state, in which there are neither classical nor quantum correlations. The joint state of systems $A$ and $B$ can be espressed as
+
+\begin{align}
+\rho = \rho_A \otimes \rho_B
+\end{align}
+
+
+
+
+
+## The Density Operator
+
+---
+
+> **For pure states: ** The density operator for a pure state can be written as $\rho = |\psi\rangle \langle \psi |$, without summation. For instance, in the conventional basis, a beam of particles polarized in the $z$-direction is described by state vector$|\psi\rangle=|\uparrow\rangle$, and then the density operator becomes
+>  $$\rho = |\psi\rangle\langle\psi| = |\uparrow\rangle\langle\uparrow| = \binom{1}{0} (1 \: 0) = \binom{1 \: 0}{0 \: 0}$$
+
+> **For mixed states:** For a mixture of states $|\psi^i\rangle$ we define the density operator as
+> $$\rho = \sum_i p_i|\psi^i\rangle\langle\psi^i|,$$
+> where the fractional population satisfies $\sum_i p_i = 1$. Obviously, such a mixture is pure iff $p_i = 1$ for some $|\psi^i\rangle$, and zero for the remaining. A completely random ensemble has diagonal elements $\frac{1}{N}$, where $N$ is the number of populations. 
+  
+---
+
+
+**Averages**
+The *expectation value* $\langle A \rangle$ (or *ensemble average* in Sakurai), for a mixed state is:
+
+$$
+\langle A \rangle \equiv \sum_i p_i \langle i| A | i\rangle = \text{Tr}(\rho A)
+$$
+
+**The Partial Trace (summary from** [**StackExchange**](http://physics.stackexchange.com/questions/70436/differences-between-pure-mixed-entangled-separable-superposed-states)**)**
+If we're only interested in predictions for a subsystem $A$ in a system composed of $AB$ then $A$ is described by a density matrix $\rho_A$ calculable by "tracing over" the indices of the Hilbert space for $B$:
+
+$$
+\rho_A = \text{Tr}_B\rho_{AB}
+$$
+
+Note that if the whole system $AB$ is in a pure state we have $\rho_{AB} = |\psi_{AB} \rangle \langle \psi_{AB} |$.
+
+
+
+## Separability Criteria
+
+---
+
+Summary from 
+
+> Mintert, F., Viviescas, C., & Buchleitner, A. (2009). Entanglement and Decoherence, 768, 61–86. https://doi.org/10.1007/978-3-540-88169-8
+> http://www.springer.com/cda/content/document/cda_downloaddocument/9783540881681-c2.pdf?SGWID=0-0-45-646111-p173849909
+
+---
+
+Checking separability can be much more involved than 
+
+
+
+
+
+
+## Entanglement measures
+
+(See also this [pioneering paper](http://journals.aps.org/pra/abstract/10.1103/PhysRevA.54.3824)) 
+Here we address how can quantum entanglement be quantified and classified, but first, we need to defined what an entanglement measure *is*:
+
+
+- Entanglement is nonnegative. It is zero iff the state is separable.
+- Entanglement of independent systems is additive, i.e. $E(\psi^{\otimes n}) = nE(\psi)$.
+- Entanglement is conserved under local unitary operations, i.e. $E(\psi) = E(U\psi)$. In other words, a local change of basis has no effect on $E$.
+    
+
+**The von Neumann Entropy**
+The entropy of entanglement defined as
+
+$$
+S = - \text{Tr}(\rho \ln{\rho}) = - \sum_i \lambda_i \ln{\lambda_i},
+$$
+
+is useful for both **pure** and **mixed** states. 
+For a pure bipartite state we also have $E(\psi) = S(\rho_A) = S(\rho_B)$.
+
+General properties of the von Neumann entropy:
+
+1. $S(\rho)\geq 0$. If it is zero, it is a pure state.
+2. $\dim{H} = d \Rightarrow S(\rho) \leq \log_2(d)$ and $S(\rho) = \log(d) \Leftrightarrow \rho = 1/d$
+3. $\rho_{AB}$ on $H_A\otimes H_B$ pure $\Rightarrow$ $S(\rho_A) = S(\rho_B)$.
+4. Let $\rho_j$ be density operators with support on orthogonal subspaces. Then $S(\sum_j p_j\rho_j) = H(\{p_j\}) + \sum_j p_jS(\rho_j)$, where $H(\{p_j\})=-\sum_j p_j \log_2p_j$ is the **Shannon entropy**.
+5. **Joint entropy theorem:** Let $\{|j_A\rangle\} \subset H_A$ orthonormal, $\rho_j^B$ density operators on $H_B$. Then $S(\sum_jp_j|j_A \rangle \langle| j_A| \otimes \rho_j^B) = H(\{p_j\}) + \sum_j p_j S(\rho_j^B)$.
+6. $S(\rho_A \otimes \rho_B) = S(\rho_A) + S(\rho_B)$
+7. $S(\rho_A) = 0 \Leftrightarrow |\psi_{AB}\rangle$ separable, $S(\rho_A) > 0 \Leftrightarrow |\psi_{AB}\rangle$ entangled.
+8. $S(\rho_A) = \log(\dim H_A)(=\text{maximal}) \Leftrightarrow |\psi_{AB}\rangle$ maximally entangled, assuming $\dim{H_A} \leq \dim{H_B}$
+     
+
+
+**The rank of the Schmidt decomposition**
+If $A$ is a subset of $n$ spins and $B$ the rest of them, then the Schmidt decomposition for some partition of $A:B$ reads
+
+
+$$
+|\psi_{AB}\rangle = \sum_{\alpha=1}^{\chi_A} \lambda_\alpha |\psi^A_\alpha\rangle\otimes|\psi_\alpha^B\rangle.
+$$
+                
+
+The rank $\chi_A$  of the reduced density matrix $\rho_A$ measures the entanglement  between spins in $A$ and $B$.
+
+---
+
+
+## Examples
+
+In the following examples we have two spin-$\frac{1}{2}$ particles coming out of a Stern-Gerlach type apparatus which can be rotated. We use the basis where $z$ is diagonal, i.e., $|\uparrow\rangle =(1,0)^T$ and $|\downarrow\rangle = (0,1)^T$.
+
+**Example 1 - Pure, separable, not entangled:**
+
+Particles $A$ and $B$ come out pointing in the $z$-direction. We then have a non-entangled and separable state:
+  
+$$
+|\psi_{AB}\rangle = |\uparrow_A\rangle \otimes |\uparrow_B\rangle = |\uparrow\uparrow\rangle.
+$$ 
+
+
+The matrix $c_{ij}$ then has elements $c_{00} = 1$, and all others are zero. 
+The SVD decomposition tells us that $\bold{c} = \bold{udv}$ where $d_{ii}^2 = c_i^2$ are the eigenvalues $\lambda_i$ of the matrix $\bold{c}^T\bold{c}$.  Recall that $c_i$ are the Schmidt coefficients! We get
+
+
+$$
+\bold{c}^T\bold{c} = \binom{1 \; 0}{0 \; 0}^\dagger\binom{1 \; 0}{0 \; 0} = \binom{1 \; 0}{0 \; 0}
+$$
+
+with eigenvalues $\lambda_0 = 0, \lambda_1 = 1$.
+
+Furthermore, the density operator becomes:
+                
+$$
+\rho_{AB} = |\psi\rangle\langle\psi| = (|\uparrow_A\rangle \otimes |\uparrow_B\rangle)(\langle\uparrow_A| \otimes \langle\uparrow_B|)
+$$
+
+$$
+\qquad = |\uparrow_A\rangle\langle\uparrow_A|\otimes |\uparrow_B\rangle\langle\uparrow_B| = \rho_A \otimes \rho_B = 4\times4 \text{ matrix}
+$$
+
+
+where $\rho_A = \text{Tr}_B \rho_{AB} =\binom{1\;0}{0\;0}$ and $\rho_B = \text{Tr}_A \rho_{AB}$ $=\binom{1\;0}{0\;0}$, and thus both have eigenvalues $\lambda_0 = 0$ and $\lambda_1 = 1$.  
+  
+In conclusion:
+- Since the state is separable, it is not entangled.
+- Since only one eigenvalue of $\rho_A,\rho_B$ is non-zero, the state is separable, and not entangled.
+- Since $1$ is one of the eigenvalues of $\rho_{A}, \rho_{B}$, the state is pure.
+
+
+ 
+
+---
+
+**Example 2 - Pure, separable, not entangled:**
+
+Particles $A$ and $B$ come out in a linear superposition 
+
+$$
+|\psi_{AB}\rangle = \frac{1}{\sqrt{2}} (|\uparrow_A\rangle|\otimes|\uparrow_B\rangle + |\uparrow_A\rangle\otimes|\downarrow_B\rangle) = \frac{1}{\sqrt{2}} (|\uparrow\uparrow\rangle + |\uparrow\downarrow\rangle)
+$$
+
+Then the coefficients $c_{ij}$ become: $c_{00} = c_{01} = \frac{1}{\sqrt{2}}$, and all others zero.
+The SVD decomposition tells us that $\bold{c} = \bold{udv}$ where $d_{ii}^2 = c_i^2$ are the eigenvalues $\lambda_i$ of the matrix $\bold{c}^T\bold{c}$.  Recall that $c_i$ are the Schmidt coefficients!
+
+
+Thus we have $\bold{c}^T\bold{c} = \frac{1}{2}\binom{1\;0}{1\;0}\binom{1\;1}{0\;0} = \frac{1}{2}\binom{1\;1}{1\;1}$, with eigenvalues $\lambda_0 = 0, \lambda_1 = 1$. 
+  
+Furthermore we have the density operator 
+
+
+$$
+\begin{aligned}
+\rho_{AB} & = |\psi_{AB}\rangle\langle\psi_{AB}| \\
+ &= \frac{1}{2} \left[ |\uparrow_A\rangle\langle\uparrow_A|\otimes|\uparrow_B\rangle\langle\uparrow_B|+
+                       |\uparrow_A\rangle\langle\uparrow_A|\otimes|\uparrow_B\rangle\langle\downarrow_B|+
+                       |\uparrow_A\rangle\langle\uparrow_A|\otimes|\downarrow_B\rangle\langle\uparrow_B|+
+                       |\uparrow_A\rangle\langle\uparrow_A|\otimes|\downarrow_B\rangle\langle\downarrow_B| 
+                \right]\\
+ &= \frac{1}{2}\left[ \binom{1\;0}{0\;0}_A \otimes \binom{1\;0}{0\;0}_B +
+                      \binom{1\;0}{0\;0}_A \otimes \binom{0\;1}{0\;0}_B +
+                      \binom{1\;0}{0\;0}_A \otimes \binom{0\;0}{1\;0}_B + 
+                      \binom{1\;0}{0\;0}_A\otimes \binom{0\;0}{0\;1}_B
+                \right]\\
+ &=\frac{1}{2} \left[ \binom{^1_0 \; ^0_0 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0} +
+                      \binom{^0_0 \; ^1_0 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0} +
+                      \binom{^0_1 \; ^0_0 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0} +
+                      \binom{^0_0 \; ^0_1 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0} 
+                \right]\\
+ &= \frac{1}{2}\binom{^1_1 \; ^1_1 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0} 
+\end{aligned}
+$$
+              
+         
+which has eigenvalues $\lambda_0 = 0$ with multiplicity 3 and $\lambda_1= 1$ with multiplicity 1.
+
+We get eigenvectors  $v^{(1)} = \frac{1}{\sqrt{2}}(-1, 1, 0,0)^T$, $v^{(2)} = \frac{1}{\sqrt{2}}(1,-1,0,0)^T$, 
+for $v^{(3)} =$ $(0,0,1,0)^T$, $v^{(4)} = (0,0,0,1)^T$.
+Therefore,  $\rho_{AB} =PDP^{-1}$ with $D = \binom{^1_0 \; ^0_0 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0}$ , and $P = [v^1, v^2, v^3, v^4]$
+
+
+Note that $\rho_A = \text{Tr}_B \rho_{AB}$ = $\binom{1 \; 0}{0 \; 0}$ and $\rho_B = \text{Tr}_A \rho_{AB}$ $=\frac{1}{2}\binom{1 \; 1}{1\; 1}$. Simply trace the A and B parts into scalars, respectively, in the third line.
+  
+In conclusion:
+
+- Since one eigenvalue of $\rho_{AB}$ is $1$, the state (or ensemble) is pure.
+- Since $\text{Tr}\rho_{AB}^2 = \sum_i \lambda_i^2 = 1$, the state (or ensemble) is pure.
+- Since $\rho_{AB} = \rho_{AB}^2$, the state (or ensemble) is pure.
+- Since we have only one non-zero Schmidt Coefficient, the state is separable and not entangled.
+
+
+
+
+
+---
+
+**Example 3 - Pure non-separable, entangled:**
+
+  The Bell state $|\psi_{AB} \rangle = \frac{1}{\sqrt{2}} (|\uparrow\uparrow\rangle + |\downarrow\downarrow\rangle)$ is maximally entangled.
+  If we measure the spin of $A$  we immediately know the spin of $B$. Let’s repeat the steps of previous examples.
+
+
+  Particles $A$ and $B$ come out in a linear superposition 
+            $|\psi_{AB}\rangle = \frac{1}{\sqrt{2}} (|\uparrow_A\rangle|\otimes|\uparrow_B\rangle + |\downarrow_A\rangle\otimes|\downarrow_B\rangle)$ 
+  Then the coefficients $c_{ij}$ become: $c_{00} = c_{11} = \frac{1}{\sqrt{2}}$, and all others zero.
+  The SVD decomposition tells us that $\bold{c} = \bold{udv}$ where $d_{ii}^2 = c_i^2$ are the eigenvalues $\lambda_i$ of the matrix $\bold{c}^T\bold{c}$.  Recall that $c_i$ are the Schmidt coefficients!
+
+
+  Thus we have $\bold{c}^T\bold{c} = \frac{1}{2}\binom{1\;0}{0\;1}\binom{1\;0}{0\;1} = \frac{1}{2}\binom{1\;0}{0\;1}$, with eigenvalues $\lambda_0 = \lambda_1 = \frac{1}{2}$. 
+  
+  Furthermore we have the density operator 
+
+$$
+\begin{aligned}
+  \rho_{AB} &= |\psi_{AB}\rangle\langle\psi_{AB}| = \\
+&= \frac{1}{2} \left[ |\uparrow_A\rangle\langle\uparrow_A|\otimes|\uparrow_B\rangle\langle\uparrow_B|+
+                      |\uparrow_A\rangle\langle\downarrow_A|\otimes|\uparrow_B\rangle\langle\downarrow_B|+
+                      |\downarrow_A\rangle\langle\uparrow_A|\otimes|\downarrow_B\rangle\langle\uparrow_B|+
+                      |\downarrow_A\rangle\langle\downarrow_A|\otimes|\downarrow_B\rangle\langle\downarrow_B|
+                \right]\\
+&= \frac{1}{2} \left[ \binom{1\;0}{0\;0}_A \otimes \binom{1\;0}{0\;0}_B+
+                      \binom{0\;1}{0\;0}_A \otimes \binom{0\;1}{0\;0}_B+
+                      \binom{0\;0}{1\;0}_A \otimes \binom{0\;0}{1\;0}_B+
+                      \binom{0\;0}{0\;1}_A\otimes \binom{0\;0}{0\;1}_B
+                \right]\\
+&= \frac{1}{2} \left[ \binom{^1_0 \; ^0_0 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0}+
+                      \binom{^0_0 \; ^0_0 \; ^0_0\; ^1_0}{^0_0 \;^0_0 \;^0_0 \;^0_0}+
+                      \binom{^0_0 \; ^0_0 \; ^0_0\; ^0_0}{^0_1 \;^0_0 \;^0_0 \;^0_0}+
+                      \binom{^0_0 \; ^0_0 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_1}
+                \right]\\
+&= \frac{1}{2}\binom{^1_0 \; ^0_0 \; ^0_0\; ^1_0}{^0_1 \;^0_0 \;^0_0 \;^0_1}
+\end{aligned}
+$$
+
+which has eigenvalues $\lambda_0 = 0$ with multiplicity 3 and $\lambda_1= 1$ with multiplicity 1.
+
+We get eigenvectors  $v^{(1)} = \frac{1}{\sqrt{2}}(-1, 0, 0,1)^T$,  
+for $v^{(2)} =$ $(0,1,0,0)^T$, $v^{(3)} = (0,0,1,0)^T$ and $v^{(4)} = \frac{1}{\sqrt{2}}(1,0,0,-1)^T$.
+Therefore,  $\rho_{AB} =PDP^{-1}$ with $D = \binom{^1_0 \; ^0_0 \; ^0_0\; ^0_0}{^0_0 \;^0_0 \;^0_0 \;^0_0}$ , and $P = [v^1, v^2, v^3, v^4]$
+  
+Note that $\rho_A = \text{Tr}_B \rho_{AB}$ = $\frac{1}{2}\binom{1 \; 0}{0 \; 1}$ and $\rho_B = \text{Tr}_A \rho_{AB}$ $=\frac{1}{2}\binom{1 \; 0}{0\; 1}$, each with eigenvalues $\lambda_1=\lambda_2 = \frac{1}{2}$. Simply trace the A and B parts into scalars, respectively, in the third line above.
+
+
+In conclusion:
+
+- Since one eigenvalue of $\rho_{AB}$ is $1$, the state (or ensemble) is pure.
+- Since $\text{Tr}\rho_{AB}^2 = \sum_i \lambda_i^2 = 1$, the state (or ensemble) is pure.
+- Since $\rho_{AB} = \rho_{AB}^2$, the state (or ensemble) is pure.
+- Since there are two non-zero Schmidt coefficients, the state is entangled. 
+- Since all Schmidt coefficients are non-zero and equal, the state is maximally entangled.
+    
+---
+
+**Example 4 - A different approach** 
+
+Let $|\psi_{AB}\rangle = \frac{1}{\sqrt{2}}(|\downarrow_A\rangle\otimes|\uparrow_B\rangle  + |\uparrow_A\rangle\otimes|\downarrow_B\rangle)$ $=\frac{1}{\sqrt{2}}(|\downarrow\uparrow\rangle + |\uparrow\downarrow\rangle)$.
+  
+  This time we study this state in another way. 
+  
+  > Recall that a general state in $H_A\otimes H_B$ is
+              $|\psi_{AB}\rangle = \sum_{jk} c_{jk} |j_A\rangle \otimes |k_B\rangle$,
+  > and that it is entangled if any pair $c_j^Ac_k^B \neq c_{jk}$, such that
+              $|\psi_{AB}\rangle\neq \sum_j c_j^A |j_A\rangle \otimes \sum_k c_k^B |k_B\rangle = |\psi_A\rangle \otimes |\psi_B\rangle$,
+  > for any basis. 
+  
+  The basis of $H_{A,B}$ is $\{|\uparrow\rangle, |\downarrow\rangle\}_{A,B}$. 
+  Then $c_{10} = -c_{01} = \frac{1}{\sqrt{2}}$. On the other hand, we have the the linear combination:
+   
+$$
+\begin{aligned}
+(c_0^A |\uparrow_A\rangle + c_1^A |\downarrow_A\rangle)\otimes 
+(c_0^B |\uparrow_B\rangle + c_1^B |\downarrow_B\rangle) = 
+c_0^Ac_0^B|\uparrow\uparrow\rangle +
+c_0^Ac_1^B|\uparrow\downarrow\rangle+
+c_1^Ac_0^B|\downarrow\uparrow\rangle+
+c_1^Ac_1^B|\downarrow\downarrow\rangle
+\end{aligned}
+$$
+  
+Now, notice the **contradiction**: if $c_{10} = c_1^Ac_0^B \neq 0$ and $c_{01} = c_0^Ac_1^B \neq 0$, then all $c_j^A$ and $c_k^B$ are nonzero $\Rightarrow$ It is impossible to get rid of any terms! $\Rightarrow$ **Entangled state!**
+
+
+By the same argument, it is also possible to see why Example 2 was not entangled: $c_1^A = 0$ and all others nonzero satisfies the condition without contradiction. 
+
