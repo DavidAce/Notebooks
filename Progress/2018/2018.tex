@@ -181,8 +181,43 @@ Interestingly the two latter techniques are very costly computationally. The who
 	- 
 \end{markdown}
 
-		
+	
+\section*{August}
+\begin{markdown}
+* Computing cluster:
+	* After seeing how much coputational power was required to do my simulations, I realized I'd need a computing cluster. I started having a look at HTCondor, which I had failed to use previously.
+	
 
+\end{markdown}
+ 
+	
+
+
+\section*{September}
+\begin{markdown}
+* Computing cluster:
+	* Over the past month I've been working with my HTCondor cluster Issues I looked at:
+		* **Users:** There are multiple requirements for users:
+			* Different users should be recognized by condor to enable priorities and usage monitoring. 
+			* Each user needs a home with write permissions, but only read permissions or less in other condor users folders. For this each user needs to exist on all the nodes with synchronized UID's and GID's. I also looked at Kerberos and LDAP but these were far too complciated. 
+			* Home folders should be present in each node. For this we need a shared filesystem. I looked at NFS, NFSv4, SMB and sshfs but in the end NFS seemed simplest and most  reliable.
+		* **Shared filesystem:** HTcondor has a file transfer mechanism so that all listed files are sent from the submitting machine to the nodes and back for each simulation. This is a lot of hassle if the executable depends on many files in a large filestructure. I ended up opting for NFSv4 and letting all the nodes mount it using AutoFS. Now all nodes have an automounted condorusers folder containing each users home folder, mounted from the network. All the permissions are set on the host machine. Having a shared filesystem drastically reduced maintenence, since now all the settings can also be read from configure-files in `/mnt/nfs/condorfs/common`, which lies on the host nfs server.
+		* **Credentials** HTCondor supports host or user based authentication and a number of others like kerberos. In the end SSL seemed simplest, if one wants to have user based credentials instead. I set up my own certificate authority which signs credentials for new nodes.
+		* ****
+		* **Library availability** Ended up using environment-modules available from apt. This can load libraries exactly like in Octupus, Triolith and PDC clusters. Now I have to maintain module-files and library files in `/mnt/nfs/condorfs/modulefiles` and `/mnt/nfs/condorfs/software/ libraries` , but I have automated scripts to install new versions when needed, so this is not a lot of work. Luckily the libraries are automatically loaded on remote nodes because condor can copy the current PATH and LD_LIBRARY_PATH to the executing node using the variable ``getenv = true'' in the condor submit script.
+		* **Heterogeneous machines:** Binary compatibility is tough to achieve when there are different machines on all the 
+		* **Shared/static libraries**
+
+
+		* 
+		
+	* 
+
+* Went to Max Planck institute in Dresden for a workshop during 23rd to 29th of september. It was interesting. Learned a lot, worked a lot and met some other students researching MBL and related topics. Short summary:
+	* LCRG method for doing infinite system time evolution can be done to study mbl somehow. The point was that disorder wasn't really needed explicitly. Maximilian Keifer explained this during a poster session. 
+	* 
+	
+\end{markdown}
  
 
 

@@ -16,4 +16,8 @@ _markdown_*/
 *.lua
 *.in
 *.out
-
+Progress/
+Application*/
+IT*/
+Hardware*/
+Translation*/

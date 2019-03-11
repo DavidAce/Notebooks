@@ -204,7 +204,7 @@ RANDFILE        = $ENV::HOME/.rnd
 ####################################################################
 [ req ]
 default_bits       = 4096
-default_keyfile    = server.key
+default_keyfile    = host.key
 distinguished_name = server_distinguished_name
 req_extensions     = server_req_extensions
 string_mask        = utf8only
@@ -245,13 +245,12 @@ DNS.1  = example.com
 DNS.2  = www.example.com
 DNS.3  = mail.example.com
 DNS.4  = ftp.example.com
-
 ```
 
 Now create a certificate request to be signed by the authority (a "csr"), and a private key in one go (might need sudo)
 
 ```
-openssl req -config openssl-server.cnf -newkey rsa:4096 -sha256 -nodes -out server.csr
+openssl req -config openssl-host.cnf -newkey rsa:4096 -sha256 -nodes -out host.csr
 ```
 
 Once again follow the instructions on screen. To avoid password encryption use  `-nodes` above as well.
@@ -360,7 +359,9 @@ For some reason condor doesn't like the host and node keys to be encrypted. Of c
 openssl rsa -in myfile.encrypted.key -out myfile.unencrypted.key
 ```
 
+### Set permissions on keys
 
+Keys seem to default to 600. Set to 644 instead, so nfs clients can read also.
 
 # Configure HTCondor
 
@@ -379,7 +380,6 @@ CERTIFICATE_MAPFILE      = /etc/condor/ssl/condor_map_file
 ```
 SSL "/C=SE/ST=Stockholm/L=Stockholm/O=Royal Institute of Technology -- KTH/CN=david@thinkstation" david
 SSL "/C=SE/ST=Stockholm/L=Stockholm/O=Royal Institute of Technology -- KTH/CN=david@uburku"       david
-
 ```
 
 On each line there are three fields, SSL, subject and username. 
@@ -408,7 +408,7 @@ To configure the Host, you'll need to edit `/etc/condor/condor_config.local` and
 Start by pasting the following into  `/etc/condor/condor_config.local`
 
 ```
-# HTCondor configuration file
+# HTCondor configuration file                                                                                                                                                                                                          
 #
 # Configuration placed into this file extends/overwrites the settings in the
 # main HTCondor configuration at /etc/condor/condor_config.
@@ -421,20 +421,29 @@ Start by pasting the following into  `/etc/condor/condor_config.local`
 
 #use ROLE : Personal, CentralManager, Submit
 #use SECURITY : USER_BASED
-SEC_DEFAULT_AUTHENTICATION_METHODS = SSL
 
 SEC_DEFAULT_AUTHENTICATION         = REQUIRED
+SEC_DEFAULT_ENCRYPTION             = REQUIRED
+SEC_DEFAULT_INTEGRITY              = REQUIRED
+
 SEC_DAEMON_AUTHENTICATION          = REQUIRED
+SEC_DAEMON_ENCRYPTION              = REQUIRED
 SEC_DAEMON_INTEGRITY               = REQUIRED
+
 SEC_NEGOTIATOR_AUTHENTICATION      = REQUIRED
+SEC_NEGOTIATOR_ENCRYPTION          = REQUIRED
 SEC_NEGOTIATOR_INTEGRITY           = REQUIRED
+
 SEC_CLIENT_AUTHENTICATION          = REQUIRED
+SEC_CLIENT_ENCRYPTION              = REQUIRED
+SEC_CLIENT_INTEGRITY               = REQUIRED
 
-
-SEC_DAEMON_AUTHENTICATION_METHODS  = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
-SEC_READ_AUTHENTICATION_METHODS    = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
-SEC_WRITE_AUTHENTICATION_METHODS   = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
-SEC_CLIENT_AUTHENTICATION_METHODS  = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_DEFAULT_AUTHENTICATION_METHODS    = SSL
+SEC_DAEMON_AUTHENTICATION_METHODS     = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_NEGOTIATOR_AUTHENTICATION_METHODS = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_READ_AUTHENTICATION_METHODS       = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_WRITE_AUTHENTICATION_METHODS      = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_CLIENT_AUTHENTICATION_METHODS     = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
 
 AUTH_SSL_CLIENT_CAFILE   = /etc/condor/ssl/cacert.crt
 AUTH_SSL_CLIENT_CERTFILE = /etc/condor/ssl/host.crt
@@ -448,11 +457,10 @@ AUTH_SSL_SERVER_KEYFILE  = /etc/condor/ssl/host.key
 
 
 CERTIFICATE_MAPFILE      = /etc/condor/ssl/condor_map_file
-#COLLECTOR_DEBUG = D_SECURITY
-#CREDD_DEBUG     = D_ALL
-#MASTER_DEBUG    = D_SECURITY
-
-
+#NEGOTIATOR_DEBUG= D_FULLDEBUG
+#COLLECTOR_DEBUG = D_FULLDEBUG
+#CREDD_DEBUG     = D_FULLDEBUG
+#MASTER_DEBUG    = D_FULLDEBUG
 ```
 
 
@@ -497,11 +505,11 @@ ALLOW_OWNER         = david@localhost, david@thinkstation
 ALLOW_ADMINISTRATOR = david@localhost, david@thinkstation
 ALLOW_CONFIG        = david@localhost, david@thinkstation
 ALLOW_DAEMON        = david@localhost, david@thinkstation,\
-                      david@uburku, david@thinkpad, herviou@rosenrot
+                      david@uburku, david@thinkpad, davidace@rosenrot
 ALLOW_WRITE         = david@localhost, david@thinkstation,\
-                      david@uburku, david@thinkpad, herviou@rosenrot
+                      david@uburku, david@thinkpad, davidace@rosenrot
 ALLOW_READ          = david@localhost, david@thinkstation,\
-                      david@uburku, david@thinkpad, herviou@rosenrot
+                      david@uburku, david@thinkpad, davidace@rosenrot
 ```
 
 Here the user names are simply the same ones used in `/etc/condor/ssl/condor_map_file`, and in this case `thinkstation` is the name of the host machine.
@@ -534,32 +542,28 @@ Start by pasting the following into  `/etc/condor/condor_config.local`
 
 
 SEC_DEFAULT_AUTHENTICATION         = REQUIRED
-SEC_DEFAULT_AUTHENTICATION_METHODS = PASSWORD, FS# HTCondor configuration file
-#
-# Configuration placed into this file extends/overwrites the settings in the
-# main HTCondor configuration at /etc/condor/condor_config.
-# It may be advantagous to leave the main configuration file pristine and put
-# local configuration here to ease configuration updates during upgrades of the
-# HTCondor Debian package. Alternatively, it is also possible to place additional
-# configuration files into /etc/condor/config.d that will take precedence over
-# both the main configuration file and this local configuration. Note that
-# DebConf-generated configuration will overwrite settings in this file.
+SEC_DEFAULT_ENCRYPTION             = REQUIRED
+SEC_DEFAULT_INTEGRITY              = REQUIRED
 
-
-SEC_DEFAULT_AUTHENTICATION_METHODS = SSL
-
-SEC_DEFAULT_AUTHENTICATION         = REQUIRED
 SEC_DAEMON_AUTHENTICATION          = REQUIRED
+SEC_DAEMON_ENCRYPTION              = REQUIRED
 SEC_DAEMON_INTEGRITY               = REQUIRED
+
 SEC_NEGOTIATOR_AUTHENTICATION      = REQUIRED
+SEC_NEGOTIATOR_ENCRYPTION          = REQUIRED
 SEC_NEGOTIATOR_INTEGRITY           = REQUIRED
+
 SEC_CLIENT_AUTHENTICATION          = REQUIRED
+SEC_CLIENT_ENCRYPTION              = REQUIRED
+SEC_CLIENT_INTEGRITY               = REQUIRED
 
+SEC_DEFAULT_AUTHENTICATION_METHODS    = SSL
+SEC_DAEMON_AUTHENTICATION_METHODS     = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_NEGOTIATOR_AUTHENTICATION_METHODS = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_READ_AUTHENTICATION_METHODS       = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_WRITE_AUTHENTICATION_METHODS      = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
+SEC_CLIENT_AUTHENTICATION_METHODS     = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
 
-SEC_DAEMON_AUTHENTICATION_METHODS  = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
-SEC_READ_AUTHENTICATION_METHODS    = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
-SEC_WRITE_AUTHENTICATION_METHODS   = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
-SEC_CLIENT_AUTHENTICATION_METHODS  = $(SEC_DEFAULT_AUTHENTICATION_METHODS)
 
 AUTH_SSL_CLIENT_CAFILE   = /etc/condor/ssl/cacert.crt
 AUTH_SSL_CLIENT_CERTFILE = /etc/condor/ssl/node.crt
@@ -573,9 +577,11 @@ AUTH_SSL_SERVER_KEYFILE  = /etc/condor/ssl/node.key
 
 
 CERTIFICATE_MAPFILE      = /etc/condor/ssl/condor_map_file
-#COLLECTOR_DEBUG = D_SECURITY
-#CREDD_DEBUG     = D_ALL
+
 #MASTER_DEBUG    = D_SECURITY
+#SCHEDD_DEBUG    = D_FULLDEBUG
+
+
 ```
 
 
