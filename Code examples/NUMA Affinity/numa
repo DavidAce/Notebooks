@@ -1,0 +1,24 @@
+{%- set nodes = salt.file.find('/sys/devices/system/node', name='node[0-9]*', type='d') -%}
+NUM_SLOTS = {{ nodes | count }}
+ENFORCE_CPU_AFFINITY = True
+
+{% for node in nodes -%}
+NUM_SLOTS_TYPE_{{ loop.index }} = 1
+{%- set cpus = salt.file.find(node, name='cpu[0-9]*', type='d') -%}
+{%- set physical_cpus = [] -%}
+{% for cpu in cpus %}
+{%- set cpu_id = cpu.replace(node + '/cpu', '') -%}
+{%- set physical_id = salt.file.read(cpu + '/topology/core_id') -%}
+{% if cpu_id.strip() == physical_id.strip() %}
+{%- do physical_cpus.append(cpu) -%}
+{% endif -%}
+{% endfor %}
+SLOT_TYPE_{{ loop.index }} = cpus={{ physical_cpus | count }}
+SLOT_TYPE_{{ loop.index }}_PARTITIONABLE = true
+{%- set cpu_ids = [] -%}
+{% for cpu in cpus %}
+{%- do cpu_ids.append(cpu.replace(node + '/cpu', '')) -%}
+{% endfor %}
+SLOT{{ loop.index }}_CPU_AFFINITY = {{ cpu_ids | join(',')}}
+
+{% endfor -%} 
